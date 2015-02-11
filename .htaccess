@@ -1,0 +1,24 @@
+php_value auto_prepend_file "/var/www/BITsensor/BITsensor/Init.php"
+
+ErrorDocument 400 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument400.php
+ErrorDocument 401 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument401.php
+ErrorDocument 402 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument402.php
+ErrorDocument 403 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument403.php
+ErrorDocument 404 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument404.php
+ErrorDocument 405 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument405.php
+ErrorDocument 406 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument406.php
+ErrorDocument 407 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument407.php
+ErrorDocument 408 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument408.php
+ErrorDocument 409 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument409.php
+ErrorDocument 410 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument410.php
+ErrorDocument 411 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument411.php
+ErrorDocument 412 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument412.php
+ErrorDocument 413 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument413.php
+ErrorDocument 414 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument414.php
+ErrorDocument 415 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument415.php
+ErrorDocument 500 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument500.php
+ErrorDocument 501 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument501.php
+ErrorDocument 502 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument502.php
+ErrorDocument 503 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument503.php
+ErrorDocument 504 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument504.php
+ErrorDocument 505 /BITsensor/BITsensor/Core/Handler/ServerErrorHandler/ErrorDocument505.php
