@@ -5,4 +5,4 @@ include_once 'SqlErrorHandler.php';
 SqlErrorHandler::Handle();
 
 echo '<pre>';
-echo($BITsensor->Serialize(true));
+print_r($BITsensor->Get());

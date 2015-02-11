@@ -98,6 +98,12 @@ class Collector {
         );
     }
     
+    public function Get()
+    {
+        return $this->_getCollections();
+    }
+
+
     public function Serialize($prettyPrint = false)
     {
         return $prettyPrint ? json_encode($this->_getCollections(), JSON_PRETTY_PRINT ) : json_encode($this->_getCollections());
