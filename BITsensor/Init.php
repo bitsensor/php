@@ -15,12 +15,14 @@ function InitializeErrorHandler(){
 }
 
 function InitializeShutdown(){
-    include BITsensorBasePath . 'Core/Handler/AfterRequest.php';
+    include_once BITsensorBasePath . 'Core/Handler/AfterRequestHandler.php';
+    AfterRequestHandler::Handle();
 }
 
 /*@var $BITsensor Collector*/
 $BITsensor = new Collector();
 
-include BITsensorBasePath . 'Core/Handler/HttpRequestHandler.php';
-include BITsensorBasePath . 'Core/Handler/InputHandler.php';
-
+include_once BITsensorBasePath . 'Core/Handler/HttpRequestHandler.php';
+HttpRequestHandler::Handle();
+include_once BITsensorBasePath . 'Core/Handler/RequestInputHandler.php';
+RequestInputHandler::Handle();
