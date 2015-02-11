@@ -219,7 +219,7 @@ class Monitor
     private function detect($key, $value)
     {
         // define the pre-filter
-        $preFilter = '([^\w\s/@!?\.]+|(?:\./)|(?:@@\w+)|(?:\+ADw)|(?:union\s+select))i';
+        $preFilter = '([^\w\s/@!?\.]+|(?:\./)|(?:@@\w+)|(?:\+ADw)|(?:union))i';
 
         // to increase performance, only start detection if value isn't alphanumeric
         if ((!$this->scanKeys || !$key || !preg_match($preFilter, $key)) && (!$value || !preg_match($preFilter, $value))) {
