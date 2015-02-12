@@ -9,8 +9,6 @@ class CodeErrorHandler {
     {
         global $BITsensor;
         
-        $errorSendToSensor = FALSE;
-        
         //$stack = CodeErrorHandler::formaldehyde_remove_recursion($stack);
         if(preg_match("/(input|stream|file|include|inclusion)/i", $description)){
             $error = new FileIncludeError($number, $description, $filePath, $line);
@@ -30,11 +28,8 @@ class CodeErrorHandler {
             $errorSendToSensor = TRUE;
         }
         
-        if($errorSendToSensor == FALSE)
-        {
-            $error = new CodeError($number, $description, $filePath, $line);
-            $BITsensor->AddError($error);
-        }
+        $error = new CodeError($number, $description, $filePath, $line);
+        $BITsensor->AddError($error);
         
         return false;
     }
