@@ -26,3 +26,6 @@ include_once BITsensorBasePath . 'Core/Handler/HttpRequestHandler.php';
 HttpRequestHandler::Handle();
 include_once BITsensorBasePath . 'Core/Handler/RequestInputHandler.php';
 RequestInputHandler::Handle();
+
+$BITsensor->SetInputProcessed(true);
+$BITsensor->SetContextProcessed(true);
