@@ -6,12 +6,37 @@ include_once 'IContext.php';
 include_once 'SQL/IMySqlEvent.php';
 include_once 'IDetection.php';
 include_once BITsensorBasePath . 'Core/Handler/ExternalHandlers/PHPIDSHandler.php';
+include_once BITsensorBasePath . 'Core/Handler/DetectionHandler.php';
 
 class Collector {
     private $contextCollection = array();
     
     private $errorCollection = array(), $inputCollection = array(), $detectionCollection = array();
     
+    private $requestInputProcessed = false;
+    private $requestContextProcessed = false;
+    
+    public function SetInputProcessed($value)
+    {
+        $this->requestInputProcessed = $value;
+        $this->checkRequestProcessed();
+    }
+    
+    public function SetContextProcessed($value)
+    {
+        $this->requestContextProcessed = $value;
+        $this->checkRequestProcessed();
+    }
+    
+    private function checkRequestProcessed()
+    {
+        if($this->requestContextProcessed && $this->requestInputProcessed) {
+            if(!empty($this->detectionCollection)) {
+                DetectionHandler::Handle();
+            }
+        }
+    }
+
     public function AddContext(IContext $context)
     {
         $this->_addContext($context);
@@ -85,6 +110,7 @@ class Collector {
     private function _addDetectioin($object)
     {
         array_push($this->detectionCollection, $object);
+        $this->checkRequestProcessed();
     }
     
     private function _getCollections()
