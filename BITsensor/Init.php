@@ -15,6 +15,7 @@ function InitializeShutdown(){
     AfterRequestHandler::Handle();
 }
 
+global $BITsensor;
 /*@var $BITsensor Collector*/
 $BITsensor = new Collector();
 
