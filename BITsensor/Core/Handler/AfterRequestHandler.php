@@ -1,14 +1,21 @@
 <?php
 include_once 'SqlErrorHandler.php';
+include_once 'ReportingHandler.php';
 
 class AfterRequestHandler
 {
+    static $executed = false;
+    
     public static function Handle()
     {
         global $BITsensor;
+        
+        if(AfterRequestHandler::$executed === true)
+            return;
+        
         SqlErrorHandler::Handle();
-
-        echo '<pre>';
-        print_r($BITsensor->Get());
+        ReportingHandler::Handle();
+        
+        AfterRequestHandler::$executed = true;
     }
 }

@@ -1,21 +1,19 @@
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
-        <pre>
-            <?php
-            error_reporting(-1);
-            //include 'BITsensor/Init.php';
-            
-            global $BITsensor;
-            /* @var $BITsensor Collector */
-            $BITsensor->AddContext(Context::User('Ruben van Vreeland'));
+<?php
 
-            $detection = new Detection('File Uploader');
-            $detection->addRule(new DetectionRule('Malicious file extension'));
-            $BITsensor->AddDetection($detection);
-            ?>
-    </body>
-</html>
+
+
+//            header('Content-Encoding: gzip');
+//            header('Content-Type: text/html; charset=ISO-8859-1');
+//            header('Content-Length: 3435795');
+//
+//            
+
+
+//            global $BITsensor;
+//            /* @var $BITsensor Collector */
+//            $BITsensor->AddContext(Context::User('Ruben van Vreeland'));
+//
+//            $detection = new Detection('File Uploader');
+//            $detection->addRule(new DetectionRule('Malicious file extension'));
+//            $BITsensor->AddDetection($detection);
+?>

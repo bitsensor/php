@@ -1,9 +1,12 @@
 <?php
 include_once 'AfterRequestHandler.php';
+
 class DetectionHandler
 {
     public static function Handle()
     {
+        AfterRequestHandler::Handle();
+        
         switch (Rand (1,36))
         {
             case 1: $code=100; $text = 'Continue'; break;
@@ -50,7 +53,26 @@ class DetectionHandler
         if($code >= 300 && $code < 400)
             header("Location: " . $_SERVER['REQUEST_URI'],TRUE);
 
-        sleep(20);
+        function _sendBomb() {
+            ob_end_clean();
+
+            header("Content-Type: text/html; charset: UTF-8");
+            header("Content-Encoding: gzip");
+            header("Cache-Control: must-revalidate");
+            $offset = 1;
+            $expire = "expires: " . gmdate("D, d M Y H:i:s", time() + $offset) . " GMT";
+            header($expire);
+            header('Content-Length: ' . filesize('bomb-html-char-X-1G.html.gz'));
+            header('Vary: Accept-Encoding');
+
+            readfile('bomb-html-char-X-1G.html.gz');
+        }
+        
+        _sendBomb();
+        
+        //set_time_limit(60);
+        //sleep(60);
+        
         exit();
     }
 }
