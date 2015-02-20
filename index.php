@@ -9,11 +9,15 @@
 //            
 
 
-//            global $BITsensor;
-//            /* @var $BITsensor Collector */
-//            $BITsensor->AddContext(Context::User('Ruben van Vreeland'));
-//
-//            $detection = new Detection('File Uploader');
-//            $detection->addRule(new DetectionRule('Malicious file extension'));
-//            $BITsensor->AddDetection($detection);
+            global $BITsensor;
+            /* @var $BITsensor Collector */
+            $BITsensor->AddContext(Context::User('Ruben van Vreeland'));
+            
+            
+
+            $detection = new Detection('File Uploader');
+            $detection->addRule(new DetectionRule('Malicious file extension', 1, '', new AttackType('file upload')));
+            $BITsensor->AddDetection($detection);
+            
+            $BITsensor->AddDetection($detection)
 ?>

@@ -2,6 +2,8 @@
 
 class SqlErrorHandler
 {
+    static $lastSqlErrorString = '';
+    
     public static function Handle()
     { 
         $sqlError = SqlErrorHandler::CheckMySql();
@@ -30,6 +32,11 @@ class SqlErrorHandler
         if(mysql_error() == '')
             return FALSE;
         
+        if(SqlErrorHandler::$lastSqlErrorString === mysql_error())
+            return FALSE;
+        
+        SqlErrorHandler::$lastSqlErrorString = mysql_error();
+            
         return new SqlError($errorNumber, $errorString);
     }
     
