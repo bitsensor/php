@@ -2,12 +2,15 @@
 include_once BITsensorBasePath . 'Core/Lib/Lib.php';
 include_once BITsensorBasePath . 'Core/Log/ICodeError.php';
 include_once BITsensorBasePath . 'Core/Log/IFileIncludeError.php';
+include_once 'SqlErrorHandler.php';
 
 class CodeErrorHandler {
     
     public static function Handle($number = 0, $description = '', $filePath = '', $line = 0, $stack = '')
     {
         global $BITsensor;
+        
+        SqlErrorHandler::Handle();
         
         //$stack = CodeErrorHandler::formaldehyde_remove_recursion($stack);
         if(preg_match("/(input|stream|file|include|inclusion)/i", $description)){

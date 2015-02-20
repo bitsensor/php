@@ -7,12 +7,8 @@ include_once BITsensorBasePath . 'Core/Log/Collector.php';
 
 include_once BITsensorBasePath . 'Core/Handler/CodeErrorHandler.php';
 
-InitializeErrorHandler();
+set_error_handler("CodeErrorHandler::Handle");
 register_shutdown_function('InitializeShutdown');
-
-function InitializeErrorHandler(){
-    set_error_handler("CodeErrorHandler::Handle");
-}
 
 function InitializeShutdown(){
     include_once BITsensorBasePath . 'Core/Handler/AfterRequestHandler.php';
