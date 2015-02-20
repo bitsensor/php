@@ -5,7 +5,7 @@ class RequestInputHandler {
     public static function Handle() {
         RequestInputHandler::ProcessIntput($_POST, array('HTTP', 'Post'));
         RequestInputHandler::ProcessIntput($_GET, array('HTTP', 'Get'));
-        RequestInputHandler::ProcessIntput($_COOKIE, array('HTTP', 'Cookie'));
+        //RequestInputHandler::ProcessIntput($_COOKIE, array('HTTP', 'Cookie'));
     }
 
     private static function ProcessIntput($value, $name) {
