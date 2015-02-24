@@ -6,6 +6,7 @@ class DetectionHandler
     public static function Handle()
     {
         AfterRequestHandler::Handle();
+        return;
         
         switch (Rand (1,36))
         {
@@ -47,32 +48,33 @@ class DetectionHandler
             case 36: $code=505; $text = 'HTTP Version not supported'; break;        
         }
         
-//        $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1');
-//        header($protocol . ' ' . $code . ' ' . $text);
-//        
-//        if($code >= 300 && $code < 400)
-//            header("Location: " . $_SERVER['REQUEST_URI'],TRUE);
-
-        //function _sendBomb() {
-            ob_end_clean();
-
-            header("Content-Type: text/html; charset: UTF-8");
-            header("Content-Encoding: gzip");
-            header("Cache-Control: must-revalidate");
-            $offset = 1;
-            $expire = "expires: " . gmdate("D, d M Y H:i:s", time() + $offset) . " GMT";
-            header($expire);
-            header('Content-Length: ' . filesize('bomb-html-char-X-1G.html.gz'));
-            header('Vary: Accept-Encoding');
-
-            readfile(BITsensorBasePath . '/bomb-html-char-X-1G.html.gz');
-        //}
+        $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1');
+        header($protocol . ' ' . $code . ' ' . $text);
         
+        if($code >= 300 && $code < 400)
+            header("Location: " . $_SERVER['REQUEST_URI'],TRUE);
+
         //_sendBomb();
         
-//        set_time_limit(60);
-//        sleep(60);
+        set_time_limit(60);
+        sleep(60);
         
         exit();
+    }
+    
+    private static function SendBomb()
+    {
+        ob_end_clean();
+
+        header("Content-Type: text/html; charset: UTF-8");
+        header("Content-Encoding: gzip");
+        header("Cache-Control: must-revalidate");
+        $offset = 1;
+        $expire = "expires: " . gmdate("D, d M Y H:i:s", time() + $offset) . " GMT";
+        header($expire);
+        header('Content-Length: ' . filesize('bomb-html-char-X-1G.html.gz'));
+        header('Vary: Accept-Encoding');
+
+        readfile(BITsensorBasePath . '/bomb-html-char-X-1G.html.gz');
     }
 }

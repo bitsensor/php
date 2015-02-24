@@ -8,12 +8,12 @@
 //
 //            
 
-
+        
             global $BITsensor;
             /* @var $BITsensor Collector */
             $BITsensor->AddContext(Context::User('Ruben van Vreeland'));
             
-            
+            $BITsensor->AddError(new SqlError(12, 'testsql'));
 
             $detection = new Detection('File Uploader');
             $detection->addRule(new DetectionRule('Malicious file extension', 1, '', new AttackType('file upload')));

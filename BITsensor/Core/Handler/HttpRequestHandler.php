@@ -19,6 +19,7 @@ class HttpRequestHandler
             $BITsensor->AddContext(new Context('User', $httpRequest->isHttpAuthenticatedRequest()));
 
         $BITsensor->AddContext(new Context(array('Server', 'Info'), new ServerInfo($_SERVER)));
+        
     }
 }
 

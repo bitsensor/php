@@ -23,8 +23,8 @@ class AfterRequestHandler
     
     private static function fatalHandler() 
     {
-        $errfile = "unknown file";
-        $errstr  = "shutdown";
+        $errfile = "";
+        $errstr  = "Fatal Error";
         $errno   = E_CORE_ERROR;
         $errline = 0;
 

@@ -10,7 +10,10 @@ class CodeErrorHandler {
     {
         global $BITsensor;
         
-        SqlErrorHandler::Handle();
+        $error = new CodeError($number, $description, $filePath, $line);
+        $BITsensor->AddError($error);
+        
+        SqlErrorHandler::Handle($error);
         
         //$stack = CodeErrorHandler::formaldehyde_remove_recursion($stack);
         if(preg_match("/(input|stream|file|include|inclusion)/i", $description)){
@@ -19,21 +22,14 @@ class CodeErrorHandler {
                      new DetectionRule('Detection based on General Error Based File Inclusion', $description, 1, 0, array('lfi', 'rfi')));
             
             $BITsensor->AddDetection($fileInclusionDetection);
-            $errorSendToSensor = TRUE;
         }
         
-        if(preg_match("/(mysql)/i", $description)){
+        if(preg_match("/(sql)/i", $description)){
             $error = new SqlError($number, $description, $filePath, $line);
             $sqlInjectionDetection = new Detection('SQL Error', '9326ab07-6b92-4e4f-bb04-90855641b9c6', true, 
                      new DetectionRule('Detection of SQL Error in code', $description, 1, 0, array('sqli')));
             
             $BITsensor->AddDetection($sqlInjectionDetection);
-            $errorSendToSensor = TRUE;
         }
-        
-        $error = new CodeError($number, $description, $filePath, $line);
-        $BITsensor->AddError($error);
-        
-        return false;
     }
 }
