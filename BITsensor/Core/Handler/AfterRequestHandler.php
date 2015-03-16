@@ -8,17 +8,16 @@ class AfterRequestHandler
     
     public static function Handle()
     {
-        global $BITsensor;
-        
         if(AfterRequestHandler::$executed === true)
             return;
+        AfterRequestHandler::$executed = true;
+
+        global $BITsensor;
         
         AfterRequestHandler::fatalHandler();
         
         SqlErrorHandler::Handle();
         ReportingHandler::Handle();
-        
-        AfterRequestHandler::$executed = true;
     }
     
     private static function fatalHandler() 
