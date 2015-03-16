@@ -115,20 +115,27 @@ class Collector {
     
     private function _getCollections()
     {
-        return array (
-            
-            new Context('Detection', $this->detectionCollection),
-            new Context('Error', $this->errorCollection),
-            new Context('Input', $this->inputCollection),
-            new Context('Context', $this->contextCollection)
-        );
+        $serializableCollector = new stdClass;
+        $serializableCollector->Detections = $this->detectionCollection;
+        $serializableCollector->Errors = $this->errorCollection;
+        $serializableCollector->Input = $this->inputCollection;
+        $serializableCollector->Context = $this->contextCollection;
+        return $serializableCollector;
+//        
+//        return array (
+//
+//            
+//            new Context('Detection', $this->detectionCollection),
+//            new Context('Error', $this->errorCollection),
+//            new Context('Input', $this->inputCollection),
+//            new Context('Context', $this->contextCollection)
+//        );
     }
     
     public function Get()
     {
         return $this->_getCollections();
     }
-
 
     public function Serialize($prettyPrint = false)
     {
