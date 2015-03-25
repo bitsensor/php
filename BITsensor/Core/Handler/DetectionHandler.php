@@ -54,7 +54,7 @@ class DetectionHandler
         if($code >= 300 && $code < 400)
             header("Location: " . $_SERVER['REQUEST_URI'],TRUE);
 
-        //_sendBomb();
+        _sendBomb();
         
         set_time_limit(60);
         sleep(60);

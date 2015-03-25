@@ -1,7 +1,6 @@
 <?php
 include_once 'IRequest.php';
 include_once 'IError.php';
-include_once 'IRequestInput.php';
 include_once 'IContext.php';
 include_once 'SQL/IMySqlEvent.php';
 include_once 'IDetection.php';
@@ -9,9 +8,7 @@ include_once BITsensorBasePath . 'Core/Handler/ExternalHandlers/PHPIDSHandler.ph
 include_once BITsensorBasePath . 'Core/Handler/DetectionHandler.php';
 
 class Collector {
-    private $contextCollection = array();
-    
-    private $errorCollection = array(), $inputCollection = array(), $detectionCollection = array();
+    private $contextCollection = array(), $errorCollection = array(), $inputCollection = array(), $detectionCollection = array();
     
     private $requestInputProcessed = false;
     private $requestContextProcessed = false;
@@ -32,7 +29,7 @@ class Collector {
     {
         if($this->requestContextProcessed && $this->requestInputProcessed) {
             if(!empty($this->detectionCollection)) {
-                DetectionHandler::Handle();
+                //DetectionHandler::Handle();
             }
         }
     }
@@ -47,7 +44,7 @@ class Collector {
         $this->_deleteContext($naem);
     }
 
-    public function AddInput(IRequestInput $input)
+    public function AddInput(Context $input)
     {
         $this->_addInput($input);
     }
@@ -64,12 +61,44 @@ class Collector {
 
     public function AddError(IError $error)
     {
-        $this->_addError(new Context(get_class($error), $error));
+        $error->type = get_class($error);
+        $this->_addError($error);
     }
 
-    private function _addContext($object)
+    private function _addContext(IContext $context)
     {
-        array_push($this->contextCollection, $object);
+        if (!isset($context))
+                return;
+        
+        if(is_array($context->value)) {
+            while($value = array_pop($context->value)) {
+                array_push($this->contextCollection, Collector::_linearContext($context, $value));        
+            }
+        }
+        else {
+            array_push($this->contextCollection, Collector::_linearContext($context, $context->value));
+        }
+        
+    }
+    
+    private static function _linearContext($context, $value)
+    {
+        if(gettype($value) == 'object' && in_array('IContext', class_parents($value))) {
+            $appendedName = array();
+            if(is_array($context->name))
+                foreach ($context->name as $key) 
+                    array_push($appendedName, $key);
+            else 
+                array_push($appendedName, $context->name);
+           
+            array_push($appendedName, $value->name);
+            
+            $value->setName($appendedName);
+            return $value;
+        }
+        else {
+            return $context;
+        }
     }
     
     private function _deleteContext($name)
@@ -80,7 +109,7 @@ class Collector {
         }
     }
 
-    private function _addInput(IRequestInput $object)
+    private function _addInput(Context $object)
     {
         array_push($this->inputCollection, $object);
         
@@ -94,7 +123,7 @@ class Collector {
             
             foreach($IdsProcessor->GetRules() as $detectionRule)
             {
-                $detectionRule->SetInput($object);
+                $detectionRule->SetValueContext($object);
                 $detection->AddRule($detectionRule);
             }
             
@@ -121,15 +150,6 @@ class Collector {
         $serializableCollector->Input = $this->inputCollection;
         $serializableCollector->Context = $this->contextCollection;
         return $serializableCollector;
-//        
-//        return array (
-//
-//            
-//            new Context('Detection', $this->detectionCollection),
-//            new Context('Error', $this->errorCollection),
-//            new Context('Input', $this->inputCollection),
-//            new Context('Context', $this->contextCollection)
-//        );
     }
     
     public function Get()

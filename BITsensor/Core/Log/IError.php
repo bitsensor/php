@@ -1,9 +1,9 @@
 <?php
 
 abstract class IError{
-    public $number, $description, $events = array();
+    public $number = 0, $description = '', $events = array();
     
-    public function __construct($errorNumber, $errorDescription) {
+    public function __construct($errorNumber = 0, $errorDescription = '') {
         $this->number = $errorNumber;
         $this->description = $errorDescription;
     }

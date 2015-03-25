@@ -13,14 +13,14 @@ class SqlErrorHandler
         {  
             if(isset($codeError))
             {
-                $sqlError->errLine = $codeError->errLine;
+                $sqlError->line = $codeError->line;
                 $sqlError->filePath = $codeError->filePath;
             }
             
             $BITsensor->AddError($sqlError);
             
-            $sqlInjectionDetection = new Detection('MySQL Error', 'b4caeafd-6abf-4396-a257-ffbe201bc3f3', TRUE, 
-                    new DetectionRule('General SQL error detection rule.', $sqlError, 1, 0, 'sqli'));
+            $sqlInjectionDetection = new Detection('MySQL Error', TRUE, 
+                    new DetectionRule(0, 'General SQL error detection rule.', 1, 'sqli', null, $sqlError));
             
             $BITsensor->AddDetection($sqlInjectionDetection);
         }
@@ -30,19 +30,19 @@ class SqlErrorHandler
     {
         if (!function_exists("mysql_errno"))
             return FALSE;
+                        
+        $errorString = (string)mysql_error();
+        $errorNumber = (int)mysql_errno();
         
-        if (mysql_errno() === 0)
+        if($errorNumber === 0)
             return FALSE;
-                         
-        $errorString = mysql_error();
-        $errorNumber = mysql_errno();
         
         if(SqlErrorHandler::$lastSqlErrorString === $errorString)
             return FALSE;
         
         SqlErrorHandler::$lastSqlErrorString = $errorString;
             
-        return new SqlError($errorNumber, $errorString);
+        return new SqlError((int)$errorNumber, (string)$errorString);
     }
     
     private static function CheckForMySQLI()

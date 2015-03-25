@@ -1,5 +1,4 @@
 <?php
-include_once BITsensorBasePath . 'Core/Log/IRequestInput.php';
 include_once BITsensorBasePath . 'External/PHPIDS/Init.php';
 include_once BITsensorBasePath . 'External/PHPIDS/Monitor.php';
 include_once BITsensorBasePath . 'External/PHPIDS/Filter/Storage.php';
@@ -13,7 +12,7 @@ include_once 'IIdsHandler.php';
 
 class PHPIDSHandler implements IExpendableIdsHandler
 {
-    public static function Evaluate(IRequestInput $input)
+    public static function Evaluate(Context $input)
     {
         $init = IDS\Init::init(BITsensorBasePath . 'External/PHPIDS/Config/Config.ini.php');
         $ids = new IDS\Monitor($init);
@@ -21,30 +20,32 @@ class PHPIDSHandler implements IExpendableIdsHandler
         
         if((!$phpIdsReport->isEmpty()))
         {
-            $detection = new Detection('PHP IDS', '2bc90c78-c06b-4b83-adf0-25005baed938', false);
+            $detection = new Detection('PHP IDS', false);
             
             $phpIdsEvents = $phpIdsReport->getEvents();
             $phpIdsEvents = array_shift($phpIdsEvents)->getFilters();
             
             if ($phpIdsReport->getCentrifuge() != null)
-                $detection->AddRule (new DetectionRulele('Centrifuge Meta Detection' . "\n Scored " . $phpIdsReport->getCentrifuge(), 1, 'Centrifuge' ));
+                $detection->AddRule (new DetectionRulele(
+                        'Centrifuge', 
+                        'Centrifuge Meta Detection' . 
+                            "\n Scored " . $phpIdsReport->getCentrifuge(), 
+                        1, 
+                        array('centrifuge')));
             
             foreach($phpIdsEvents as $rule)
             {    
                 /*@var $rule IDS\Filter */
                 $detectionRule = new DetectionRule(
-                                    $rule->getDescription() . 
-                                    $rule->getRule(),
-                                    null,
-                                    $rule->getImpact(),
-                                    $rule->getId(),
-                                    $rule->getTags() 
-                        );
+                        $rule->getId(),            
+                        $rule->getDescription() . $rule->getRule(),
+                        1,
+                        $rule->getTags()
+                );
                 
                 $detection->AddRule($detectionRule);
             }
             
-            //$phpIdsReport->getCentrifuge();
             return $detection;
         }
         else

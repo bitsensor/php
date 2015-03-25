@@ -2,7 +2,7 @@
 
 interface IExpendableIdsHandler
 {
-    public static function Evaluate(IRequestInput $input);
+    public static function Evaluate(Context $input);
 }
 
 interface IInitializableIdsHandler extends IExpendableIdsHandler

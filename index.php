@@ -1,23 +1,15 @@
 <?php
+    global $BITsensor;
+    
+    print_r(
+            pathinfo ( $_REQUEST['x'] ,  PATHINFO_EXTENSION ));
+    
+    /* @var $BITsensor Collector 
+    $BITsensor->AddContext(Context::User('Ruben BadUser'));
 
+    $BITsensor->AddError(new SqlError(12, 'testsql'));
 
-
-//            header('Content-Encoding: gzip');
-//            header('Content-Type: text/html; charset=ISO-8859-1');
-//            header('Content-Length: 3435795');
-//
-//            
-
-        
-            global $BITsensor;
-            /* @var $BITsensor Collector */
-            $BITsensor->AddContext(Context::User('Ruben van Vreeland'));
-            
-            $BITsensor->AddError(new SqlError(12, 'testsql'));
-
-            $detection = new Detection('File Uploader');
-            $detection->addRule(new DetectionRule('Malicious file extension', 1, '', new AttackType('file upload')));
-            $BITsensor->AddDetection($detection);
-            
-            $BITsensor->AddDetection($detection)
+    $detection = new Detection('File Uploader');
+        $detection->addRule(new DetectionRule(1, 'Malicious file extension', 1, 'File Upload' ));
+        $BITsensor->AddDetection($detection);*/
 ?>

@@ -332,7 +332,7 @@ class Storage
                     $impact      = (string) $filter->impact;
                     $tags        = array_values((array) $filter->tags);
                     $description = (string) $filter->description;
-    
+                    
                     $this->addFilter(
                         new \IDS\Filter(
                             $id,
