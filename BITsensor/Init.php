@@ -8,6 +8,8 @@ include_once BITsensorBasePath . 'Core/Handler/AfterRequestHandler.php';
 include_once BITsensorBasePath . 'Core/Handler/HttpRequestHandler.php';
 include_once BITsensorBasePath . 'Core/Handler/RequestInputHandler.php';
 
+ob_start();
+
 /*@var $BITsensor Collector*/
 global $BITsensor;
 $BITsensor = new Collector();
