@@ -6,7 +6,8 @@ class ReportingHandler {
         global $BITsensor;
 
         //DEBUG OPTION
-        //echo('<pre>' . $BITsensor->Serialize(true) . '</pre>');
+        echo('<pre>' . $BITsensor->Serialize(true) . '</pre>');
+        return;
         
         // Get the size of the output.
         $size = ob_get_length();
