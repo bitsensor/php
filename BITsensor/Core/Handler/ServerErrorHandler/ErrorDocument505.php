@@ -1,4 +1,5 @@
 <?php
+namespace BITsensor\Core\Handler\ServerErrorHandler;
 
-include 'ServerErrorHandler.php';
-raiseServerError(505, $errStr, $_SERVER['REDIRECT_URL']);
+
+ServerErrorHandler::raiseServerError(505, $_SERVER['REDIRECT_URL']);

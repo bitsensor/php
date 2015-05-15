@@ -1,14 +1,18 @@
 <?php
+namespace BITsensor\Core\Handler;
+
+
+use BITsensor\Core\Log\Context;
 
 class RequestInputHandler {
 
     public static function Handle() {
-        RequestInputHandler::ProcessIntput($_POST, array('HTTP', 'Post'));
-        RequestInputHandler::ProcessIntput($_GET, array('HTTP', 'Get'));
-        RequestInputHandler::ProcessIntput($_COOKIE, array('HTTP', 'Cookie'));
+        RequestInputHandler::ProcessInput($_POST, array('HTTP', 'Post'));
+        RequestInputHandler::ProcessInput($_GET, array('HTTP', 'Get'));
+        RequestInputHandler::ProcessInput($_COOKIE, array('HTTP', 'Cookie'));
     }
 
-    private static function ProcessIntput($value, $name) {
+    private static function ProcessInput($value, $name) {
         if (!isset($value))
             return;
 

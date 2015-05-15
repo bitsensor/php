@@ -1,6 +1,8 @@
 <?php
-include_once BITsensorBasePath . 'Core/Log/ICodeError.php';
+namespace BITsensor\Core\Log\SQL;
 
-abstract class ISqlError extends ICodeError {}
 
-class SqlError extends ISqlError {}
+use BITsensor\Core\Log\ICodeError;
+
+abstract class ISqlError extends ICodeError {
+}

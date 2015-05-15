@@ -1,4 +1,8 @@
 <?php
+namespace BITsensor\Core\Handler;
+
+
+use Exception;
 
 class ReportingHandler {
 
@@ -8,7 +12,7 @@ class ReportingHandler {
         //DEBUG OPTION
         echo('<pre>' . $BITsensor->Serialize(true) . '</pre>');
         return;
-        
+
         // Get the size of the output.
         $size = ob_get_length();
 
@@ -27,7 +31,7 @@ class ReportingHandler {
         flush();
 
         // Close current session (if it exists).
-        if(session_id()) 
+        if (session_id())
             session_write_close();
 
         try {
@@ -44,10 +48,10 @@ class ReportingHandler {
             curl_setopt($ch, CURLOPT_POSTFIELDS, "=" . urlencode(json_encode($BITsensor->Get())));
 
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            
+
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0.1);
             curl_setopt($ch, CURLOPT_TIMEOUT, 0.5);
-            
+
             curl_exec($ch);
             curl_close($ch);
         } catch (Exception $e) {

@@ -1,12 +1,20 @@
 <?php
+namespace BITsensor;
+
+
+use BITsensor\Core\Handler\HttpRequestHandler;
+use BITsensor\Core\Handler\RequestInputHandler;
+use BITsensor\Core\Log\Collector;
+
 define('BITsensorBasePath', realpath(dirname(__FILE__)) . '/');
 
-include_once 'Config.php';
-include_once BITsensorBasePath . 'Core/Log/Collector.php';
-include_once BITsensorBasePath . 'Core/Handler/CodeErrorHandler.php';
-include_once BITsensorBasePath . 'Core/Handler/AfterRequestHandler.php';
-include_once BITsensorBasePath . 'Core/Handler/HttpRequestHandler.php';
-include_once BITsensorBasePath . 'Core/Handler/RequestInputHandler.php';
+spl_autoload_register(function ($class) {
+    restore_include_path();
+    set_include_path(get_include_path() . PATH_SEPARATOR . dirname(BITsensorBasePath) . PATH_SEPARATOR . dirname(BITsensorBasePath) . '/External');
+    include str_replace("\\", "/", $class) . '.php';
+});
+
+require_once 'Config.php';
 
 ob_start();
 
@@ -14,8 +22,8 @@ ob_start();
 global $BITsensor;
 $BITsensor = new Collector();
 
-set_error_handler("CodeErrorHandler::Handle");
-register_shutdown_function('AfterRequestHandler::Handle');
+set_error_handler("\\BITsensor\\Core\\Handler\\CodeErrorHandler::Handle");
+register_shutdown_function('\\BITsensor\\Core\\Handler\\AfterRequestHandler::Handle');
 
 HttpRequestHandler::Handle();
 RequestInputHandler::Handle();

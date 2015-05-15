@@ -1,10 +1,14 @@
 <?php
-/* @var $BITsensor Collector */
-include BITsensorBasePath . 'Core/Log/IServerError.php';
+namespace BITsensor\Core\Handler\ServerErrorHandler;
 
-function raiseServerError($errorNumber, $errorFile)
-{
-    global $BITsensor;
-    $BITsensor->DeleteContext(array('Script', 'Path'));
-    $BITsensor->AddError(new ServerError($errorNumber, $errorFile));
+
+use BITsensor\Core\Log\ServerError;
+
+class ServerErrorHandler {
+
+    static function raiseServerError($errorNumber, $errorFile) {
+        global $BITsensor;
+        $BITsensor->DeleteContext(array('Script', 'Path'));
+        $BITsensor->AddError(new ServerError($errorNumber, $errorFile));
+    }
 }
