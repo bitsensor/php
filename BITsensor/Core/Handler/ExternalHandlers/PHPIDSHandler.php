@@ -1,6 +1,15 @@
 <?php
 namespace BITsensor\Core\Handler\ExternalHandlers;
 
+include_once BITsensorBasePath . 'External/IDS/Init.php';
+include_once BITsensorBasePath . 'External/IDS/Monitor.php';
+include_once BITsensorBasePath . 'External/IDS/Filter/Storage.php';
+include_once BITsensorBasePath . 'External/IDS/Report.php';
+include_once BITsensorBasePath . 'External/IDS/Converter.php';
+include_once BITsensorBasePath . 'External/IDS/Event.php';
+include_once BITsensorBasePath . 'External/IDS/Caching/CacheFactory.php';
+include_once BITsensorBasePath . 'External/IDS/Caching/CacheInterface.php';
+include_once BITsensorBasePath . 'External/IDS/Filter.php';
 
 use BITsensor\Core\Log\Context;
 use BITsensor\Core\Log\Detection;

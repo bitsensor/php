@@ -10,7 +10,7 @@ define('BITsensorBasePath', realpath(dirname(__FILE__)) . '/');
 
 spl_autoload_register(function ($class) {
     restore_include_path();
-    set_include_path(get_include_path() . PATH_SEPARATOR . dirname(BITsensorBasePath) . PATH_SEPARATOR . dirname(BITsensorBasePath) . '/External');
+    set_include_path(get_include_path() . PATH_SEPARATOR . dirname(BITsensorBasePath) . PATH_SEPARATOR . dirname(BITsensorBasePath) . '/External/');
     include str_replace("\\", "/", $class) . '.php';
 });
 
