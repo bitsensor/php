@@ -1,6 +1,6 @@
 <?php
 namespace BITsensor\Core\Handler\ServerErrorHandler;
-use BITsensor\Core\Log\ServerError;
+use \BITsensor\Core\ServerError;
 
 class ServerErrorHandler {
     static function raiseServerError($errorNumber, $errorFile) {

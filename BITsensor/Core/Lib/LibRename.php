@@ -2,7 +2,7 @@
 namespace BITsensor\Core\Lib;
 
 
-use BITsensor\Core\Log\Context;
+use \BITsensor\Core\Context;
 
 class LibRename {
     public static function Rename(&$object, $renameFields) {

@@ -2,9 +2,9 @@
 namespace BITsensor\Core\Handler;
 
 
-use BITsensor\Core\Log\Detection;
-use BITsensor\Core\Log\DetectionRule;
-use BITsensor\Core\Log\SQL\SqlError;
+use \BITsensor\Core\Detection;
+use \BITsensor\Core\DetectionRule;
+use \BITsensor\Core\SQL\SqlError;
 
 class SqlErrorHandler {
     static $lastSqlErrorString = '';

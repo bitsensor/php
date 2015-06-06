@@ -2,7 +2,7 @@
 namespace BITsensor\Core\Handler;
 
 
-use BITsensor\Core\Log\Context;
+use \BITsensor\Core\Context;
 
 class RequestInputHandler {
 

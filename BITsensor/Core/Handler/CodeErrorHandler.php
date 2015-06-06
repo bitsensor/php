@@ -2,11 +2,11 @@
 namespace BITsensor\Core\Handler;
 
 
-use BITsensor\Core\Log\CodeError;
-use BITsensor\Core\Log\Detection;
-use BITsensor\Core\Log\DetectionRule;
-use BITsensor\Core\Log\FileIncludeError;
-use BITsensor\Core\Log\SQL\SqlError;
+use \BITsensor\Core\CodeError;
+use \BITsensor\Core\Detection;
+use \BITsensor\Core\DetectionRule;
+use \BITsensor\Core\FileIncludeError;
+use \BITsensor\Core\SQL\SqlError;
 
 class CodeErrorHandler {
 

@@ -1,24 +1,14 @@
 <?php
 namespace BITsensor\Core\Handler\ExternalHandlers;
 
-include_once BITsensorBasePath . 'External/IDS/Init.php';
-include_once BITsensorBasePath . 'External/IDS/Monitor.php';
-include_once BITsensorBasePath . 'External/IDS/Filter/Storage.php';
-include_once BITsensorBasePath . 'External/IDS/Report.php';
-include_once BITsensorBasePath . 'External/IDS/Converter.php';
-include_once BITsensorBasePath . 'External/IDS/Event.php';
-include_once BITsensorBasePath . 'External/IDS/Caching/CacheFactory.php';
-include_once BITsensorBasePath . 'External/IDS/Caching/CacheInterface.php';
-include_once BITsensorBasePath . 'External/IDS/Filter.php';
-
-use BITsensor\Core\Log\Context;
-use BITsensor\Core\Log\Detection;
-use BITsensor\Core\Log\DetectionRule;
+use \BITsensor\Core\Context;
+use \BITsensor\Core\Detection;
+use \BITsensor\Core\DetectionRule;
 use IDS;
 
 class PHPIDSHandler implements IExpendableIdsHandler {
     public static function Evaluate(Context $input) {
-        $init = IDS\Init::init(BITsensorBasePath . 'External/IDS/Config/Config.ini.php');
+        $init = IDS\Init::init(BITsensorBasePath . '/External/IDS/Config/Config.ini.php');
         $ids = new IDS\Monitor($init);
         $phpIdsReport = $ids->runOnce("", $input->value);
 

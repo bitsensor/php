@@ -4,14 +4,17 @@ namespace BITsensor;
 
 use BITsensor\Core\Handler\HttpRequestHandler;
 use BITsensor\Core\Handler\RequestInputHandler;
-use BITsensor\Core\Log\Collector;
+use \BITsensor\Core\Collector;
 
 define('BITsensorBasePath', realpath(dirname(__FILE__)) . '/');
 
 spl_autoload_register(function ($class) {
     restore_include_path();
-    set_include_path(get_include_path() . PATH_SEPARATOR . dirname(BITsensorBasePath) . PATH_SEPARATOR . dirname(BITsensorBasePath) . '/External/');
-    include str_replace("\\", "/", $class) . '.php';
+    set_include_path(
+            get_include_path() . PATH_SEPARATOR . 
+            dirname(BITsensorBasePath) . PATH_SEPARATOR . 
+            BITsensorBasePath . 'External/');
+    require_once str_replace("\\", "/", $class) . '.php';
 });
 
 require_once 'Config.php';

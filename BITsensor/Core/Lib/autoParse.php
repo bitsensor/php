@@ -1,9 +1,10 @@
 <?php
 namespace BITsensor\Core\Lib;
 
+use BITsensor\Core\IContext;
 
-abstract class autoParse {
-    public $RAW_CONSTRUCTOR_ARRAY;
+abstract class autoParse extends IContext{
+    private $RAW_CONSTRUCTOR_ARRAY;
 
     public function __construct($keyValueArray) {
         $this->RAW_CONSTRUCTOR_ARRAY = $keyValueArray;

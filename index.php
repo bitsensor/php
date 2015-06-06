@@ -1,12 +1,13 @@
+<pre>
 <?php
     global $BITsensor;
     
-    print_r(
-            pathinfo ( $_REQUEST['x'] ,  PATHINFO_EXTENSION ));
-    
-    /* @var $BITsensor Collector 
-    $BITsensor->AddContext(Context::User('Ruben BadUser'));
+    $BITsensor->AddContext(\BITsensor\Core\Context::User('Ruben BadUser'));
 
+    
+    print_r($_SERVER);
+    /* @var $BITsensor Collector 
+    
     $BITsensor->AddError(new SqlError(12, 'testsql'));
 
     $detection = new Detection('File Uploader');
