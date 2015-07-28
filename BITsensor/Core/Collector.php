@@ -1,163 +1,62 @@
 <?php
+
 namespace BITsensor\Core;
 
-use \BITsensor\Core\Handler\ExternalHandlers\PHPIDSHandler;
-use \BITsensor\Core\Context;
-use \BITsensor\Core\ContextCollection;
-use stdClass;
 
+/**
+ * Responsible for collecting data about the connecting user and the accessed files.
+ * @package BITsensor\Core
+ */
 class Collector {
-    private $contextCollection;
-    private $errorCollection = array(), $inputCollection = array(), $detectionCollection = array();
 
-    private $requestInputProcessed = false;
-    private $requestContextProcessed = false;
+    /**
+     * @var Context[]
+     */
+    private $contextCollection = array();
 
-    public function __construct()
-    {
-        $this->contextCollection = new ContextCollection();
+    /**
+     * @var Error[]
+     */
+    private $errorCollection = array();
+
+    public function __construct() {
     }
 
-    public function SetInputProcessed($value) {
-        $this->requestInputProcessed = $value;
-        $this->checkRequestProcessed();
+    /**
+     * @param Context $context
+     */
+    public function addContext(Context $context) {
+        $this->contextCollection[] = $context;
     }
 
-    public function SetContextProcessed($value) {
-        $this->requestContextProcessed = $value;
-        $this->checkRequestProcessed();
+    /**
+     * @param Error $error
+     */
+    public function addError(Error $error) {
+        $this->errorCollection[] = $error;
     }
 
-    private function checkRequestProcessed() {
-        if ($this->requestContextProcessed && $this->requestInputProcessed) {
-            if (!empty($this->detectionCollection)) {
-                //DetectionHandler::Handle();
-            }
-        }
-    }
+    /**
+     * @param bool $prettyPrint
+     * @return string JSON encoded string
+     */
+    public function serialize($prettyPrint = false) {
+        $json = array();
 
-    public function AddUserContext(IContext $context){
-        $this->_addUserContext($context);
-    }
-    
-    public function AddInfoContext(IContext $context){
-        $this->_addInfoContext($context);
-    }
-    
-    public function AddServerContext(IContext $context){
-        $this->_addServerContext($context);
-    }
-    
-    public function AddPathContext(IContext $context){
-        $this->_addPathContext($context);
-    }
-    
-
-    public function DeleteContext($naem) {
-        $this->_deleteContext($naem);
-    }
-
-    public function AddInput(Context $input) {
-        $this->_addInput($input);
-    }
-
-    public function AddInputSet($input) {
-        array_walk($input,
-            function ($value, $key) {
-                $this->_addInput($value);
-            });
-    }
-
-    public function AddDetection($detection) {
-        $this->_addDetectioin($detection);
-    }
-
-    public function AddError(IError $error) {
-        $error->type = get_class($error);
-        $this->_addError($error);
-    }
-
-    private function _addContext(IContext $context) {
-        if (!isset($context))
-            return;
-
-        if (is_array($context->value)) {
-            while ($value = array_pop($context->value)) {
-                array_push($this->contextCollection->info, Collector::_linearContext($context, $value));
-            }
-        } else {
-            array_push($this->contextCollection->info, Collector::_linearContext($context, $context->value));
+        foreach ($this->contextCollection as $context) {
+            $json[$context->getName()] = $context->getValue();
         }
 
-    }
-
-    private static function _linearContext($context, $value) {
-        if (gettype($value) == 'object' && in_array('BITsensor\Core\IContextable', class_implements($value))) {
-            /* @var $value IContextable*/
-            $appendedName = array();
-            if (is_array($context->name))
-                foreach ($context->name as $key)
-                    array_push($appendedName, $key);
-            else
-                array_push($appendedName, $context->name);
-
-            array_push($appendedName, $value->name);
-            $value->setName($appendedName);
-            return $value;
-        } else {
-            return $context;
+        foreach ($this->errorCollection as $error) {
+            $json['Errors'][] = $error->toArray();
         }
+
+
+        return $prettyPrint ? json_encode($json, JSON_PRETTY_PRINT) : json_encode($json);
     }
 
-    private function _deleteContext($name) {
-        for ($n = 0; $n < count($this->contextCollection); $n++) {
-            if ($this->contextCollection[$n]->name === $name)
-                unset ($this->contextCollection[$n]);
-        }
+    public function __toString() {
+        return $this->serialize(true);
     }
 
-    private function _addInput(Context $object) {
-        array_push($this->inputCollection, $object);
-
-        if ($object->value == NULL)
-            return;
-
-        $IdsProcessor = PHPIDSHandler::Evaluate($object);
-        if ($IdsProcessor->HasDetection()) {
-            $detection = $IdsProcessor;
-
-            foreach ($IdsProcessor->GetRules() as $detectionRule) {
-                $detectionRule->SetValueContext($object);
-                $detection->AddRule($detectionRule);
-            }
-
-            $this->AddDetection($detection);
-        }
-    }
-
-    private function _addError($object) {
-        array_push($this->errorCollection, $object);
-    }
-
-    private function _addDetectioin($object) {
-        array_push($this->detectionCollection, $object);
-        $this->checkRequestProcessed();
-    }
-
-    private function _getCollections() {
-        $serializableCollector = new stdClass;
-        $serializableCollector->Detections = $this->detectionCollection;
-        $serializableCollector->Errors = $this->errorCollection;
-        $serializableCollector->Input = $this->inputCollection;
-        $serializableCollector->Context = $this->contextCollection;
-        return $serializableCollector;
-    }
-
-    public function Get() {
-        return $this->_getCollections();
-    }
-
-    public function Serialize($prettyPrint = false) {
-        return $prettyPrint ? json_encode($this->_getCollections(), JSON_PRETTY_PRINT) : json_encode($this->_getCollections());
-    }
 }

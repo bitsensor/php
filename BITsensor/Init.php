@@ -1,35 +1,36 @@
 <?php
+
 namespace BITsensor;
 
 
-use BITsensor\Core\Handler\HttpRequestHandler;
-use BITsensor\Core\Handler\RequestInputHandler;
-use \BITsensor\Core\Collector;
+use BITsensor\Core\Collector;
+use BITsensor\Handler\AfterRequestHandler;
+use BITsensor\Handler\CodeErrorHandler;
+use BITsensor\Handler\ExceptionHandler;
+use BITsensor\Handler\RequestInputHandler;
+use BITsensor\Handler\HttpRequestHandler;
 
-define('BITsensorBasePath', realpath(dirname(__FILE__)) . '/');
+define('BITSENSOR_BASE_PATH', realpath(dirname(__FILE__)) . '/');
 
 spl_autoload_register(function ($class) {
-    restore_include_path();
-    set_include_path(
-            get_include_path() . PATH_SEPARATOR . 
-            dirname(BITsensorBasePath) . PATH_SEPARATOR . 
-            BITsensorBasePath . 'External/');
     require_once str_replace("\\", "/", $class) . '.php';
 });
 
-require_once 'Config.php';
+header('Content-Type: application/json'); // TODO: Debug
 
-ob_start();
+global $bitSensor;
+$bitSensor = new Collector();
 
-/*@var $BITsensor Collector*/
-global $BITsensor;
-$BITsensor = new Collector();
+set_error_handler([CodeErrorHandler::class, 'handle']);
+set_exception_handler([ExceptionHandler::class, 'handle']);
+register_shutdown_function([AfterRequestHandler::class, 'handle']);
 
-set_error_handler("\\BITsensor\\Core\\Handler\\CodeErrorHandler::Handle");
-register_shutdown_function('\\BITsensor\\Core\\Handler\\AfterRequestHandler::Handle');
+HttpRequestHandler::handle($bitSensor);
+RequestInputHandler::handle($bitSensor);
 
-HttpRequestHandler::Handle();
-RequestInputHandler::Handle();
+//$bitSensor->setInputProcessed(true);
+//$bitSensor->setContextProcessed(true);
 
-$BITsensor->SetInputProcessed(true);
-$BITsensor->SetContextProcessed(true);
+// TODO: Debug
+trigger_error("FATAL ERROR!", E_USER_ERROR);
+throw new \Exception();

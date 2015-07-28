@@ -1,12 +1,56 @@
 <?php
+
 namespace BITsensor\Core;
 
-class Context extends IContext {
-    public static function User($identifier, $applicationName = 'Application') {
-        return new Context(array($applicationName, 'User'), $identifier);
+
+/**
+ * Class Context
+ * @package BITsensor\Core
+ */
+abstract class Context {
+
+    const REMOTE_ADDR = 'IP';
+    const SCRIPT_FILENAME = 'Path';
+    const HTTP = 'HTTP';
+    const AUTH = 'Authentication';
+    const SERVER = 'Server';
+    const INPUT = 'Input';
+
+    /**
+     * @var string
+     */
+    private $name;
+    /**
+     * @var array|string
+     */
+    private $value;
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
     }
 
-    public static function Session($identifier, $applicationName = 'Application') {
-        return new Context(array($applicationName, 'Session'), $identifier);
+    /**
+     * @param string $name
+     */
+    public function setName($name) {
+        $this->name = $name;
     }
+
+    /**
+     * @return array|string
+     */
+    public function getValue() {
+        return $this->value;
+    }
+
+    /**
+     * @param array|string $value
+     */
+    public function setValue($value) {
+        $this->value = $value;
+    }
+
 }
