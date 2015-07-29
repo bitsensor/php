@@ -3,6 +3,6 @@ use BITsensor\Core\BITsensor;
 
 require_once '../vendor/autoload.php';
 
-new BITsensor('http://localhost/tests/api/', 'abcdefghijklmnopqrstuvwxyz');
+new BITsensor('http://localhost/test/api/', 'abcdefghijklmnopqrstuvwxyz');
 
 ?>
