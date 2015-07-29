@@ -19,7 +19,8 @@
     "email": "support@bitsaver.nl"
   },
   "require": {
-    "guzzlehttp/guzzle": "6.0.2"
+    "php": ">=5.3.3",
+    "guzzlehttp/guzzle": "3.8.1"
   },
   "autoload": {
     "psr-4": {
