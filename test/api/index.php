@@ -1,2 +1,4 @@
 <?php
-print_r($_POST);
+header('Content-Type: application/json');
+
+echo file_get_contents('php://input');

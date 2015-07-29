@@ -15,12 +15,6 @@ class BITsensor {
         define('BITSENSOR_BASE_PATH', realpath(dirname(__FILE__)) . '/');
         define('WORKING_DIR', getcwd());
 
-        spl_autoload_register(function ($class) {
-            require_once str_replace("\\", "/", $class) . '.php';
-        });
-
-        header('Content-Type: application/json'); // TODO: Debug
-
         global $bitSensor;
         $bitSensor = new Collector();
 
@@ -33,10 +27,6 @@ class BITsensor {
 
         //$bitSensor->setInputProcessed(true);
         //$bitSensor->setContextProcessed(true);
-
-        // TODO: Debug
-        trigger_error("FATAL ERROR!", E_USER_ERROR);
-        throw new \Exception();
     }
 
 }

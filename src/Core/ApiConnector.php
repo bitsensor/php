@@ -3,6 +3,9 @@
 namespace BITsensor\Core;
 
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+
 /**
  * Handles the connection with the BITsensor servers.
  * @package BITsensor\Core
@@ -14,7 +17,7 @@ class ApiConnector {
      */
     private $uri;
     /**
-     * @var string JSON encoded string
+     * @var array JSON array
      */
     private $data;
     /**
@@ -81,7 +84,20 @@ class ApiConnector {
             'data' => $this->data
         );
 
-        echo json_encode($json);
+
+        $client = new Client([
+            'base_uri' => $this->uri
+        ]);
+
+        try {
+            $response = $client->post('index.php', [
+                'json' => $json
+            ]);
+
+            $response->getBody();
+        } catch (ClientException $e) {
+            // TODO: Handle data not send
+        }
     }
 
 }
