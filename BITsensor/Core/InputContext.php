@@ -10,8 +10,8 @@ class InputContext extends Context {
     const COOKIE = 'Cookie';
 
     public function __construct($name, $values) {
-        $this->setName(Context::INPUT);
-        $this->setValue(array($name => $values));
+        $this->setName($name);
+        $this->setValue($values);
     }
 
 }

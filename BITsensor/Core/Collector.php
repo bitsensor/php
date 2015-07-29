@@ -15,6 +15,11 @@ class Collector {
     private $contextCollection = array();
 
     /**
+     * @var Context[]
+     */
+    private $inputCollection = array();
+
+    /**
      * @var Error[]
      */
     private $errorCollection = array();
@@ -27,6 +32,10 @@ class Collector {
      */
     public function addContext(Context $context) {
         $this->contextCollection[] = $context;
+    }
+
+    public function addInput(Context $input) {
+        $this->inputCollection[] = $input;
     }
 
     /**
@@ -46,6 +55,11 @@ class Collector {
         foreach ($this->contextCollection as $context) {
             $json[$context->getName()] = $context->getValue();
         }
+
+        foreach ($this->inputCollection as $input) {
+            $json['Input'][$input->getName()] = $input->getValue();
+        }
+
 
         foreach ($this->errorCollection as $error) {
             $json['Errors'][] = $error->toArray();
