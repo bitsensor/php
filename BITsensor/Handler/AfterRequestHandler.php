@@ -3,6 +3,7 @@
 namespace BITsensor\Handler;
 
 
+use BITsensor\Core\ApiConnector;
 use BITsensor\Core\Collector;
 
 class AfterRequestHandler {
@@ -13,7 +14,10 @@ class AfterRequestHandler {
          */
         global $bitSensor;
 
-        echo $bitSensor;
+        // Correctly sets working directory
+        chdir(WORKING_DIR);
+
+        ApiConnector::with($bitSensor->toArray())->send();
     }
 
 }

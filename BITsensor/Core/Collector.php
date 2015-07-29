@@ -50,6 +50,12 @@ class Collector {
      * @return string JSON encoded string
      */
     public function serialize($prettyPrint = false) {
+        $json = $this->toArray();
+
+        return $prettyPrint ? json_encode($json, JSON_PRETTY_PRINT) : json_encode($json);
+    }
+
+    public function toArray() {
         $json = array();
 
         foreach ($this->contextCollection as $context) {
@@ -65,8 +71,7 @@ class Collector {
             $json['Errors'][] = $error->toArray();
         }
 
-
-        return $prettyPrint ? json_encode($json, JSON_PRETTY_PRINT) : json_encode($json);
+        return $json;
     }
 
     public function __toString() {

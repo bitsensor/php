@@ -11,6 +11,7 @@ use BITsensor\Handler\RequestInputHandler;
 use BITsensor\Handler\HttpRequestHandler;
 
 define('BITSENSOR_BASE_PATH', realpath(dirname(__FILE__)) . '/');
+define('WORKING_DIR', getcwd());
 
 spl_autoload_register(function ($class) {
     require_once str_replace("\\", "/", $class) . '.php';
