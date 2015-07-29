@@ -1,0 +1,20 @@
+{
+  "name": "bitsaver/bitsensor",
+  "description": "BITsensor Web Application Security",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "BITsaver",
+      "email": "info@bitsaver.nl"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "6.0.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "BITsensor\\": "src/"
+    }
+  }
+}
