@@ -7,8 +7,17 @@
     {
       "name": "BITsaver",
       "email": "info@bitsaver.nl"
+    },
+    {
+      "name": "Sven Dubbeld",
+      "email": "sven.dubbeld1@gmail.com",
+      "homepage": "http://svendubbeld.nl/",
+      "role": "Developer"
     }
   ],
+  "support": {
+    "email": "support@bitsaver.nl"
+  },
   "require": {
     "guzzlehttp/guzzle": "6.0.2"
   },
