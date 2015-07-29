@@ -1,8 +1,8 @@
 <?php
-use BITsensor\Core\BITsensor;
+use BitSensor\Core\BitSensor;
 
 require_once '../vendor/autoload.php';
 
-new BITsensor('http://localhost/test/api/', 'abcdefghijklmnopqrstuvwxyz');
+new BitSensor('http://localhost/test/api/', 'abcdefghijklmnopqrstuvwxyz');
 
 ?>

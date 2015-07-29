@@ -1,15 +1,15 @@
 <?php
 
-namespace BITsensor\Core;
+namespace BitSensor\Core;
 
 
-use BITsensor\Handler\AfterRequestHandler;
-use BITsensor\Handler\CodeErrorHandler;
-use BITsensor\Handler\ExceptionHandler;
-use BITsensor\Handler\HttpRequestHandler;
-use BITsensor\Handler\RequestInputHandler;
+use BitSensor\Handler\AfterRequestHandler;
+use BitSensor\Handler\CodeErrorHandler;
+use BitSensor\Handler\ExceptionHandler;
+use BitSensor\Handler\HttpRequestHandler;
+use BitSensor\Handler\RequestInputHandler;
 
-class BITsensor {
+class BitSensor {
 
     public function __construct($uri, $apiKey) {
         define('BITSENSOR_BASE_PATH', realpath(dirname(__FILE__)) . '/');

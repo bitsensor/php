@@ -1,10 +1,10 @@
 <?php
 
-namespace BITsensor\Handler;
+namespace BitSensor\Handler;
 
 
-use BITsensor\Core\CodeError;
-use BITsensor\Core\Collector;
+use BitSensor\Core\CodeError;
+use BitSensor\Core\Collector;
 
 class CodeErrorHandler {
 

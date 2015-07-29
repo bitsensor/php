@@ -1,14 +1,14 @@
 <?php
 
-namespace BITsensor\Handler;
+namespace BitSensor\Handler;
 
 
-use BITsensor\Core\Collector;
-use BITsensor\Core\InputContext;
+use BitSensor\Core\Collector;
+use BitSensor\Core\InputContext;
 
 /**
  * Collects information about the HTTP request data.
- * @package BITsensor\Handler
+ * @package BitSensor\Handler
  */
 class RequestInputHandler {
 

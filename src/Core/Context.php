@@ -1,11 +1,11 @@
 <?php
 
-namespace BITsensor\Core;
+namespace BitSensor\Core;
 
 
 /**
  * Class Context
- * @package BITsensor\Core
+ * @package BitSensor\Core
  */
 abstract class Context {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace BITsensor\Core;
+namespace BitSensor\Core;
 
 
 class CodeError extends Error {

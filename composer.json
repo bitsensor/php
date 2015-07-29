@@ -1,6 +1,6 @@
 {
   "name": "bitsaver/bitsensor",
-  "description": "BITsensor Web Application Security",
+  "description": "BitSensor Web Application Security",
   "minimum-stability": "stable",
   "license": "proprietary",
   "authors": [
@@ -23,7 +23,7 @@
   },
   "autoload": {
     "psr-4": {
-      "BITsensor\\": "src/"
+      "BitSensor\\": "src/"
     }
   }
 }

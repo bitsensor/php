@@ -1,19 +1,19 @@
 <?php
 
-namespace BITsensor\Core;
+namespace BitSensor\Core;
 
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
 /**
- * Handles the connection with the BITsensor servers.
- * @package BITsensor\Core
+ * Handles the connection with the BitSensor servers.
+ * @package BitSensor\Core
  */
 class ApiConnector {
 
     /**
-     * @var string BITsensor server URI
+     * @var string BitSensor server URI
      */
     private $uri;
     /**
@@ -26,7 +26,7 @@ class ApiConnector {
     private $apiKey;
 
     /**
-     * @param string $apiKey The API key used to authenticate with the BITsensor servers.
+     * @param string $apiKey The API key used to authenticate with the BitSensor servers.
      * @return ApiConnector
      */
     public static function from($apiKey) {

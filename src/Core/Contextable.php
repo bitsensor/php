@@ -1,11 +1,11 @@
 <?php
 
-namespace BITsensor\Core;
+namespace BitSensor\Core;
 
 
 /**
  * Interface Contextable
- * @package BITsensor\Core
+ * @package BitSensor\Core
  */
 interface Contextable {
 

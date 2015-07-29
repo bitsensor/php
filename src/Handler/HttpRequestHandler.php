@@ -1,18 +1,18 @@
 <?php
 
-namespace BITsensor\Handler;
+namespace BitSensor\Handler;
 
-use BITsensor\Core\AuthenticatedContext;
-use BITsensor\Core\AuthenticationContext;
-use BITsensor\Core\Collector;
-use BITsensor\Core\HttpContext;
-use BITsensor\Core\IpContext;
-use BITsensor\Core\ScriptContext;
-use BITsensor\Core\ServerContext;
+use BitSensor\Core\AuthenticatedContext;
+use BitSensor\Core\AuthenticationContext;
+use BitSensor\Core\Collector;
+use BitSensor\Core\HttpContext;
+use BitSensor\Core\IpContext;
+use BitSensor\Core\ScriptContext;
+use BitSensor\Core\ServerContext;
 
 /**
  * Collects information about the HTTP request.
- * @package BITsensor\Handler
+ * @package BitSensor\Handler
  */
 class HttpRequestHandler {
 

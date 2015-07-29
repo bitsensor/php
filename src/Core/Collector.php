@@ -1,11 +1,11 @@
 <?php
 
-namespace BITsensor\Core;
+namespace BitSensor\Core;
 
 
 /**
  * Responsible for collecting data about the connecting user and the accessed files.
- * @package BITsensor\Core
+ * @package BitSensor\Core
  */
 class Collector {
 

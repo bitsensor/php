@@ -1,15 +1,15 @@
 <?php
 
-namespace BITsensor\Handler;
+namespace BitSensor\Handler;
 
 
-use BITsensor\Core\CodeError;
-use BITsensor\Core\Collector;
+use BitSensor\Core\CodeError;
+use BitSensor\Core\Collector;
 use Exception;
 
 /**
  * Collects information about thrown exceptions.
- * @package BITsensor\Handler
+ * @package BitSensor\Handler
  */
 class ExceptionHandler {
 

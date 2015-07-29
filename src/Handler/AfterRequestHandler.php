@@ -1,10 +1,10 @@
 <?php
 
-namespace BITsensor\Handler;
+namespace BitSensor\Handler;
 
 
-use BITsensor\Core\ApiConnector;
-use BITsensor\Core\Collector;
+use BitSensor\Core\ApiConnector;
+use BitSensor\Core\Collector;
 
 class AfterRequestHandler {
 
