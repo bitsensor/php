@@ -1,6 +1,7 @@
 # BitSensor PHP Plugin
 ## Requirements
 * ``php >= 5.3.3``
+* ``php5-curl >= 5.3.3``
 * ``guzzlehttp/guzzle == 3.8.1``
 
 ## Composer
