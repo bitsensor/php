@@ -10,6 +10,12 @@ namespace BitSensor\Core;
 class ApiConnector {
 
     /**
+     * @var string
+     */
+    const ACTION_AUTHORIZE = 'authorize';
+    const ACTION_LOG = 'log';
+
+    /**
      * @var string BitSensor server URI
      */
     private $uri;
@@ -21,6 +27,10 @@ class ApiConnector {
      * @var string API key
      */
     private $apiKey;
+    /**
+     * @var string Action
+     */
+    private $action;
 
     /**
      * @param string $apiKey The API key used to authenticate with the BitSensor servers.
@@ -51,6 +61,17 @@ class ApiConnector {
     }
 
     /**
+     * @param string $action The  action to post to the server. Possible values:
+     * {@link ApiConnector::$ACTION_AUTHORIZE},
+     * {@link ApiConnector::$ACTION_LOG}
+     * @return ApiConnector
+     */
+    public function post($action) {
+        $this->setAction($action);
+        return $this;
+    }
+
+    /**
      * @param string $data
      */
     public function setData($data) {
@@ -71,6 +92,14 @@ class ApiConnector {
         $this->apiKey = $apiKey;
     }
 
+    /**
+     * @param string $action The  action to post to the server. Possible values:
+     * {@link ApiConnector::$ACTION_AUTHORIZE},
+     * {@link ApiConnector::$ACTION_LOG}
+     */
+    public function setAction($action) {
+        $this->action = $action;
+    }
 
     /**
      * Sends the data to the server.
@@ -78,6 +107,7 @@ class ApiConnector {
     public function send() {
         $data = array(
             'key' => $this->apiKey,
+            'action' => $this->action,
             'data' => $this->data
         );
 

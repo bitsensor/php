@@ -18,6 +18,10 @@ class AfterRequestHandler {
         // Correctly sets working directory
         chdir(WORKING_DIR);
 
-        ApiConnector::from($apiKey)->with($collector->toArray())->to($uri)->send();
+        ApiConnector::from($apiKey)
+            ->with($collector->toArray())
+            ->to($uri)
+            ->post(ApiConnector::ACTION_LOG)
+            ->send();
     }
 }
