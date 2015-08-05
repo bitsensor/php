@@ -3,9 +3,6 @@
 namespace BitSensor\Core;
 
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\RequestException;
-
 /**
  * Handles the connection with the BitSensor servers.
  * @package BitSensor\Core
@@ -79,23 +76,25 @@ class ApiConnector {
      * Sends the data to the server.
      */
     public function send() {
-        $json = array(
+        $data = array(
             'key' => $this->apiKey,
             'data' => $this->data
         );
 
+        $json = json_encode($data);
 
-        $client = new Client($this->uri);
+        $ch = curl_init($this->uri);
+        curl_setopt_array($ch, array(
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $json,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($json)
+            )
+        ));
 
-        try {
-            $response = $client->post('index.php', array(
-                'Content-Type' => 'application/json'
-            ), json_encode($json))->send();
-
-            $response->getBody();
-        } catch (RequestException $e) {
-            // TODO: Handle data not send
-        }
+        $result = curl_exec($ch);
     }
 
 }
