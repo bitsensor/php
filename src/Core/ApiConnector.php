@@ -1,6 +1,7 @@
 <?php
 
 namespace BitSensor\Core;
+use BitSensor\Exception\ApiException;
 
 
 /**
@@ -103,6 +104,8 @@ class ApiConnector {
 
     /**
      * Sends the data to the server.
+     *
+     * @throws ApiException
      */
     public function send() {
         $data = array(
@@ -121,10 +124,18 @@ class ApiConnector {
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($json)
-            )
+            ),
+            CURLOPT_TCP_NODELAY => true,
+            CURLOPT_TIMEOUT => 1
         ));
 
         $result = curl_exec($ch);
+
+        if ($result === false) {
+            throw new ApiException('Server connection failed!', ApiException::CONNECTION_FAILED);
+        }
+
+        return $result;
     }
 
 }
