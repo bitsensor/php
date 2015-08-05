@@ -7,4 +7,6 @@ header('Content-Type: application/json');
 
 new BitSensor('http://localhost/test/api/', 'abcdefghijklmnopqrstuvwxyz');
 
+echo 'Allowed';
+
 ?>

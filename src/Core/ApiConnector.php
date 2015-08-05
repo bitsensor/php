@@ -14,7 +14,23 @@ class ApiConnector {
      * @var string
      */
     const ACTION_AUTHORIZE = 'authorize';
+    /**
+     * @var string
+     */
     const ACTION_LOG = 'log';
+
+    /**
+     * @var string
+     */
+    const RESPONSE_OK = 'ok';
+    /**
+     * @var string
+     */
+    const RESPONSE_ALLOW = 'allow';
+    /**
+     * @var string
+     */
+    const RESPONSE_BLOCK = 'block';
 
     /**
      * @var string BitSensor server URI

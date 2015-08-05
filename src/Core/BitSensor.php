@@ -24,6 +24,22 @@ class BitSensor {
 
         //$bitSensor->setInputProcessed(true);
         //$bitSensor->setContextProcessed(true);
+
+        $authorizationResponse = json_decode(ApiConnector::from($apiKey)
+            ->to($uri)
+            ->with($bitSensor->toArray())
+            ->post(ApiConnector::ACTION_AUTHORIZE)
+            ->send(), true);
+
+        if ($authorizationResponse['response'] === ApiConnector::RESPONSE_ALLOW) {
+
+        } else if ($authorizationResponse['response'] === ApiConnector::RESPONSE_BLOCK) {
+            echo 'Blocked';
+            exit;
+        } else {
+            echo 'Unknown';
+            exit;
+        }
     }
 
 }
