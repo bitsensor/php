@@ -1,6 +1,7 @@
 <?php
 
 namespace BitSensor\Core;
+
 use BitSensor\Exception\ApiException;
 
 
@@ -31,6 +32,10 @@ class ApiConnector {
      * @var string
      */
     const RESPONSE_BLOCK = 'block';
+    /**
+     * @var string
+     */
+    const RESPONSE_ACCESS_DENIED = 'access_denied';
 
     /**
      * @var string BitSensor server URI
@@ -41,6 +46,10 @@ class ApiConnector {
      */
     private $data;
     /**
+     * @var string User ID
+     */
+    private $user;
+    /**
      * @var string API key
      */
     private $apiKey;
@@ -50,11 +59,13 @@ class ApiConnector {
     private $action;
 
     /**
+     * @param string $user The ID of the user.
      * @param string $apiKey The API key used to authenticate with the BitSensor servers.
      * @return ApiConnector
      */
-    public static function from($apiKey) {
+    public static function from($user, $apiKey) {
         $connector = new self;
+        $connector->setUser($user);
         $connector->setApiKey($apiKey);
         return $connector;
     }
@@ -103,6 +114,13 @@ class ApiConnector {
     }
 
     /**
+     * @param string $user
+     */
+    public function setUser($user) {
+        $this->user = $user;
+    }
+
+    /**
      * @param string $apiKey
      */
     public function setApiKey($apiKey) {
@@ -124,17 +142,13 @@ class ApiConnector {
      * @throws ApiException
      */
     public function send() {
-        $data = array(
-            'key' => $this->apiKey,
-            'action' => $this->action,
-            'data' => $this->data
-        );
+        $json = json_encode($this->data);
 
-        $json = json_encode($data);
+        $signature = hash_hmac('sha256', $json, $this->apiKey);
 
-        $ch = curl_init($this->uri);
+        $ch = curl_init($this->uri . '/' . $this->action . '/?user=' . $this->user . '&sig=' . $signature);
         curl_setopt_array($ch, array(
-            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_CUSTOMREQUEST => self::getRequestType($this->action),
             CURLOPT_POSTFIELDS => $json,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => array(
@@ -152,6 +166,17 @@ class ApiConnector {
         }
 
         return $result;
+    }
+
+    private static function getRequestType($action) {
+        switch ($action) {
+            case ApiConnector::ACTION_AUTHORIZE:
+                return 'POST';
+            case ApiConnector::ACTION_LOG:
+                return 'POST';
+            default:
+                return 'GET';
+        }
     }
 
 }
