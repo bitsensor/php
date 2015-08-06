@@ -5,9 +5,9 @@ namespace BitSensor\Core;
 
 class CodeError extends Error {
 
-    const ERRFILE = 'Filename';
-    const ERRLINE = 'Line Number';
-    const ERRCONTEXT = 'Context';
+    const ERRFILE = 'filename';
+    const ERRLINE = 'line';
+    const ERRCONTEXT = 'context';
 
     /**
      * @var string

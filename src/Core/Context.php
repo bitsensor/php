@@ -9,12 +9,12 @@ namespace BitSensor\Core;
  */
 abstract class Context {
 
-    const REMOTE_ADDR = 'IP';
-    const SCRIPT_FILENAME = 'Path';
-    const HTTP = 'HTTP';
-    const AUTH = 'Authentication';
-    const SERVER = 'Server';
-    const INPUT = 'Input';
+    const REMOTE_ADDR = 'ip';
+    const SCRIPT_FILENAME = 'path';
+    const HTTP = 'http';
+    const AUTH = 'authentication';
+    const SERVER = 'server';
+    const INPUT = 'input';
 
     /**
      * @var string

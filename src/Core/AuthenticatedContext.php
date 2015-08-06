@@ -5,7 +5,7 @@ namespace BitSensor\Core;
 
 class AuthenticatedContext extends Context {
 
-    const REMOTE_USER = 'User';
+    const REMOTE_USER = 'user';
 
     public function __construct() {
         $this->setName(Context::AUTH);
