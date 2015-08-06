@@ -5,13 +5,13 @@ namespace BitSensor\Core;
 
 class ServerContext extends Context {
 
-    const SERVER_ADDR = 'Address';
-    const SERVER_NAME = 'Name';
-    const SERVER_SOFTWARE = 'Software';
-    const SERVER_SIGNATURE = 'Signature';
-    const SERVER_PORT = 'Port';
-    const DOCUMENT_ROOT = 'Document Root';
-    const GATEWAY_INTERFACE = 'Interface';
+    const SERVER_ADDR = 'address';
+    const SERVER_NAME = 'name';
+    const SERVER_SOFTWARE = 'software';
+    const SERVER_SIGNATURE = 'signature';
+    const SERVER_PORT = 'port';
+    const DOCUMENT_ROOT = 'documentRoot';
+    const GATEWAY_INTERFACE = 'interface';
 
     public function __construct() {
         $this->setName(Context::SERVER);

@@ -5,9 +5,9 @@ namespace BitSensor\Core;
 
 class AuthenticationContext extends Context {
 
-    const PHP_AUTH_USER = 'Username';
-    const PHP_AUTH_PW = 'Password';
-    const AUTH_TYPE = 'Type';
+    const PHP_AUTH_USER = 'username';
+    const PHP_AUTH_PW = 'password';
+    const AUTH_TYPE = 'type';
 
     public function __construct() {
         $this->setName(Context::AUTH);

@@ -5,19 +5,19 @@ namespace BitSensor\Core;
 
 class HttpContext extends Context {
 
-    const SERVER_PROTOCOL = 'Version';
-    const QUERY_STRING = 'Query';
-    const HTTP_USER_AGENT = 'User-Agent';
-    const HTTP_REFERRER = 'Referrer';
-    const REQUEST_METHOD = 'Type';
-    const REQUEST_TIME = 'Localtime-Unix';
-    const HTTP_ACCEPT = 'Accept-Media';
-    const HTTP_ACCEPT_CHARSET = 'Accept-Charset';
-    const HTTP_ACCEPT_ENCODING = 'Accept-Encoding';
-    const HTTP_ACCEPT_LANGUAGE = 'Accept-Language';
-    const REQUEST_URI = 'Uri';
-    const PATH_INFO = 'PathInfo';
-    const HTTPS = 'HTTPS';
+    const SERVER_PROTOCOL = 'version';
+    const QUERY_STRING = 'query';
+    const HTTP_USER_AGENT = 'userAgent';
+    const HTTP_REFERRER = 'referrer';
+    const REQUEST_METHOD = 'type';
+    const REQUEST_TIME = 'localtimeUnix';
+    const HTTP_ACCEPT = 'acceptMedia';
+    const HTTP_ACCEPT_CHARSET = 'acceptCharset';
+    const HTTP_ACCEPT_ENCODING = 'acceptEncoding';
+    const HTTP_ACCEPT_LANGUAGE = 'acceptLanguage';
+    const REQUEST_URI = 'uri';
+    const PATH_INFO = 'pathInfo';
+    const HTTPS = 'https';
 
     public function __construct() {
         $this->setName(Context::HTTP);

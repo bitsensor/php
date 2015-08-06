@@ -63,12 +63,12 @@ class Collector {
         }
 
         foreach ($this->inputCollection as $input) {
-            $json['Input'][$input->getName()] = $input->getValue();
+            $json['input'][$input->getName()] = $input->getValue();
         }
 
 
         foreach ($this->errorCollection as $error) {
-            $json['Errors'][] = $error->toArray();
+            $json['errors'][] = $error->toArray();
         }
 
         return $json;
