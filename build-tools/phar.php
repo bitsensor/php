@@ -18,9 +18,13 @@ if (isset($argv[1])) {
     $phar->setMetadata(array(
         'version' => BITSENSOR_BUILD_VERSION,
         'buildDate' => date('Y-m-d H:i:s'),
-        'title' => 'BitSensor PHP Plugin',
+        'title' => 'BitSensor Web Application Security',
         'company' => 'BitSaver'
     ));
+
+    echo "Compressing archive...\n";
+    $phar->compress(Phar::BZ2);
+    $phar->compress(Phar::GZ);
 
     echo "Build finished.\n";
 
