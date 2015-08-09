@@ -8,3 +8,10 @@ This project uses composer to handle dependencies. Use ``php composer.phar insta
 
 ## External dependencies
 Libraries not managed by Composer should go in the ``lib/`` folder.
+
+## Building
+The application can be packaged as a PHP Archive (phar). Executing the following command will generate the archive:
+
+``php build-tools/phar.php [output-file]``
+
+By default, the resulting file will be placed in the ``build/`` folder, but this can be changed via the optional ``output-file`` parameter.
