@@ -156,7 +156,7 @@ class ApiConnector {
                 'Content-Length: ' . strlen($json)
             ),
             CURLOPT_TCP_NODELAY => true,
-            CURLOPT_TIMEOUT => 1
+            CURLOPT_TIMEOUT_MS => 200
         ));
 
         $result = curl_exec($ch);
