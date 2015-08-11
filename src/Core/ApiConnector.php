@@ -142,6 +142,9 @@ class ApiConnector {
      * @throws ApiException
      */
     public function send() {
+        echo "<pre>";
+        echo json_encode($this->data, JSON_PRETTY_PRINT);
+        
         $json = json_encode($this->data);
 
         $signature = hash_hmac('sha256', $json, $this->apiKey);
@@ -162,7 +165,7 @@ class ApiConnector {
         $result = curl_exec($ch);
 
         if ($result === false) {
-            throw new ApiException('Server connection failed!', ApiException::CONNECTION_FAILED);
+            new ApiException('Server connection failed!', ApiException::CONNECTION_FAILED);
         }
 
         return $result;

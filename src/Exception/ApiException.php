@@ -3,10 +3,13 @@
 namespace BitSensor\Exception;
 
 
-use Exception;
 
-class ApiException extends Exception {
+class ApiException{
 
     const CONNECTION_FAILED = 1;
-
+    
+    public function __construct($message) {
+        echo $message . "<br />";
+        trigger_error($message, E_WARNING);
+    }
 }

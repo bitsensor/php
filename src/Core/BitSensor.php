@@ -56,7 +56,7 @@ class BitSensor {
                 exit;
             case BitSensor::BLOCK_REASON_ACCESS_DENIED:
                 error_log('The API key you provided does not appear to be valid. Please check your settings.');
-                error_log('WARNING! BitSensor is not active!');
+                error_log('WARNING! BITsensor is not active!');
                 break;
             case BitSensor::BLOCK_REASON_UNKNOWN:
                 // TODO Handle unknown response
