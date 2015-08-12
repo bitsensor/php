@@ -3,23 +3,37 @@
 namespace BitSensor\Core;
 
 
+/**
+ * Container for information about errors occurring during application execution.
+ * @package BitSensor\Core
+ */
 abstract class Error {
 
+    /**
+     * Error code.
+     */
     const ERRNO = 'code';
+    /**
+     * Error description.
+     */
     const ERRSTR = 'description';
 
     /**
+     * Error code.
+     *
      * @var int
      */
     private $errno;
     /**
+     * Error description.
+     *
      * @var string
      */
     private $errstr;
 
     /**
-     * @param int $errno
-     * @param string $errstr
+     * @param int $errno Error code.
+     * @param string $errstr Error description.
      */
     public function __construct($errno, $errstr) {
         $this->setCode($errno);
@@ -27,28 +41,28 @@ abstract class Error {
     }
 
     /**
-     * @return string
+     * @return string Error description.
      */
     public function getMessage() {
         return $this->errstr;
     }
 
     /**
-     * @param string $errstr
+     * @param string $errstr Error description.
      */
     public function setMessage($errstr) {
         $this->errstr = $errstr;
     }
 
     /**
-     * @return int
+     * @return int Error code.
      */
     public function getCode() {
         return $this->errno;
     }
 
     /**
-     * @param int $errno
+     * @param int $errno Error code.
      */
     public function setCode($errno) {
         $this->errno = $errno;

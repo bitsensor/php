@@ -18,7 +18,7 @@ class ExceptionHandler {
      */
     public static function handle($exception) {
         /**
-         * @var Collector
+         * @global Collector $bitSensor
          */
         global $bitSensor;
 

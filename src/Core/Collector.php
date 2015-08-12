@@ -10,16 +10,22 @@ namespace BitSensor\Core;
 class Collector {
 
     /**
+     * Collection of contexts.
+     *
      * @var Context[]
      */
     private $contextCollection = array();
 
     /**
+     * Collection of inputs.
+     *
      * @var Context[]
      */
     private $inputCollection = array();
 
     /**
+     * Collection of errors.
+     *
      * @var Error[]
      */
     private $errorCollection = array();
@@ -28,17 +34,26 @@ class Collector {
     }
 
     /**
+     * Adds a new {@link Context} to the context collection.
+     *
      * @param Context $context
      */
     public function addContext(Context $context) {
         $this->contextCollection[] = $context;
     }
 
+    /**
+     * Adds a new {@link Context} to the input collection.
+     *
+     * @param Context $input
+     */
     public function addInput(Context $input) {
         $this->inputCollection[] = $input;
     }
 
     /**
+     * Adds a new {@link Error} to the error collection.
+     *
      * @param Error $error
      */
     public function addError(Error $error) {
@@ -46,7 +61,9 @@ class Collector {
     }
 
     /**
-     * @param bool $prettyPrint
+     * Converts all collections to a JSON encoded string.
+     *
+     * @param bool $prettyPrint Use whitespace in returned data to format it.
      * @return string JSON encoded string
      */
     public function serialize($prettyPrint = false) {
@@ -55,23 +72,28 @@ class Collector {
         return $prettyPrint ? json_encode($json, JSON_PRETTY_PRINT) : json_encode($json);
     }
 
+    /**
+     * Converts all collections to a single array.
+     *
+     * @return array
+     */
     public function toArray() {
-        $json = array();
+        $all = array();
 
         foreach ($this->contextCollection as $context) {
-            $json[$context->getName()] = $context->getValue();
+            $all[$context->getName()] = $context->getValue();
         }
 
         foreach ($this->inputCollection as $input) {
-            $json['input'][$input->getName()] = $input->getValue();
+            $all['input'][$input->getName()] = $input->getValue();
         }
 
 
         foreach ($this->errorCollection as $error) {
-            $json['errors'][] = $error->toArray();
+            $all['errors'][] = $error->toArray();
         }
 
-        return $json;
+        return $all;
     }
 
     public function __toString() {
