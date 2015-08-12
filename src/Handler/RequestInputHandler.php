@@ -16,19 +16,38 @@ class RequestInputHandler {
      * @param Collector $collector
      */
     public static function handle(Collector $collector) {
-        $collector->addInput(new InputContext(InputContext::POST, $_POST));
+        $post = array();
+        foreach ($_POST as $k => $v) {
+            if (is_array($v)) {
+                self::flatten($v, $post, $k);
+            } else {
+                $post[$k] = $v;
+            }
+        }
+
+        $collector->addInput(new InputContext(InputContext::POST, $post));
 
         $get = array();
         foreach ($_GET as $k => $v) {
             if (is_array($v)) {
-                self::flatten($v, $get[$k]);
+                self::flatten($v, $get, $k);
             } else {
                 $get[$k] = $v;
             }
         }
+
         $collector->addInput(new InputContext(InputContext::GET, $get));
 
-        $collector->addInput(new InputContext(InputContext::COOKIE, $_COOKIE));
+        $cookie = array();
+        foreach ($_COOKIE as $k => $v) {
+            if (is_array($v)) {
+                self::flatten($v, $cookie, $k);
+            } else {
+                $cookie[$k] = $v;
+            }
+        }
+
+        $collector->addInput(new InputContext(InputContext::COOKIE, $cookie));
     }
 
     /**
@@ -37,13 +56,14 @@ class RequestInputHandler {
      *
      * @param array $input The original array.
      * @param array $output The array in which the flattened elements should be placed.
+     * @param string $prefix Prefix to add to each element.
      */
-    private static function flatten($input, &$output) {
-        foreach ($input as $entry) {
-            if (is_array($entry)) {
-                self::flatten($entry, $output);
+    private static function flatten($input, &$output, $prefix) {
+        foreach ($input as $k => $v) {
+            if (is_array($v)) {
+                self::flatten($v, $output, $prefix . "[$k]");
             } else {
-                $output[] = $entry;
+                $output[$prefix . "[$k]"] = $v;
             }
         }
     }
