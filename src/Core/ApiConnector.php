@@ -3,6 +3,7 @@
 namespace BitSensor\Core;
 
 use BitSensor\Exception\ApiException;
+use BitSensor\Util\Log;
 
 
 /**
@@ -142,8 +143,8 @@ class ApiConnector {
      * @throws ApiException
      */
     public function send() {
-        echo "<pre>";
-        echo json_encode($this->data, JSON_PRETTY_PRINT);
+        Log::d('<pre>');
+        Log::d(json_encode($this->data, JSON_PRETTY_PRINT));
         
         $json = json_encode($this->data);
 
