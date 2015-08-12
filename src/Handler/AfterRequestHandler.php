@@ -7,13 +7,17 @@ use BitSensor\Core\ApiConnector;
 use BitSensor\Core\Collector;
 use BitSensor\Exception\ApiException;
 
+/**
+ * Handler to run after the PHP script finished. Sends logged data to the BitSensor servers.
+ * @package BitSensor\Handler
+ */
 class AfterRequestHandler {
 
     /**
-     * @param string $user
-     * @param string $apiKey
-     * @param Collector $collector
-     * @param string $uri
+     * @param string $user Your BitSensor username.
+     * @param string $apiKey Your BitSensor API key.
+     * @param Collector $collector The Collector containing the data about the connecting user.
+     * @param string $uri The BitSensor server to connect to.
      * @throws ApiException
      */
     public static function handle($user, $apiKey, $collector, $uri) {

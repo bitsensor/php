@@ -3,8 +3,15 @@
 namespace BitSensor\Core;
 
 
+/**
+ * Information about the authenticated user.
+ * @package BitSensor\Core
+ */
 class AuthenticatedContext extends Context {
 
+    /**
+     * Username of the connecting user.
+     */
     const REMOTE_USER = 'user';
 
     public function __construct() {

@@ -3,6 +3,10 @@
 namespace BitSensor\Core;
 
 
+/**
+ * Information about the accessed script.
+ * @package BitSensor\Core
+ */
 class ScriptContext extends Context {
 
     public function __construct() {
