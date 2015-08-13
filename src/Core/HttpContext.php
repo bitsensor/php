@@ -66,18 +66,18 @@ class HttpContext extends Context {
     public function __construct() {
         $this->setName(Context::HTTP);
         $this->setValue(array(
-            self::SERVER_PROTOCOL => $_SERVER['SERVER_PROTOCOL'],
-            self::QUERY_STRING => $_SERVER['QUERY_STRING'],
-            self::HTTP_USER_AGENT => $_SERVER['HTTP_USER_AGENT'],
-            self::HTTP_REFERER => $_SERVER['HTTP_REFERER'],
-            self::REQUEST_METHOD => $_SERVER['REQUEST_METHOD'],
-            self::REQUEST_TIME => $_SERVER['REQUEST_TIME'],
-            self::HTTP_ACCEPT => $_SERVER['HTTP_ACCEPT'],
-            self::HTTP_ACCEPT_CHARSET => $_SERVER['HTTP_ACCEPT_CHARSET'],
-            self::HTTP_ACCEPT_ENCODING => $_SERVER['HTTP_ACCEPT_ENCODING'],
-            self::HTTP_ACCEPT_LANGUAGE => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
-            self::REQUEST_URI => $_SERVER['REQUEST_URI'],
-            self::PATH_INFO => $_SERVER['PATH_INFO'],
+            self::SERVER_PROTOCOL => isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : null,
+            self::QUERY_STRING => isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : null,
+            self::HTTP_USER_AGENT => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null,
+            self::HTTP_REFERER => isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null,
+            self::REQUEST_METHOD => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null,
+            self::REQUEST_TIME => isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] : null,
+            self::HTTP_ACCEPT => isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : null,
+            self::HTTP_ACCEPT_CHARSET => isset($_SERVER['HTTP_ACCEPT_CHARSET']) ? $_SERVER['HTTP_ACCEPT_CHARSET'] : null,
+            self::HTTP_ACCEPT_ENCODING => isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : null,
+            self::HTTP_ACCEPT_LANGUAGE => isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : null,
+            self::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null,
+            self::PATH_INFO => isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : null,
             self::HTTPS => isset($_SERVER['HTTPS'])
         ));
     }

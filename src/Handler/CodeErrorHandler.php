@@ -25,7 +25,7 @@ class CodeErrorHandler {
          */
         global $bitSensor;
 
-        $bitSensor->addError(new CodeError($errno, $errstr, $errfile, $errline, $errcontext));
+        $bitSensor->addError(new CodeError($errno, $errstr, $errfile, $errline));
     }
 
 }

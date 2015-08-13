@@ -22,7 +22,7 @@ class ExceptionHandler {
          */
         global $bitSensor;
 
-        $bitSensor->addError(new CodeError($exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTrace()));
+        $bitSensor->addError(new CodeError($exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine()));
     }
 
 }
