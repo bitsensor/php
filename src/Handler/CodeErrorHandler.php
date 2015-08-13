@@ -20,11 +20,11 @@ class CodeErrorHandler {
      */
     public static function handle($errno, $errstr, $errfile, $errline) {
         /**
-         * @global Collector $bitSensor
+         * @global Collector $collector
          */
-        global $bitSensor;
+        global $collector;
 
-        $bitSensor->addError(new CodeError($errno, $errstr, $errfile, $errline));
+        $collector->addError(new CodeError($errno, $errstr, $errfile, $errline));
     }
 
 }
