@@ -28,7 +28,7 @@ abstract class Context {
     /**
      * Server information.
      */
-    const SERVER = 'server';
+    const SERVER = 'enpoint';
     /**
      * POST, GET and Cookie.
      */
