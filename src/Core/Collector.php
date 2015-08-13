@@ -81,7 +81,11 @@ class Collector {
         $all = array();
 
         foreach ($this->contextCollection as $context) {
-            $all[$context->getName()] = $context->getValue();
+            if ($context->getName() === EndpointContext::ENDPOINT) {
+                $all[$context->getName()] = $context->getValue();
+            } else {
+                $all['context'][$context->getName()] = $context->getValue();
+            }
         }
 
         foreach ($this->inputCollection as $input) {

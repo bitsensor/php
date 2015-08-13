@@ -8,7 +8,7 @@ namespace BitSensor\Core;
  * @package BitSensor\Core
  * @see $_SERVER
  */
-class ServerContext extends Context {
+class EndpointContext extends Context {
 
     /**
      * Server address.
@@ -38,9 +38,21 @@ class ServerContext extends Context {
      * CGI revision.
      */
     const GATEWAY_INTERFACE = 'interface';
+    /**
+     * Absolute path to the executed script.
+     */
+    const SCRIPT_FILENAME = 'location';
+    /**
+     * Request time in UNIX time.
+     */
+    const REQUEST_TIME = 'localtimeUnix';
+    /**
+     * Request URI.
+     */
+    const REQUEST_URI = 'uri';
 
     public function __construct() {
-        $this->setName(Context::SERVER);
+        $this->setName(Context::ENDPOINT);
         $this->setValue(array(
             self::SERVER_ADDR => $_SERVER['SERVER_ADDR'],
             self::SERVER_NAME => $_SERVER['SERVER_NAME'],
@@ -48,7 +60,10 @@ class ServerContext extends Context {
             self::SERVER_SIGNATURE => $_SERVER['SERVER_SIGNATURE'],
             self::SERVER_PORT => $_SERVER['SERVER_PORT'],
             self::DOCUMENT_ROOT => $_SERVER['DOCUMENT_ROOT'],
-            self::GATEWAY_INTERFACE => $_SERVER['GATEWAY_INTERFACE']
+            self::GATEWAY_INTERFACE => $_SERVER['GATEWAY_INTERFACE'],
+            self::SCRIPT_FILENAME => $_SERVER['SCRIPT_FILENAME'],
+            self::REQUEST_TIME => isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] : null,
+            self::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null
         ));
     }
 
