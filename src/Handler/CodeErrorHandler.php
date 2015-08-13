@@ -17,9 +17,8 @@ class CodeErrorHandler {
      * @param string $errstr Error description.
      * @param string $errfile Name of the file in which the error occurred.
      * @param int $errline Line at which the error occurred.
-     * @param array $errcontext Stacktrace of the error.
      */
-    public static function handle($errno, $errstr, $errfile, $errline, $errcontext) {
+    public static function handle($errno, $errstr, $errfile, $errline) {
         /**
          * @global Collector $bitSensor
          */
