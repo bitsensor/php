@@ -26,14 +26,9 @@ class AuthenticationContext extends Context {
      */
     const REMOTE_USER = 'user';
 
-    public function __construct() {
-        $this->setName(Context::AUTH);
-        $this->setValue(array(
-            self::PHP_AUTH_USER => isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null,
-            self::PHP_AUTH_PW => isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : null,
-            self::AUTH_TYPE => isset($_SERVER['AUTH_TYPE']) ? $_SERVER['AUTH_TYPE'] : null,
-            self::REMOTE_USER => isset($_SERVER['REMOTE_USER']) ? $_SERVER['REMOTE_USER'] : null
-        ));
+    public function __construct($key, $value) {
+        $this->setName(Context::AUTH . '.' . $key);
+        $this->setValue($value);
     }
 
 

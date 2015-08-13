@@ -29,6 +29,12 @@ class Collector {
      * @var Error[]
      */
     private $errorCollection = array();
+    /**
+     * Collection of endpoint contexts.
+     *
+     * @var Context[]
+     */
+    private $endpointCollection = array();
 
     public function __construct() {
     }
@@ -40,6 +46,15 @@ class Collector {
      */
     public function addContext(Context $context) {
         $this->contextCollection[] = $context;
+    }
+
+    /**
+     * Adds a new {@link Context} to the endpoint collection.
+     *
+     * @param Context $context
+     */
+    public function addEndpointContext(Context $context) {
+        $this->endpointCollection[] = $context;
     }
 
     /**
@@ -81,15 +96,15 @@ class Collector {
         $all = array();
 
         foreach ($this->contextCollection as $context) {
-            if ($context->getName() === EndpointContext::ENDPOINT) {
-                $all[$context->getName()] = $context->getValue();
-            } else {
-                $all['context'][$context->getName()] = $context->getValue();
-            }
+            $all['context'][][$context->getName()] = $context->getValue();
+        }
+
+        foreach ($this->endpointCollection as $context) {
+            $all['endpoint'][][$context->getName()] = $context->getValue();
         }
 
         foreach ($this->inputCollection as $input) {
-            $all['input'][$input->getName()] = $input->getValue();
+            $all['input'][][$input->getName()] = $input->getValue();
         }
 
 

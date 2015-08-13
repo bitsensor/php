@@ -25,7 +25,9 @@ class RequestInputHandler {
             }
         }
 
-        $collector->addInput(new InputContext(InputContext::POST, $post));
+        foreach ($post as $k => $v) {
+            $collector->addInput(new InputContext(InputContext::POST, $k, $v));
+        }
 
         $get = array();
         foreach ($_GET as $k => $v) {
@@ -36,7 +38,9 @@ class RequestInputHandler {
             }
         }
 
-        $collector->addInput(new InputContext(InputContext::GET, $get));
+        foreach ($get as $k => $v) {
+            $collector->addInput(new InputContext(InputContext::GET, $k, $v));
+        }
 
         $cookie = array();
         foreach ($_COOKIE as $k => $v) {
@@ -47,7 +51,9 @@ class RequestInputHandler {
             }
         }
 
-        $collector->addInput(new InputContext(InputContext::COOKIE, $cookie));
+        foreach ($cookie as $k => $v) {
+            $collector->addInput(new InputContext(InputContext::COOKIE, $k, $v));
+        }
     }
 
     /**
