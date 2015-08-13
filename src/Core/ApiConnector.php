@@ -169,7 +169,7 @@ class ApiConnector {
         $result = curl_exec($ch);
 
         if ($result === false) {
-            new ApiException('Server connection failed!', ApiException::CONNECTION_FAILED);
+            throw new ApiException('Server connection failed!', ApiException::CONNECTION_FAILED);
         }
 
         return $result;
