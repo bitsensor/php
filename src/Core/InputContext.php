@@ -22,9 +22,14 @@ class InputContext extends Context {
      */
     const COOKIE = 'cookie';
 
-    public function __construct($name, $values) {
-        $this->setName($name);
-        $this->setValue($values);
+    /**
+     * @param $name
+     * @param $key
+     * @param $value
+     */
+    public function __construct($name, $key, $value) {
+        $this->setName('http.' . $name . '.' . $key);
+        $this->setValue($value);
     }
 
 }

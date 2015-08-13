@@ -14,10 +14,6 @@ abstract class Context {
      */
     const REMOTE_ADDR = 'ip';
     /**
-     * Absolute path to the executed script.
-     */
-    const SCRIPT_FILENAME = 'location';
-    /**
      * HTTP request.
      */
     const HTTP = 'http';
@@ -28,7 +24,7 @@ abstract class Context {
     /**
      * Server information.
      */
-    const SERVER = 'enpoint';
+    const ENDPOINT = 'enpoint';
     /**
      * POST, GET and Cookie.
      */
