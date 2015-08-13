@@ -16,7 +16,7 @@ abstract class Context {
     /**
      * Absolute path to the executed script.
      */
-    const SCRIPT_FILENAME = 'path';
+    const SCRIPT_FILENAME = 'location';
     /**
      * HTTP request.
      */
