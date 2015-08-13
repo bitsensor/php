@@ -7,4 +7,6 @@ global $debug;
 
 new BitSensor('http://localhost/test/api/', 'example_user', 'abcdefghijklmnopqrstuvwxyz');
 
+trigger_error('Test Error');
+
 echo 'Allowed';
