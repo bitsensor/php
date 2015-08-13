@@ -53,11 +53,15 @@ class BitSensor {
         RequestInputHandler::handle($bitSensor);
 
         // Check if user is authorized
-        $authorizationResponse = json_decode(ApiConnector::from($user, $apiKey)
-            ->to($uri)
-            ->with($bitSensor->toArray())
-            ->post(ApiConnector::ACTION_AUTHORIZE)
-            ->send(), true);
+        try {
+            $authorizationResponse = json_decode(ApiConnector::from($user, $apiKey)
+                ->to($uri)
+                ->with($bitSensor->toArray())
+                ->post(ApiConnector::ACTION_AUTHORIZE)
+                ->send(), true);
+        } catch (ApiException $e) {
+            $authorizationResponse['response'] = 'error';
+        }
 
         if ($authorizationResponse['response'] === ApiConnector::RESPONSE_ALLOW) {
             return;
