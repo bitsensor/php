@@ -28,6 +28,13 @@ class BitSensor {
     const BLOCK_REASON_UNKNOWN = 3;
 
     /**
+     * Reference to the global collector instance.
+     *
+     * @var Collector
+     */
+    private $collector;
+
+    /**
      * @param string $uri The BitSensor server to connect to.
      * @param string $user Your BitSensor username.
      * @param string $apiKey Your BitSensor API key.
@@ -40,23 +47,24 @@ class BitSensor {
         define('WORKING_DIR', getcwd());
 
         /**
-         * @global Collector $bitSensor
+         * @global Collector $collector
          */
-        global $bitSensor;
-        $bitSensor = new Collector();
+        global $collector;
+        $collector = new Collector();
+        $this->collector = &$collector;
 
         set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
         set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
-        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $user, $apiKey, $bitSensor, $uri);
+        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $user, $apiKey, $collector, $uri);
 
-        HttpRequestHandler::handle($bitSensor);
-        RequestInputHandler::handle($bitSensor);
+        HttpRequestHandler::handle($collector);
+        RequestInputHandler::handle($collector);
 
         // Check if user is authorized
         try {
             $authorizationResponse = json_decode(ApiConnector::from($user, $apiKey)
                 ->to($uri)
-                ->with($bitSensor->toArray())
+                ->with($collector->toArray())
                 ->post(ApiConnector::ACTION_AUTHORIZE)
                 ->send(), true);
         } catch (ApiException $e) {
@@ -97,6 +105,22 @@ class BitSensor {
                 // TODO Handle unknown response
                 break;
         }
+    }
+
+    public function addContext(Context $context) {
+        $this->collector->addContext($context);
+    }
+
+    public function addEndpointContext(Context $context) {
+        $this->collector->addEndpointContext($context);
+    }
+
+    public function addError(Error $error) {
+        $this->collector->addError($error);
+    }
+
+    public function addInput(Context $input) {
+        $this->collector->addInput($input);
     }
 
 }

@@ -18,11 +18,11 @@ class ExceptionHandler {
      */
     public static function handle($exception) {
         /**
-         * @global Collector $bitSensor
+         * @global Collector $collector
          */
-        global $bitSensor;
+        global $collector;
 
-        $bitSensor->addError(new CodeError($exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTrace()));
+        $collector->addError(new CodeError($exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTrace()));
     }
 
 }
