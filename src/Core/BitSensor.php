@@ -5,6 +5,7 @@ namespace BitSensor\Core;
 
 use BitSensor\Exception\ApiException;
 use BitSensor\Handler\HttpRequestHandler;
+use BitSensor\Handler\ModSecurityHandler;
 use BitSensor\Handler\RequestInputHandler;
 use BitSensor\View\TamperView;
 
@@ -59,6 +60,7 @@ class BitSensor {
 
         HttpRequestHandler::handle($collector);
         RequestInputHandler::handle($collector);
+        ModSecurityHandler::handle($collector);
 
         // Check if user is authorized
         try {
