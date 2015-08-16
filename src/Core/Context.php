@@ -29,6 +29,10 @@ abstract class Context {
      * POST, GET and Cookie.
      */
     const INPUT = 'input';
+    /**
+     * ModSecurity.
+     */
+    const MOD_SECURITY = 'modSecurity';
 
     /**
      * Name of the context.
