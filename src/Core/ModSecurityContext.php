@@ -11,6 +11,10 @@ namespace BitSensor\Core;
 class ModSecurityContext extends Context {
 
     /**
+     * ModSecurity.
+     */
+    const NAME = 'modSecurity';
+    /**
      * Events from ModSecurity.
      */
     const WAF_EVENTS = 'events';
@@ -20,7 +24,7 @@ class ModSecurityContext extends Context {
     const WAF_SCORE = 'score';
 
     public function __construct($key, $value) {
-        $this->setName(Context::MOD_SECURITY . '.' . $key);
+        $this->setName(self::NAME . '.' . $key);
         $this->setValue($value);
     }
 

@@ -145,6 +145,7 @@ class ApiConnector {
     public function send() {
         Log::d('<pre>');
         Log::d(json_encode($this->data, JSON_PRETTY_PRINT));
+        Log::d('</pre>');
         
         $json = json_encode($this->data);
 

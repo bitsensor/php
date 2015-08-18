@@ -9,8 +9,13 @@ namespace BitSensor\Core;
  */
 class IpContext extends Context {
 
+    /**
+     * IP address of the connecting user.
+     */
+    const NAME = 'ip';
+
     public function __construct($value) {
-        $this->setName(Context::REMOTE_ADDR);
+        $this->setName(self::NAME);
         $this->setValue($value);
     }
 

@@ -13,7 +13,7 @@ require_once 'version.php';
 
 $out = isset($argv[1]) ? $argv[1] : __DIR__ . '/../build/BitSensor.phar';
 
-echo "Building $out \n";
+echo "Building $out\n";
 echo "Version: " . BITSENSOR_BUILD_VERSION . "\n";
 
 echo "\n";
