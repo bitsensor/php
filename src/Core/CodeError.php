@@ -12,7 +12,7 @@ class CodeError extends Error {
     /**
      * Name of the file in which the error occurred.
      */
-    const ERRFILE = 'filename';
+    const ERRFILE = 'location';
     /**
      * Line at which the error occurred.
      */
