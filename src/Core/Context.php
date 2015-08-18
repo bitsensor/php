@@ -10,29 +10,9 @@ namespace BitSensor\Core;
 abstract class Context {
 
     /**
-     * IP address of the connecting user.
+     * Name of the Context.
      */
-    const REMOTE_ADDR = 'ip';
-    /**
-     * HTTP request.
-     */
-    const HTTP = 'http';
-    /**
-     * Authentication of the connecting user.
-     */
-    const AUTH = 'authentication';
-    /**
-     * Server information.
-     */
-    const ENDPOINT = 'enpoint';
-    /**
-     * POST, GET and Cookie.
-     */
-    const INPUT = 'input';
-    /**
-     * ModSecurity.
-     */
-    const MOD_SECURITY = 'modSecurity';
+    const NAME = 'context';
 
     /**
      * Name of the context.

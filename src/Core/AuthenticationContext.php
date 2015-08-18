@@ -10,6 +10,10 @@ namespace BitSensor\Core;
 class AuthenticationContext extends Context {
 
     /**
+     * Authentication of the connecting user.
+     */
+    const NAME = 'authentication';
+    /**
      * Username of the connecting user.
      */
     const PHP_AUTH_USER = 'username';
@@ -27,7 +31,7 @@ class AuthenticationContext extends Context {
     const REMOTE_USER = 'user';
 
     public function __construct($key, $value) {
-        $this->setName(Context::AUTH . '.' . $key);
+        $this->setName(self::NAME . '.' . $key);
         $this->setValue($value);
     }
 

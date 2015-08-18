@@ -10,6 +10,10 @@ namespace BitSensor\Core;
 class InputContext extends Context {
 
     /**
+     * POST, GET and Cookie.
+     */
+    const NAME = 'input';
+    /**
      * POST fields.
      */
     const POST = 'post';
@@ -28,7 +32,7 @@ class InputContext extends Context {
      * @param $value
      */
     public function __construct($name, $key, $value) {
-        $this->setName('http.' . $name . '.' . $key);
+        $this->setName(HttpContext::NAME . '.' . $name . '.' . $key);
         $this->setValue($value);
     }
 

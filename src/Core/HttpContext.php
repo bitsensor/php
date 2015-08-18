@@ -11,6 +11,10 @@ namespace BitSensor\Core;
 class HttpContext extends Context {
 
     /**
+     * HTTP request.
+     */
+    const NAME = 'http';
+    /**
      * Server protocol.
      */
     const SERVER_PROTOCOL = 'version';
@@ -56,7 +60,7 @@ class HttpContext extends Context {
     const HTTPS = 'https';
 
     public function __construct($key, $value) {
-        $this->setName(Context::HTTP . '.' . $key);
+        $this->setName(self::NAME . '.' . $key);
         $this->setValue($value);
     }
 

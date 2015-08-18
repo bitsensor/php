@@ -11,6 +11,10 @@ namespace BitSensor\Core;
 class EndpointContext extends Context {
 
     /**
+     * Server information.
+     */
+    const NAME = 'endpoint';
+    /**
      * Server address.
      */
     const SERVER_ADDR = 'address';
