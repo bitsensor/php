@@ -47,9 +47,15 @@ class EndpointContext extends Context {
      */
     const SCRIPT_FILENAME = 'location';
     /**
+     * Request time with microseconds.
+     *
+     * Formatted as <code>Y-m-d\TH:i:s.µO</code>
+     */
+    const REQUEST_TIME = 'localtime';
+    /**
      * Request time in UNIX time.
      */
-    const REQUEST_TIME = 'localtimeUnix';
+    const REQUEST_TIME_UNIX = 'localtimeUnix';
     /**
      * Request URI.
      */
