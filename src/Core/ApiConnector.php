@@ -163,14 +163,17 @@ class ApiConnector {
                 'Content-Length: ' . strlen($json)
             ),
             CURLOPT_TCP_NODELAY => true,
-            CURLOPT_TIMEOUT_MS => 200
+            CURLOPT_TIMEOUT_MS => 200,
+            CURLOPT_NOSIGNAL => true
         ));
 
         // Send data
         $result = curl_exec($ch);
+        $curl_errno = curl_errno($ch);
+        $curl_error = curl_error($ch);
 
-        if ($result === false) {
-            throw new ApiException('Server connection failed!', ApiException::CONNECTION_FAILED);
+        if ($curl_errno > 0) {
+            throw new ApiException("Server connection failed! $curl_error Code: $curl_errno", ApiException::CONNECTION_FAILED);
         }
 
         return $result;
