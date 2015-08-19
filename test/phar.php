@@ -7,7 +7,9 @@ require_once '../build/BitSensor.phar';
 $config = json_encode(array(
     Config::URI => 'http://localhost/test/api/',
     Config::USER => 'example_user',
-    Config::API_KEY => 'abcdefghijklmnopqrstuvwxyz'
+    Config::API_KEY => 'abcdefghijklmnopqrstuvwxyz',
+    Config::MODE => Config::MODE_ON,
+    Config::CONNECTION_FAIL => Config::ACTION_BLOCK
 ));
 
 //$config = file_get_contents('config.json');

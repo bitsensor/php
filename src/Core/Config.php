@@ -21,6 +21,30 @@ class Config {
      * Your BitSensor API key.
      */
     const API_KEY = 'apiKey';
+    /**
+     * Running mode.
+     */
+    const MODE = 'mode';
+    /**
+     * Only do detection but don't block attackers.
+     */
+    const MODE_DETECTION = 'detection';
+    /**
+     * Do detection and block attackers.
+     */
+    const MODE_ON = 'on';
+    /**
+     * Action to perform when the connection to the BitSensor servers is lost.
+     */
+    const CONNECTION_FAIL = 'connectionFail';
+    /**
+     * Allow the user to connect.
+     */
+    const ACTION_ALLOW = 'allow';
+    /**
+     * Block the user.
+     */
+    const ACTION_BLOCK = 'block';
 
     /**
      * The BitSensor server to connect to.
@@ -40,6 +64,18 @@ class Config {
      * @var string
      */
     private $apiKey;
+    /**
+     * Running mode.
+     *
+     * @var string
+     */
+    private $mode;
+    /**
+     * Action to perform when the connection to the BitSensor servers is lost.
+     *
+     * @var string
+     */
+    private $connectionFail;
 
     public function __construct($json) {
         $config = json_decode($json, true);
@@ -54,6 +90,14 @@ class Config {
 
         if (isset($config[self::API_KEY])) {
             $this->setApiKey($config[self::API_KEY]);
+        }
+
+        if (isset($config[self::MODE])) {
+            $this->setMode($config[self::MODE]);
+        }
+
+        if (isset($config[self::CONNECTION_FAIL])) {
+            $this->setConnectionFail($config[self::CONNECTION_FAIL]);
         }
     }
 
@@ -99,5 +143,32 @@ class Config {
         $this->apiKey = $apiKey;
     }
 
+    /**
+     * @return string Running mode.
+     */
+    public function getMode() {
+        return $this->mode;
+    }
+
+    /**
+     * @param string $mode Running mode.
+     */
+    public function setMode($mode) {
+        $this->mode = $mode;
+    }
+
+    /**
+     * @return string Action to perform when the connection to the BitSensor servers is lost.
+     */
+    public function getConnectionFail() {
+        return $this->connectionFail;
+    }
+
+    /**
+     * @param string $connectionFail Action to perform when the connection to the BitSensor servers is lost.
+     */
+    public function setConnectionFail($connectionFail) {
+        $this->connectionFail = $connectionFail;
+    }
 
 }
