@@ -5,6 +5,7 @@ namespace BitSensor\Core;
 
 use BitSensor\Exception\ApiException;
 use BitSensor\Handler\HttpRequestHandler;
+use BitSensor\Handler\IpHandler;
 use BitSensor\Handler\ModSecurityHandler;
 use BitSensor\Handler\RequestInputHandler;
 use BitSensor\View\TamperView;
@@ -59,6 +60,7 @@ class BitSensor {
         set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
         register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $this->config->getUser(), $this->config->getApiKey(), $collector, $this->config->getUri());
 
+        IpHandler::handle($collector, $config);
         HttpRequestHandler::handle($collector);
         RequestInputHandler::handle($collector);
         ModSecurityHandler::handle($collector);

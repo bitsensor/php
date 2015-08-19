@@ -9,7 +9,8 @@ $config = json_encode(array(
     Config::USER => 'example_user',
     Config::API_KEY => 'abcdefghijklmnopqrstuvwxyz',
     Config::MODE => Config::MODE_ON,
-    Config::CONNECTION_FAIL => Config::ACTION_BLOCK
+    Config::CONNECTION_FAIL => Config::ACTION_BLOCK,
+    Config::IP_ADDRESS_SRC => Config::IP_ADDRESS_REMOTE_ADDR
 ));
 
 //$config = file_get_contents('config.json');

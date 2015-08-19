@@ -45,6 +45,26 @@ class Config {
      * Block the user.
      */
     const ACTION_BLOCK = 'block';
+    /**
+     * Source of the IP address of the user.
+     */
+    const IP_ADDRESS_SRC = 'ipAddressSrc';
+    /**
+     * Manual IP address.
+     */
+    const IP_ADDRESS = 'ipAddress';
+    /**
+     * Set IP address manually.
+     */
+    const IP_ADDRESS_MANUAL = 'manual';
+    /**
+     * Set IP address according to <code>$_SERVER['REMOTE_ADDR']</code>.
+     */
+    const IP_ADDRESS_REMOTE_ADDR = 'remoteAddr';
+    /**
+     * Set IP address according to the <code>X-Forwarded-For</code> HTTP header.
+     */
+    const IP_ADDRESS_X_FORWARDED_FOR = 'forwardedFor';
 
     /**
      * The BitSensor server to connect to.
@@ -76,6 +96,18 @@ class Config {
      * @var string
      */
     private $connectionFail;
+    /**
+     * Source of the IP address of the user.
+     *
+     * @var string
+     */
+    private $ipAddressSrc;
+    /**
+     * Manual IP address.
+     *
+     * @var string
+     */
+    private $ipAddress;
 
     public function __construct($json) {
         $config = json_decode($json, true);
@@ -98,6 +130,14 @@ class Config {
 
         if (isset($config[self::CONNECTION_FAIL])) {
             $this->setConnectionFail($config[self::CONNECTION_FAIL]);
+        }
+
+        if (isset($config[self::IP_ADDRESS_SRC])) {
+            $this->setIpAddressSrc($config[self::IP_ADDRESS_SRC]);
+        }
+
+        if (isset($config[self::IP_ADDRESS])) {
+            $this->setIpAddress($config[self::IP_ADDRESS]);
         }
     }
 
@@ -171,4 +211,31 @@ class Config {
         $this->connectionFail = $connectionFail;
     }
 
+    /**
+     * @return string Source of the IP address of the user.
+     */
+    public function getIpAddressSrc() {
+        return $this->ipAddressSrc;
+    }
+
+    /**
+     * @param string $ipAddressSrc Source of the IP address of the user.
+     */
+    public function setIpAddressSrc($ipAddressSrc) {
+        $this->ipAddressSrc = $ipAddressSrc;
+    }
+
+    /**
+     * @return string Manual IP address.
+     */
+    public function getIpAddress() {
+        return $this->ipAddress;
+    }
+
+    /**
+     * @param string $ipAddress Manual IP address.
+     */
+    public function setIpAddress($ipAddress) {
+        $this->ipAddress = $ipAddress;
+    }
 }
