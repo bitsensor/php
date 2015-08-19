@@ -118,7 +118,7 @@ class Collector {
 
 
         foreach ($this->errorCollection as $error) {
-            $all['error'][] = $error->toArray();
+            $all[Error::NAME][] = $error->toArray();
         }
 
         return $all;
