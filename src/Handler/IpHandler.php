@@ -10,13 +10,13 @@ use BitSensor\Core\IpContext;
  * Collects the IP address.
  * @package BitSensor\Handler
  */
-class IpHandler {
+class IpHandler implements Handler {
 
     /**
      * @param Collector $collector
      * @param Config $config
      */
-    public static function handle(Collector $collector, Config $config) {
+    public function handle(Collector $collector, Config $config) {
         $ip = null;
 
         switch ($config->getIpAddressSrc()) {

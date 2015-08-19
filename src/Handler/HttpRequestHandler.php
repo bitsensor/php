@@ -4,6 +4,7 @@ namespace BitSensor\Handler;
 
 use BitSensor\Core\AuthenticationContext;
 use BitSensor\Core\Collector;
+use BitSensor\Core\Config;
 use BitSensor\Core\EndpointContext;
 use BitSensor\Core\HttpContext;
 
@@ -11,12 +12,13 @@ use BitSensor\Core\HttpContext;
  * Collects information about the HTTP request.
  * @package BitSensor\Handler
  */
-class HttpRequestHandler {
+class HttpRequestHandler implements Handler {
 
     /**
      * @param Collector $collector
+     * @param Config $config
      */
-    public static function handle(Collector $collector) {
+    public function handle(Collector $collector, Config $config) {
         $http = array(
             HttpContext::SERVER_PROTOCOL => isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : null,
             HttpContext::QUERY_STRING => isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : null,

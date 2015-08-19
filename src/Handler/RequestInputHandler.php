@@ -4,18 +4,20 @@ namespace BitSensor\Handler;
 
 
 use BitSensor\Core\Collector;
+use BitSensor\Core\Config;
 use BitSensor\Core\InputContext;
 
 /**
  * Collects information about the HTTP request data.
  * @package BitSensor\Handler
  */
-class RequestInputHandler {
+class RequestInputHandler implements Handler {
 
     /**
      * @param Collector $collector
+     * @param Config $config
      */
-    public static function handle(Collector $collector) {
+    public function handle(Collector $collector, Config $config) {
         $post = array();
         foreach ($_POST as $k => $v) {
             if (is_array($v)) {
