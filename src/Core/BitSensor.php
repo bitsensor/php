@@ -7,6 +7,7 @@ use BitSensor\Exception\ApiException;
 use BitSensor\Handler\HttpRequestHandler;
 use BitSensor\Handler\ModSecurityHandler;
 use BitSensor\Handler\RequestInputHandler;
+use BitSensor\Util\Log;
 use BitSensor\View\TamperView;
 
 /**
@@ -36,12 +37,10 @@ class BitSensor {
     private $collector;
 
     /**
-     * @param string $uri The BitSensor server to connect to.
-     * @param string $user Your BitSensor username.
-     * @param string $apiKey Your BitSensor API key.
+     * @param Config $config Object with configuration.
      * @throws ApiException
      */
-    public function __construct($uri, $user, $apiKey) {
+    public function __construct($config) {
         /**
          * Working directory when the application started.
          */
@@ -56,7 +55,7 @@ class BitSensor {
 
         set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
         set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
-        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $user, $apiKey, $collector, $uri);
+        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $config->getUser(), $config->getApiKey(), $collector, $config->getUri());
 
         HttpRequestHandler::handle($collector);
         RequestInputHandler::handle($collector);
@@ -64,8 +63,8 @@ class BitSensor {
 
         // Check if user is authorized
         try {
-            $authorizationResponse = json_decode(ApiConnector::from($user, $apiKey)
-                ->to($uri)
+            $authorizationResponse = json_decode(ApiConnector::from($config->getUser(), $config->getApiKey())
+                ->to($config->getUri())
                 ->with($collector->toArray())
                 ->post(ApiConnector::ACTION_AUTHORIZE)
                 ->send(), true);
