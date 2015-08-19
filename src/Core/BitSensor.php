@@ -4,6 +4,7 @@ namespace BitSensor\Core;
 
 
 use BitSensor\Exception\ApiException;
+use BitSensor\Handler\Handler;
 use BitSensor\Handler\HttpRequestHandler;
 use BitSensor\Handler\IpHandler;
 use BitSensor\Handler\ModSecurityHandler;
@@ -35,7 +36,18 @@ class BitSensor {
      * @var Collector
      */
     private $collector;
+    /**
+     * Configuration.
+     *
+     * @var Config
+     */
     private $config;
+    /**
+     * Handlers that should run.
+     *
+     * @var Handler[]
+     */
+    private $handlers;
 
     /**
      * @param Config $config Object with configuration.
@@ -60,10 +72,12 @@ class BitSensor {
         set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
         register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $this->config->getUser(), $this->config->getApiKey(), $collector, $this->config->getUri());
 
-        IpHandler::handle($collector, $config);
-        HttpRequestHandler::handle($collector);
-        RequestInputHandler::handle($collector);
-        ModSecurityHandler::handle($collector);
+        $this->addHandler(new IpHandler());
+        $this->addHandler(new HttpRequestHandler());
+        $this->addHandler(new RequestInputHandler());
+        $this->addHandler(new ModSecurityHandler());
+
+        $this->runHandlers();
 
         if ($this->config->getMode() === Config::MODE_ON) {
             // Check if user is authorized
@@ -133,6 +147,16 @@ class BitSensor {
 
     public function addInput(Context $input) {
         $this->collector->addInput($input);
+    }
+
+    private function addHandler(Handler $handler) {
+        $this->handlers[] = $handler;
+    }
+
+    private function runHandlers() {
+        foreach ($this->handlers as $handler) {
+            $handler->handle($this->collector, $this->config);
+        }
     }
 
 }
