@@ -34,18 +34,19 @@ class BitSensor {
      * @var Collector
      */
     private $collector;
+    private $config;
 
     /**
-     * @param string $uri The BitSensor server to connect to.
-     * @param string $user Your BitSensor username.
-     * @param string $apiKey Your BitSensor API key.
+     * @param Config $config Object with configuration.
      * @throws ApiException
      */
-    public function __construct($uri, $user, $apiKey) {
+    public function __construct($config) {
         /**
          * Working directory when the application started.
          */
         define('WORKING_DIR', getcwd());
+
+        $this->config = $config;
 
         /**
          * @global Collector $collector
@@ -56,7 +57,7 @@ class BitSensor {
 
         set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
         set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
-        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $user, $apiKey, $collector, $uri);
+        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $this->config->getUser(), $this->config->getApiKey(), $collector, $this->config->getUri());
 
         HttpRequestHandler::handle($collector);
         RequestInputHandler::handle($collector);
@@ -64,8 +65,8 @@ class BitSensor {
 
         // Check if user is authorized
         try {
-            $authorizationResponse = json_decode(ApiConnector::from($user, $apiKey)
-                ->to($uri)
+            $authorizationResponse = json_decode(ApiConnector::from($this->config->getUser(), $this->config->getApiKey())
+                ->to($this->config->getUri())
                 ->with($collector->toArray())
                 ->post(ApiConnector::ACTION_AUTHORIZE)
                 ->send(), true);
@@ -95,16 +96,21 @@ class BitSensor {
     public function requestBlockAccess($reason) {
         switch ($reason) {
             case BitSensor::BLOCK_REASON_TAMPER:
-                sleep(20);
-                $view = new TamperView();
-                $view->show();
-                exit;
+                if ($this->config->getMode() === Config::MODE_ON) {
+                    sleep(20);
+                    $view = new TamperView();
+                    $view->show();
+                    exit;
+                }
+                break;
+            /** @noinspection PhpMissingBreakStatementInspection */
             case BitSensor::BLOCK_REASON_ACCESS_DENIED:
                 error_log('The API key you provided does not appear to be valid. Please check your settings.');
                 error_log('WARNING! BITsensor is not active!');
-                break;
             case BitSensor::BLOCK_REASON_UNKNOWN:
-                // TODO Handle unknown response
+                if ($this->config->getMode() === Config::MODE_ON && $this->config->getConnectionFail() === Config::ACTION_BLOCK) {
+                    exit;
+                }
                 break;
         }
     }

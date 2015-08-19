@@ -1,0 +1,7 @@
+{
+  "uri": "http://localhost/test/api/",
+  "user": "example_user",
+  "apiKey": "abcdefghijklmnopqrstuvwxyz",
+  "mode": "on",
+  "connectionFail": "block"
+}
