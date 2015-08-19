@@ -11,18 +11,26 @@ class Config {
 
     /**
      * The BitSensor server to connect to.
+     *
+     * <i>Required</i>
      */
     const URI = 'uri';
     /**
      * Your BitSensor username.
+     *
+     * <i>Required</i>
      */
     const USER = 'user';
     /**
      * Your BitSensor API key.
+     *
+     * <i>Required</i>
      */
     const API_KEY = 'apiKey';
     /**
      * Running mode.
+     *
+     * <i>Defaults to {@link Config::MODE_ON}.</i>
      */
     const MODE = 'mode';
     /**
@@ -35,6 +43,8 @@ class Config {
     const MODE_ON = 'on';
     /**
      * Action to perform when the connection to the BitSensor servers is lost.
+     *
+     * <i>Defaults to {@link Config::ACTION_BLOCK}.</i>
      */
     const CONNECTION_FAIL = 'connectionFail';
     /**
@@ -47,10 +57,14 @@ class Config {
     const ACTION_BLOCK = 'block';
     /**
      * Source of the IP address of the user.
+     *
+     * <i>Defaults to {@link Config::IP_ADDRESS_REMOTE_ADDR}.</i>
      */
     const IP_ADDRESS_SRC = 'ipAddressSrc';
     /**
      * Manual IP address.
+     *
+     * <i>Optional. Only required when {@link Config::IP_ADDRESS_SRC} is set to {@link Config::IP_ADDRESS_MANUAL}.</i>
      */
     const IP_ADDRESS = 'ipAddress';
     /**
@@ -89,19 +103,19 @@ class Config {
      *
      * @var string
      */
-    private $mode;
+    private $mode = self::MODE_ON;
     /**
      * Action to perform when the connection to the BitSensor servers is lost.
      *
      * @var string
      */
-    private $connectionFail;
+    private $connectionFail = self::ACTION_BLOCK;
     /**
      * Source of the IP address of the user.
      *
      * @var string
      */
-    private $ipAddressSrc;
+    private $ipAddressSrc = self::IP_ADDRESS_REMOTE_ADDR;
     /**
      * Manual IP address.
      *
