@@ -11,18 +11,26 @@ class Config {
 
     /**
      * The BitSensor server to connect to.
+     *
+     * <i>Required</i>
      */
     const URI = 'uri';
     /**
      * Your BitSensor username.
+     *
+     * <i>Required</i>
      */
     const USER = 'user';
     /**
      * Your BitSensor API key.
+     *
+     * <i>Required</i>
      */
     const API_KEY = 'apiKey';
     /**
      * Running mode.
+     *
+     * <i>Defaults to {@link Config::MODE_ON}.</i>
      */
     const MODE = 'mode';
     /**
@@ -35,6 +43,8 @@ class Config {
     const MODE_ON = 'on';
     /**
      * Action to perform when the connection to the BitSensor servers is lost.
+     *
+     * <i>Defaults to {@link Config::ACTION_BLOCK}.</i>
      */
     const CONNECTION_FAIL = 'connectionFail';
     /**
@@ -45,6 +55,30 @@ class Config {
      * Block the user.
      */
     const ACTION_BLOCK = 'block';
+    /**
+     * Source of the IP address of the user.
+     *
+     * <i>Defaults to {@link Config::IP_ADDRESS_REMOTE_ADDR}.</i>
+     */
+    const IP_ADDRESS_SRC = 'ipAddressSrc';
+    /**
+     * Manual IP address.
+     *
+     * <i>Optional. Only required when {@link Config::IP_ADDRESS_SRC} is set to {@link Config::IP_ADDRESS_MANUAL}.</i>
+     */
+    const IP_ADDRESS = 'ipAddress';
+    /**
+     * Set IP address manually.
+     */
+    const IP_ADDRESS_MANUAL = 'manual';
+    /**
+     * Set IP address according to <code>$_SERVER['REMOTE_ADDR']</code>.
+     */
+    const IP_ADDRESS_REMOTE_ADDR = 'remoteAddr';
+    /**
+     * Set IP address according to the <code>X-Forwarded-For</code> HTTP header.
+     */
+    const IP_ADDRESS_X_FORWARDED_FOR = 'forwardedFor';
 
     /**
      * The BitSensor server to connect to.
@@ -69,13 +103,25 @@ class Config {
      *
      * @var string
      */
-    private $mode;
+    private $mode = self::MODE_ON;
     /**
      * Action to perform when the connection to the BitSensor servers is lost.
      *
      * @var string
      */
-    private $connectionFail;
+    private $connectionFail = self::ACTION_BLOCK;
+    /**
+     * Source of the IP address of the user.
+     *
+     * @var string
+     */
+    private $ipAddressSrc = self::IP_ADDRESS_REMOTE_ADDR;
+    /**
+     * Manual IP address.
+     *
+     * @var string
+     */
+    private $ipAddress;
 
     public function __construct($json) {
         $config = json_decode($json, true);
@@ -98,6 +144,14 @@ class Config {
 
         if (isset($config[self::CONNECTION_FAIL])) {
             $this->setConnectionFail($config[self::CONNECTION_FAIL]);
+        }
+
+        if (isset($config[self::IP_ADDRESS_SRC])) {
+            $this->setIpAddressSrc($config[self::IP_ADDRESS_SRC]);
+        }
+
+        if (isset($config[self::IP_ADDRESS])) {
+            $this->setIpAddress($config[self::IP_ADDRESS]);
         }
     }
 
@@ -171,4 +225,31 @@ class Config {
         $this->connectionFail = $connectionFail;
     }
 
+    /**
+     * @return string Source of the IP address of the user.
+     */
+    public function getIpAddressSrc() {
+        return $this->ipAddressSrc;
+    }
+
+    /**
+     * @param string $ipAddressSrc Source of the IP address of the user.
+     */
+    public function setIpAddressSrc($ipAddressSrc) {
+        $this->ipAddressSrc = $ipAddressSrc;
+    }
+
+    /**
+     * @return string Manual IP address.
+     */
+    public function getIpAddress() {
+        return $this->ipAddress;
+    }
+
+    /**
+     * @param string $ipAddress Manual IP address.
+     */
+    public function setIpAddress($ipAddress) {
+        $this->ipAddress = $ipAddress;
+    }
 }

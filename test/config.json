@@ -3,5 +3,6 @@
   "user": "example_user",
   "apiKey": "abcdefghijklmnopqrstuvwxyz",
   "mode": "on",
-  "connectionFail": "block"
+  "connectionFail": "block",
+  "ipAddressSrc": "remoteAddr"
 }

@@ -6,7 +6,6 @@ use BitSensor\Core\AuthenticationContext;
 use BitSensor\Core\Collector;
 use BitSensor\Core\EndpointContext;
 use BitSensor\Core\HttpContext;
-use BitSensor\Core\IpContext;
 
 /**
  * Collects information about the HTTP request.
@@ -18,8 +17,6 @@ class HttpRequestHandler {
      * @param Collector $collector
      */
     public static function handle(Collector $collector) {
-        $collector->addContext(new IpContext($_SERVER['REMOTE_ADDR']));
-
         $http = array(
             HttpContext::SERVER_PROTOCOL => isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : null,
             HttpContext::QUERY_STRING => isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : null,

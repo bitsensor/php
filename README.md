@@ -18,7 +18,8 @@ $config = json_encode(array(
     Config::USER => 'your_username',
     Config::API_KEY => 'your_api_key',
     Config::MODE => Config::MODE_ON,
-    Config::CONNECTION_FAIL => Config::ACTION_BLOCK
+    Config::CONNECTION_FAIL => Config::ACTION_BLOCK,
+    Config::IP_ADDRESS_SRC => Config::IP_ADDRESS_REMOTE_ADDR
 ));
 
 // ...or save it in a JSON file
@@ -35,7 +36,8 @@ $bitSensor = new BitSensor(new Config($config));
   "user": "your_username",
   "apiKey": "your_api_key",
   "mode": "on",
-  "connectionFail": "block"
+  "connectionFail": "block",
+  "ipAddressSrc": "remoteAddr"
 }
 ```
 
