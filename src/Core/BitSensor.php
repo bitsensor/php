@@ -63,25 +63,27 @@ class BitSensor {
         RequestInputHandler::handle($collector);
         ModSecurityHandler::handle($collector);
 
-        // Check if user is authorized
-        try {
-            $authorizationResponse = json_decode(ApiConnector::from($this->config->getUser(), $this->config->getApiKey())
-                ->to($this->config->getUri())
-                ->with($collector->toArray())
-                ->post(ApiConnector::ACTION_AUTHORIZE)
-                ->send(), true);
-        } catch (ApiException $e) {
-            $authorizationResponse['response'] = 'error';
-        }
+        if ($this->config->getMode() === Config::MODE_ON) {
+            // Check if user is authorized
+            try {
+                $authorizationResponse = json_decode(ApiConnector::from($this->config->getUser(), $this->config->getApiKey())
+                    ->to($this->config->getUri())
+                    ->with($collector->toArray())
+                    ->post(ApiConnector::ACTION_AUTHORIZE)
+                    ->send(), true);
+            } catch (ApiException $e) {
+                $authorizationResponse['response'] = 'error';
+            }
 
-        if ($authorizationResponse['response'] === ApiConnector::RESPONSE_ALLOW) {
-            return;
-        } else if ($authorizationResponse['response'] === ApiConnector::RESPONSE_BLOCK) {
-            $this->requestBlockAccess(BitSensor::BLOCK_REASON_TAMPER);
-        } else if ($authorizationResponse['response'] === ApiConnector::RESPONSE_ACCESS_DENIED) {
-            $this->requestBlockAccess(BitSensor::BLOCK_REASON_ACCESS_DENIED);
-        } else {
-            $this->requestBlockAccess(BitSensor::BLOCK_REASON_UNKNOWN);
+            if ($authorizationResponse['response'] === ApiConnector::RESPONSE_ALLOW) {
+                return;
+            } else if ($authorizationResponse['response'] === ApiConnector::RESPONSE_BLOCK) {
+                $this->requestBlockAccess(BitSensor::BLOCK_REASON_TAMPER);
+            } else if ($authorizationResponse['response'] === ApiConnector::RESPONSE_ACCESS_DENIED) {
+                $this->requestBlockAccess(BitSensor::BLOCK_REASON_ACCESS_DENIED);
+            } else {
+                $this->requestBlockAccess(BitSensor::BLOCK_REASON_UNKNOWN);
+            }
         }
     }
 
