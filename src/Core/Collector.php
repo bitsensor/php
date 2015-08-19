@@ -96,29 +96,20 @@ class Collector {
         $all = array();
 
         foreach ($this->contextCollection as $context) {
-            $all[Context::NAME][] = array(
-                'key' => $context->getName(),
-                'value' => $context->getValue()
-            );
+            $all[Context::NAME][$context->getName()] = $context->getValue();
         }
 
         foreach ($this->endpointCollection as $context) {
-            $all[EndpointContext::NAME][] = array(
-                'key' => $context->getName(),
-                'value' => $context->getValue()
-            );
+            $all[EndpointContext::NAME][$context->getName()] = $context->getValue();
         }
 
         foreach ($this->inputCollection as $input) {
-            $all[InputContext::NAME][] = array(
-                'key' => $input->getName(),
-                'value' => $input->getValue()
-            );
+            $all[InputContext::NAME][$input->getName()] = $input->getValue();
         }
 
 
         foreach ($this->errorCollection as $error) {
-            $all['error'][] = $error->toArray();
+            $all[Error::NAME][] = $error->toArray();
         }
 
         return $all;

@@ -49,6 +49,13 @@ class HttpRequestHandler {
             $collector->addContext(new AuthenticationContext($k, $v));
         }
 
+        $micro_date = microtime();
+        $date_array = explode(' ', $micro_date);
+        $date = date('Y-m-d\TH:i:s', $date_array[1]);
+        $time = substr($date_array[0], 1);
+        $timezone = date('O', $date_array[1]);
+
+
         $endpoint = array(
             EndpointContext::SERVER_ADDR => $_SERVER['SERVER_ADDR'],
             EndpointContext::SERVER_NAME => $_SERVER['SERVER_NAME'],
@@ -58,7 +65,8 @@ class HttpRequestHandler {
             EndpointContext::DOCUMENT_ROOT => $_SERVER['DOCUMENT_ROOT'],
             EndpointContext::GATEWAY_INTERFACE => $_SERVER['GATEWAY_INTERFACE'],
             EndpointContext::SCRIPT_FILENAME => $_SERVER['SCRIPT_FILENAME'],
-            EndpointContext::REQUEST_TIME => isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] : null,
+            EndpointContext::REQUEST_TIME => $date . $time . $timezone,
+            EndpointContext::REQUEST_TIME_UNIX => isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] : null,
             EndpointContext::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null
         );
 

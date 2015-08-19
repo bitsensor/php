@@ -10,6 +10,10 @@ namespace BitSensor\Core;
 abstract class Error {
 
     /**
+     * Name.
+     */
+    const NAME = 'error';
+    /**
      * Error code.
      */
     const ERRNO = 'code';
