@@ -7,11 +7,11 @@ require_once '../vendor/autoload.php';
 global $debug;
 
 $config = json_encode(array(
-    Config::URI => 'http://localhost/test/api/',
+    Config::URI => 'http://192.168.159.1:8080/data',
     Config::USER => 'example_user',
     Config::API_KEY => 'abcdefghijklmnopqrstuvwxyz',
-    Config::MODE => Config::MODE_ON,
-    Config::CONNECTION_FAIL => Config::ACTION_BLOCK,
+    Config::MODE => Config::MODE_DETECTION,
+    Config::CONNECTION_FAIL => Config::ACTION_ALLOW,
     Config::IP_ADDRESS_SRC => Config::IP_ADDRESS_REMOTE_ADDR
 ));
 
@@ -19,14 +19,4 @@ $config = json_encode(array(
 
 $bitSensor = new BitSensor(new Config($config));
 
-trigger_error('Test Error');
-
-function test() {
-    throw new Exception('Test Exception');
-}
-
 echo 'Allowed';
-
-test();
-
-echo 'Exception thrown';

@@ -2,7 +2,7 @@
   "uri": "http://localhost/test/api/",
   "user": "example_user",
   "apiKey": "abcdefghijklmnopqrstuvwxyz",
-  "mode": "on",
+  "mode": "detection",
   "connectionFail": "block",
   "ipAddressSrc": "remoteAddr"
 }
