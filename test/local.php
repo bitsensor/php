@@ -19,4 +19,4 @@ $config = json_encode(array(
 
 $bitSensor = new BitSensor(new Config($config));
 
-echo 'Allowed';
+throw new Exception;

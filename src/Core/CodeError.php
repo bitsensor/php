@@ -48,8 +48,8 @@ class CodeError extends Error {
      * @param int $errline Line at which the error occurred.
      * @param array $errcontext Stacktrace of the error.
      */
-    public function __construct($errno, $errstr, $errfile, $errline, $errcontext = null) {
-        parent::__construct($errno, $errstr);
+    public function __construct($errno, $errstr, $errfile, $errline, $errcontext = null, $errtype = null) {
+        parent::__construct($errno, $errstr, $errtype);
         $this->setFile($errfile);
         $this->setLine($errline);
         $this->setContext($errcontext);

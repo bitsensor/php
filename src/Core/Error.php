@@ -21,7 +21,10 @@ abstract class Error {
      * Error description.
      */
     const ERRSTR = 'description';
-
+    /**
+     * Error type.
+     */
+    const ERRTYPE = 'type';
     /**
      * Error code.
      *
@@ -34,14 +37,22 @@ abstract class Error {
      * @var string
      */
     private $errstr;
+    /**
+     * Error type.
+     *
+     * @var string
+     */
+    private $errtype;
 
     /**
      * @param int $errno Error code.
      * @param string $errstr Error description.
+     * @param string $errtype Error type.
      */
-    public function __construct($errno, $errstr) {
+    public function __construct($errno = 0, $errstr = null, $errtype = null) {
         $this->setCode($errno);
         $this->setMessage($errstr);
+        $this->setType($errtype);
     }
 
     /**
@@ -71,6 +82,21 @@ abstract class Error {
     public function setCode($errno) {
         $this->errno = $errno;
     }
+    
+    
+    /**
+     * @return string Error type.
+     */
+    public function getType() {
+        return $this->errtype;
+    }
+
+    /**
+     * @param string Error type.
+     */
+    public function setType($errtype) {
+        $this->errtype = $errtype;
+    }
 
     /**
      * <p>Adds all elements of the error to an array.</p>
@@ -92,7 +118,8 @@ abstract class Error {
     public function toArray() {
         return array(
             self::ERRNO => $this->getCode(),
-            self::ERRSTR => $this->getMessage()
+            self::ERRSTR => $this->getMessage(),
+            self::ERRTYPE => $this->getType()
         );
     }
 
