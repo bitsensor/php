@@ -7,7 +7,7 @@ require_once '../vendor/autoload.php';
 global $debug;
 
 $config = json_encode(array(
-    Config::URI => 'http://192.168.159.1:8080/data',
+    Config::URI => 'http://192.168.159.144:8080/data',
     Config::USER => 'example_user',
     Config::API_KEY => 'abcdefghijklmnopqrstuvwxyz',
     Config::MODE => Config::MODE_DETECTION,
