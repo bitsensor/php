@@ -7,26 +7,15 @@
 This project uses composer to handle dependencies. Use ``php composer.phar install`` to install everything after checking out the source.
 
 ## Usage
+Upload ``BitSensor.phar`` to your server and create a ``config.json`` file.
+
 ``index.php:``
 ```php
 // Load BitSensor phar
 require_once '/path/to/BitSensor.phar';
 
-// Create config
-$config = json_encode(array(
-    Config::URI => 'http://bitsensor.io/api/',
-    Config::USER => 'your_username',
-    Config::API_KEY => 'your_api_key',
-    Config::MODE => Config::MODE_ON,
-    Config::CONNECTION_FAIL => Config::ACTION_BLOCK,
-    Config::IP_ADDRESS_SRC => Config::IP_ADDRESS_REMOTE_ADDR
-));
-
-// ...or save it in a JSON file
-$config = file_get_contents('config.json');
-
-// Start BitSensor with the config
-$bitSensor = new BitSensor(new Config($config));
+// Start BitSensor 
+$bitSensor = new BitSensor());
 ```
 
 ``config.json:``
@@ -39,6 +28,34 @@ $bitSensor = new BitSensor(new Config($config));
   "connectionFail": "block",
   "ipAddressSrc": "remoteAddr"
 }
+```
+
+To log Apache errors add the following to your ``.htaccess``:
+```ApacheConf
+AddType application/x-httpd-php .phar
+
+ErrorDocument 400 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=400
+ErrorDocument 401 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=401
+ErrorDocument 402 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=402
+ErrorDocument 403 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=403
+ErrorDocument 404 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=404
+ErrorDocument 405 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=405
+ErrorDocument 406 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=406
+ErrorDocument 407 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=407
+ErrorDocument 408 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=408
+ErrorDocument 409 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=409
+ErrorDocument 410 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=410
+ErrorDocument 411 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=411
+ErrorDocument 412 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=412
+ErrorDocument 413 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=413
+ErrorDocument 414 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=414
+ErrorDocument 415 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=415
+ErrorDocument 500 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=500
+ErrorDocument 501 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=501
+ErrorDocument 502 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=502
+ErrorDocument 503 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=503
+ErrorDocument 504 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=504
+ErrorDocument 505 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=505
 ```
 
 ## External dependencies
