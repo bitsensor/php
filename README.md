@@ -7,26 +7,15 @@
 This project uses composer to handle dependencies. Use ``php composer.phar install`` to install everything after checking out the source.
 
 ## Usage
+Upload ``BitSensor.phar`` to your server and create a ``config.json`` file.
+
 ``index.php:``
 ```php
 // Load BitSensor phar
 require_once '/path/to/BitSensor.phar';
 
-// Create config
-$config = json_encode(array(
-    Config::URI => 'http://bitsensor.io/api/',
-    Config::USER => 'your_username',
-    Config::API_KEY => 'your_api_key',
-    Config::MODE => Config::MODE_ON,
-    Config::CONNECTION_FAIL => Config::ACTION_BLOCK,
-    Config::IP_ADDRESS_SRC => Config::IP_ADDRESS_REMOTE_ADDR
-));
-
-// ...or save it in a JSON file
-$config = file_get_contents('config.json');
-
-// Start BitSensor with the config
-$bitSensor = new BitSensor(new Config($config));
+// Start BitSensor 
+$bitSensor = new BitSensor());
 ```
 
 ``config.json:``

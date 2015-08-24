@@ -53,13 +53,13 @@ class BitSensor {
      * @param Config $config Object with configuration.
      * @throws ApiException
      */
-    public function __construct($config) {
+    public function __construct($config = 'config.json') {
         /**
          * Working directory when the application started.
          */
         define('WORKING_DIR', getcwd());
 
-        $this->config = $config;
+        $this->config = new Config(file_get_contents($config));
 
         /**
          * @global Collector $collector
