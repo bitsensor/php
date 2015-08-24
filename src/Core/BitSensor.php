@@ -78,7 +78,7 @@ class BitSensor {
         $this->addHandler(new ModSecurityHandler());
 
         $this->runHandlers();
-
+        
         if ($this->config->getMode() === Config::MODE_ON) {
             // Check if user is authorized
             try {
