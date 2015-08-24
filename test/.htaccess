@@ -1,0 +1,24 @@
+AddType application/x-httpd-php .phar
+
+ErrorDocument 400 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=400
+ErrorDocument 401 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=401
+ErrorDocument 402 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=402
+ErrorDocument 403 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=403
+ErrorDocument 404 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=404
+ErrorDocument 405 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=405
+ErrorDocument 406 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=406
+ErrorDocument 407 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=407
+ErrorDocument 408 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=408
+ErrorDocument 409 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=409
+ErrorDocument 410 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=410
+ErrorDocument 411 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=411
+ErrorDocument 412 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=412
+ErrorDocument 413 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=413
+ErrorDocument 414 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=414
+ErrorDocument 415 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=415
+ErrorDocument 500 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=500
+ErrorDocument 501 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=501
+ErrorDocument 502 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=502
+ErrorDocument 503 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=503
+ErrorDocument 504 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=504
+ErrorDocument 505 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=505
