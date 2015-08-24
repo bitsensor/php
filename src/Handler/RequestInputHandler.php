@@ -6,6 +6,7 @@ namespace BitSensor\Handler;
 use BitSensor\Core\Collector;
 use BitSensor\Core\Config;
 use BitSensor\Core\InputContext;
+use BitSensor\Core\SessionContext;
 
 /**
  * Collects information about the HTTP request data.
@@ -54,7 +55,11 @@ class RequestInputHandler implements Handler {
         }
 
         foreach ($cookie as $k => $v) {
-            $collector->addInput(new InputContext(InputContext::COOKIE, $k, $v));
+            if ($k === 'PHPSESSID') {
+                $collector->addContext(new SessionContext($v));
+            } else {
+                $collector->addInput(new InputContext(InputContext::COOKIE, $k, $v));
+            }
         }
     }
 
