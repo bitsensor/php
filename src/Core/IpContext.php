@@ -4,7 +4,7 @@ namespace BitSensor\Core;
 
 
 /**
- * Information about the ip address of the user.
+ * Information about the IP address of the user.
  * @package BitSensor\Core
  */
 class IpContext extends Context {
