@@ -22,3 +22,5 @@ ErrorDocument 502 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=502
 ErrorDocument 503 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=503
 ErrorDocument 504 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=504
 ErrorDocument 505 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=505
+
+SetEnv ERROR_DOCUMENT_404 /home/sven/git/BITsensor/test/404.html
