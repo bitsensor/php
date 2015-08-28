@@ -56,7 +56,7 @@ class RequestInputHandler implements Handler {
 
         foreach ($cookie as $k => $v) {
             if ($k === 'PHPSESSID') {
-                $collector->addContext(new SessionContext($v));
+                $collector->addContext(new SessionContext(SessionContext::SESSION_ID, $v));
             } else {
                 $collector->addInput(new InputContext(InputContext::COOKIE, $k, $v));
             }
