@@ -25,7 +25,7 @@ if (isset($_GET['e'])) {
         $view->show();
     }
 }
-global $debug;
+
 $bitSensor = new BitSensor();
 
 $bitSensor->addContext(new HttpContext(HttpContext::STATUS, $_GET['e']));
