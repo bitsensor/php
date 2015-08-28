@@ -1,5 +1,7 @@
 AddType application/x-httpd-php .phar
 
+SetEnv BITSENSOR_PATH /test/BitSensor.phar
+
 ErrorDocument 400 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=400
 ErrorDocument 401 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=401
 ErrorDocument 402 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=402
@@ -23,4 +25,4 @@ ErrorDocument 503 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=503
 ErrorDocument 504 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=504
 ErrorDocument 505 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=505
 
-SetEnv ERROR_DOCUMENT_404 /home/sven/git/BITsensor/test/404.html
+SetEnv ERROR_DOCUMENT_404 /test/404.html

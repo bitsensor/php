@@ -61,7 +61,7 @@ ErrorDocument 504 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=504
 ErrorDocument 505 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=505
 
 # Add all errors you want to show a custom page for
-# The path is the absolute path to the file
+# The path is as seen in the URL in the browser
 SetEnv ERROR_DOCUMENT_400 /path/to/error/document.html
 SetEnv ERROR_DOCUMENT_401 /path/to/error/document.html
 SetEnv ERROR_DOCUMENT_402 /path/to/error/document.html

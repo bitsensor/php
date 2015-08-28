@@ -2,16 +2,27 @@
 
 use BitSensor\Core\ApacheError;
 use BitSensor\Core\BitSensor;
+use BitSensor\View\ErrorView;
 
 require_once '../index.php';
 
 if (isset($_GET['e'])) {
     $path = getenv('ERROR_DOCUMENT_' . $_GET['e']);
-    if ($path && file_exists($path)) {
-        /** @noinspection PhpIncludeInspection */
-        include $path;
+    if ($path) {
+        ob_start();
+        $loaded = virtual($path);
+
+        if (!$loaded) {
+            ob_end_clean();
+
+            $view = new ErrorView($_GET['e']);
+            $view->show();
+        } else {
+            ob_end_flush();
+        }
     } else {
-        echo '<h1>' . $_GET['e'] . '</h1>';
+        $view = new ErrorView($_GET['e']);
+        $view->show();
     }
 }
 
