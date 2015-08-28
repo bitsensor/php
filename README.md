@@ -32,8 +32,11 @@ $bitSensor = new BitSensor());
 
 To log Apache errors add the following to your ``.htaccess``:
 ```ApacheConf
+# Open .phar files as PHP files
 AddType application/x-httpd-php .phar
 
+# Add all errors you want BitSensor to handle
+# The path to BitSensor.phar is as seen in the URL in the browser
 ErrorDocument 400 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=400
 ErrorDocument 401 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=401
 ErrorDocument 402 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=402
@@ -56,6 +59,31 @@ ErrorDocument 502 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=502
 ErrorDocument 503 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=503
 ErrorDocument 504 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=504
 ErrorDocument 505 /path/to/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=505
+
+# Add all errors you want to show a custom page for
+# The path is as seen in the URL in the browser
+SetEnv ERROR_DOCUMENT_400 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_401 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_402 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_403 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_404 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_405 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_406 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_407 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_408 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_409 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_410 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_411 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_412 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_413 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_414 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_415 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_500 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_501 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_502 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_503 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_504 /path/to/error/document.html
+SetEnv ERROR_DOCUMENT_505 /path/to/error/document.html
 ```
 
 ## External dependencies
