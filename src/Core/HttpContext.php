@@ -58,6 +58,10 @@ class HttpContext extends Context {
      * HTTPS connection.
      */
     const HTTPS = 'https';
+    /**
+     * Status code.
+     */
+    const STATUS = 'code';
 
     public function __construct($key, $value) {
         $this->setName(self::NAME . '.' . $key);

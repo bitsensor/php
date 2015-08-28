@@ -1,7 +1,7 @@
 <?php
 
-use BitSensor\Core\ApacheError;
 use BitSensor\Core\BitSensor;
+use BitSensor\Core\HttpContext;
 use BitSensor\View\ErrorView;
 
 require_once '../index.php';
@@ -25,7 +25,7 @@ if (isset($_GET['e'])) {
         $view->show();
     }
 }
-
+global $debug;
 $bitSensor = new BitSensor();
 
-$bitSensor->addError(new ApacheError($_GET['e'], null, 'ServerError'));
+$bitSensor->addContext(new HttpContext(HttpContext::STATUS, $_GET['e']));
