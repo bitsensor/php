@@ -10,12 +10,20 @@ namespace BitSensor\Core;
 class SessionContext extends Context {
 
     /**
-     * PHP Session ID of the connecting user.
+     * PHP session.
      */
-    const NAME = 'sessionId';
+    const NAME = 'session';
+    /**
+     * Session ID of the connecting user.
+     */
+    const SESSION_ID = 'sessionId';
+    /**
+     * Username.
+     */
+    const USERNAME = 'username';
 
-    public function __construct($value) {
-        $this->setName('php.' . self::NAME);
+    public function __construct($key, $value) {
+        $this->setName('php.' . self::NAME . '.' . $key);
         $this->setValue($value);
     }
 
