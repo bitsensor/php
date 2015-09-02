@@ -14,6 +14,7 @@ use BitSensor\View\TamperView;
 /**
  * Entry point for starting the BitSensor Web Application Security plugin.
  * @package BitSensor\Core
+ * @version 0.1.0
  */
 class BitSensor {
 
