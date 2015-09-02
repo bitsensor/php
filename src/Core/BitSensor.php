@@ -133,26 +133,54 @@ class BitSensor {
         }
     }
 
+    /**
+     * Adds a new {@link Context} to the context collection.
+     *
+     * @param Context $context
+     */
     public function addContext(Context $context) {
         $this->collector->addContext($context);
     }
 
+    /**
+     * Adds a new {@link Context} to the endpoint collection.
+     *
+     * @param Context $context
+     */
     public function addEndpointContext(Context $context) {
         $this->collector->addEndpointContext($context);
     }
 
+    /**
+     * Adds a new {@link Error} to the error collection.
+     *
+     * @param Error $error
+     */
     public function addError(Error $error) {
         $this->collector->addError($error);
     }
 
+    /**
+     * Adds a new {@link Context} to the input collection.
+     *
+     * @param Context $input
+     */
     public function addInput(Context $input) {
         $this->collector->addInput($input);
     }
 
+    /**
+     * Adds a new {@link Handler} that should run to collect data about the current request.
+     *
+     * @param Handler $handler
+     */
     private function addHandler(Handler $handler) {
         $this->handlers[] = $handler;
     }
 
+    /**
+     * Run all registered Handlers to collect data about the current request.
+     */
     private function runHandlers() {
         foreach ($this->handlers as $handler) {
             $handler->handle($this->collector, $this->config);
