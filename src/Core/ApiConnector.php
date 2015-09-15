@@ -143,7 +143,7 @@ class ApiConnector {
      * @throws ApiException
      */
     public function send() {
-        $json = json_encode($this->data);
+        $json = json_encode($this->data, JSON_FORCE_OBJECT);
         
         Log::d('<pre>' . json_encode($this->data, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT) . '</pre>');
         

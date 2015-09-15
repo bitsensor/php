@@ -1,8 +1,8 @@
 {
-  "uri": "http://localhost/test/api/",
+  "uri": "http://localhost:8080/",
   "user": "example_user",
   "apiKey": "abcdefghijklmnopqrstuvwxyz",
   "mode": "detection",
-  "connectionFail": "block",
+  "connectionFail": "allow",
   "ipAddressSrc": "remoteAddr"
 }
