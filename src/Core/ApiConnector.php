@@ -145,7 +145,7 @@ class ApiConnector {
     public function send() {
         $json = json_encode($this->data);
         
-        Log::d('<pre>' . json_encode($this->data, JSON_PRETTY_PRINT) . '</pre>');
+        Log::d('<pre>' . json_encode($this->data, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT) . '</pre>');
         
         // Generate signature
         $signature = hash_hmac('sha256', $json, $this->apiKey);
