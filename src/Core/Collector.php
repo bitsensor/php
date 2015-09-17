@@ -104,7 +104,7 @@ class Collector {
         }
 
         foreach ($this->inputCollection as $input) {
-            $all[Context::NAME][$input->getName()] = $input->getValue();
+            $all[InputContext::NAME][$input->getName()] = $input->getValue();
         }
 
 
