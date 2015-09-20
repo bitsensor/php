@@ -163,9 +163,9 @@ class ApiConnector {
             CURLOPT_TCP_NODELAY => true,
             CURLOPT_TIMEOUT_MS => 200,
             CURLOPT_NOSIGNAL => true,
-            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYPEER => false, // TODO Enable with a real certificate
             CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_CAINFO, __DIR__ . '/..' . '/bitbrain.crt'
+            CURLOPT_CAINFO, dirname(__DIR__) . '/bitbrain.crt'
         ));
 
         // Send data
