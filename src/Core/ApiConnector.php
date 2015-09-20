@@ -144,9 +144,9 @@ class ApiConnector {
      */
     public function send() {
         $json = json_encode($this->data, JSON_FORCE_OBJECT);
-        
+
         Log::d('<pre>' . json_encode($this->data, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT) . '</pre>');
-        
+
         // Generate signature
         $signature = hash_hmac('sha256', $json, $this->apiKey);
 
@@ -162,7 +162,10 @@ class ApiConnector {
             ),
             CURLOPT_TCP_NODELAY => true,
             CURLOPT_TIMEOUT_MS => 200,
-            CURLOPT_NOSIGNAL => true
+            CURLOPT_NOSIGNAL => true,
+            CURLOPT_SSL_VERIFYPEER => false, // TODO Enable with a real certificate
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_CAINFO, dirname(__DIR__) . '/bitbrain.crt'
         ));
 
         // Send data
