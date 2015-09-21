@@ -59,9 +59,11 @@ class BitSensor {
          * Working directory when the application started.
          */
         define('WORKING_DIR', getcwd());
-
-        $this->config = new Config(file_get_contents($config));
-
+        if(gettype($config) != 'object')
+            $this->config = new Config(file_get_contents($config));
+        else
+            $this->config = $config;
+        
         /**
          * @global Collector $collector
          */
