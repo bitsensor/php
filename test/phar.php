@@ -5,6 +5,7 @@ use BitSensor\Core\SessionContext;
 require_once 'BitSensor.phar';
 
 global $debug;
+$debug = true;
 
 $bitSensor = new BitSensor();
 
