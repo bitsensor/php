@@ -1,5 +1,6 @@
 <?php
 use BitSensor\Core\BitSensor;
+use BitSensor\Core\Config;
 use BitSensor\Core\SessionContext;
 
 require_once 'BitSensor.phar';
@@ -7,7 +8,16 @@ require_once 'BitSensor.phar';
 global $debug;
 $debug = true;
 
-$bitSensor = new BitSensor();
+$config = new Config();
+$config->setUri('https://localhost:8081/');
+$config->setUser('example_user');
+$config->setApiKey('abcdefghijklmnopqrstuvwxyz');
+$config->setMode(Config::MODE_DETECTION);
+$config->setConnectionFail(Config::ACTION_ALLOW);
+$config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
+$config->setLogLevel(Config::LOG_LEVEL_ALL);
+
+$bitSensor = new BitSensor($config);
 
 session_start();
 
