@@ -79,6 +79,20 @@ class Config {
      * Set IP address according to the <code>X-Forwarded-For</code> HTTP header.
      */
     const IP_ADDRESS_X_FORWARDED_FOR = 'forwardedFor';
+    /**
+     * Set the log level.
+     *
+     * <i>Defaults to {@link Config::LOG_LEVEL_ALL}.</i>
+     */
+    const LOG_LEVEL = 'logLevel';
+    /**
+     * Log everything.
+     */
+    const LOG_LEVEL_ALL = 'all';
+    /**
+     * Log nothing.
+     */
+    const LOG_LEVEL_NONE = 'none';
 
     /**
      * The BitSensor server to connect to.
@@ -122,6 +136,12 @@ class Config {
      * @var string
      */
     private $ipAddress;
+    /**
+     * Log level.
+     *
+     * @var string
+     */
+    private $logLevel = self::LOG_LEVEL_ALL;
 
     public function __construct($json) {
         $config = json_decode($json, true);
@@ -152,6 +172,10 @@ class Config {
 
         if (isset($config[self::IP_ADDRESS])) {
             $this->setIpAddress($config[self::IP_ADDRESS]);
+        }
+
+        if (isset($config[self::LOG_LEVEL])) {
+            $this->setLogLevel($config[self::LOG_LEVEL]);
         }
     }
 
@@ -251,5 +275,19 @@ class Config {
      */
     public function setIpAddress($ipAddress) {
         $this->ipAddress = $ipAddress;
+    }
+
+    /**
+     * @return string Log level.
+     */
+    public function getLogLevel() {
+        return $this->logLevel;
+    }
+
+    /**
+     * @param string $logLevel Log level.
+     */
+    public function setLogLevel($logLevel) {
+        $this->logLevel = $logLevel;
     }
 }
