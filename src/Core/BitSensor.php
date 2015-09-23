@@ -51,7 +51,7 @@ class BitSensor {
     private $handlers;
 
     /**
-     * @param Config $configPath Object with configuration.
+     * @param Config|string $configPath Object with configuration.
      * @throws ApiException
      */
     public function __construct($configPath = 'config.json') {
@@ -64,7 +64,11 @@ class BitSensor {
          * @global Config $config
          */
         global $config;
-        $config = new Config(file_get_contents($configPath));
+        if ($configPath instanceof Config) {
+            $config = $configPath;
+        } else {
+            $config = new Config(file_get_contents($configPath));
+        }
         $this->config = &$config;
 
         /**

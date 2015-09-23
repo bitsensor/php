@@ -143,39 +143,44 @@ class Config {
      */
     private $logLevel = self::LOG_LEVEL_ALL;
 
-    public function __construct($json) {
-        $config = json_decode($json, true);
+    /**
+     * @param $json
+     */
+    public function __construct($json = null) {
+        if ($json !== null) {
+            $config = json_decode($json, true);
 
-        if (isset($config[self::URI])) {
-            $this->setUri($config[self::URI]);
-        }
+            if (isset($config[self::URI])) {
+                $this->setUri($config[self::URI]);
+            }
 
-        if (isset($config[self::USER])) {
-            $this->setUser($config[self::USER]);
-        };
+            if (isset($config[self::USER])) {
+                $this->setUser($config[self::USER]);
+            };
 
-        if (isset($config[self::API_KEY])) {
-            $this->setApiKey($config[self::API_KEY]);
-        }
+            if (isset($config[self::API_KEY])) {
+                $this->setApiKey($config[self::API_KEY]);
+            }
 
-        if (isset($config[self::MODE])) {
-            $this->setMode($config[self::MODE]);
-        }
+            if (isset($config[self::MODE])) {
+                $this->setMode($config[self::MODE]);
+            }
 
-        if (isset($config[self::CONNECTION_FAIL])) {
-            $this->setConnectionFail($config[self::CONNECTION_FAIL]);
-        }
+            if (isset($config[self::CONNECTION_FAIL])) {
+                $this->setConnectionFail($config[self::CONNECTION_FAIL]);
+            }
 
-        if (isset($config[self::IP_ADDRESS_SRC])) {
-            $this->setIpAddressSrc($config[self::IP_ADDRESS_SRC]);
-        }
+            if (isset($config[self::IP_ADDRESS_SRC])) {
+                $this->setIpAddressSrc($config[self::IP_ADDRESS_SRC]);
+            }
 
-        if (isset($config[self::IP_ADDRESS])) {
-            $this->setIpAddress($config[self::IP_ADDRESS]);
-        }
+            if (isset($config[self::IP_ADDRESS])) {
+                $this->setIpAddress($config[self::IP_ADDRESS]);
+            }
 
-        if (isset($config[self::LOG_LEVEL])) {
-            $this->setLogLevel($config[self::LOG_LEVEL]);
+            if (isset($config[self::LOG_LEVEL])) {
+                $this->setLogLevel($config[self::LOG_LEVEL]);
+            }
         }
     }
 
