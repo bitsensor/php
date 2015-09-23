@@ -4,5 +4,6 @@
   "apiKey": "abcdefghijklmnopqrstuvwxyz",
   "mode": "detection",
   "connectionFail": "allow",
-  "ipAddressSrc": "remoteAddr"
+  "ipAddressSrc": "remoteAddr",
+  "logLevel": "all"
 }
