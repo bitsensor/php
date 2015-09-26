@@ -26,8 +26,8 @@ class CodeErrorHandler {
 
         $collector->addError(new CodeError($errno, $errstr, $errfile, $errline, null, "Code"));
 
-        if (mysql_errno()) {
+        /*if (mysql_errno()) {
             $collector->addError(new CodeError(mysql_errno(), mysql_error(), $errfile, $errline, null, "MySQL"));
-        }
+        }*/
     }
 }

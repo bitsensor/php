@@ -147,25 +147,36 @@ class ApiConnector {
 
         Log::d('<pre>' . json_encode($this->data, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT) . '</pre>');
 
+        $fp = fopen(dirname(__DIR__) . '/bitbrain.pem', 'r');
+        $cert = fread($fp, 8192);
+        fclose($fp);
+        $pubKey = openssl_get_publickey($cert);
+
+        openssl_seal($json, $encryptedJson, $eKeys, array($pubKey));
+
+        openssl_free_key($pubKey);
+
+        $content = json_encode(array(
+            'key' => base64_encode($eKeys[0]),
+            'content' => base64_encode($encryptedJson)
+        ));
+
         // Generate signature
-        $signature = hash_hmac('sha256', $json, $this->apiKey);
+        $signature = hash_hmac('sha256', $content, $this->apiKey);
 
         // Create cURL handle
         $ch = curl_init($this->uri . '/' . $this->action . '/?user=' . $this->user . '&sig=' . $signature);
         curl_setopt_array($ch, array(
             CURLOPT_CUSTOMREQUEST => self::getRequestType($this->action),
-            CURLOPT_POSTFIELDS => $json,
+            CURLOPT_POSTFIELDS => $content,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($json)
+                'Content-Type: text/plain',
+                'Content-Length: ' . strlen($content)
             ),
             CURLOPT_TCP_NODELAY => true,
             CURLOPT_TIMEOUT_MS => 200,
-            CURLOPT_NOSIGNAL => true,
-            CURLOPT_SSL_VERIFYPEER => false, // TODO Enable with a real certificate
-            CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_CAINFO, dirname(__DIR__) . '/bitbrain.crt'
+            CURLOPT_NOSIGNAL => true
         ));
 
         // Send data

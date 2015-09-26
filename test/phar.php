@@ -9,7 +9,7 @@ global $debug;
 $debug = true;
 
 $config = new Config();
-$config->setUri('https://localhost:8081/');
+$config->setUri('http://localhost:8080/');
 $config->setUser('example_user');
 $config->setApiKey('abcdefghijklmnopqrstuvwxyz');
 $config->setMode(Config::MODE_DETECTION);
