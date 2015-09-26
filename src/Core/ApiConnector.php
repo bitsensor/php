@@ -156,15 +156,23 @@ class ApiConnector {
 
         openssl_free_key($pubKey);
 
+        $content = json_encode(array(
+            'key' => base64_encode($eKeys[0]),
+            'content' => base64_encode($encryptedJson)
+        ));
+
+        // Generate signature
+        $signature = hash_hmac('sha256', $content, $this->apiKey);
+
         // Create cURL handle
-        $ch = curl_init($this->uri . '/' . $this->action . '/?user=' . $this->user . '&key=' . base64_encode($eKeys[0]));
+        $ch = curl_init($this->uri . '/' . $this->action . '/?user=' . $this->user . '&sig=' . $signature);
         curl_setopt_array($ch, array(
             CURLOPT_CUSTOMREQUEST => self::getRequestType($this->action),
-            CURLOPT_POSTFIELDS => base64_encode($encryptedJson),
+            CURLOPT_POSTFIELDS => $content,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: text/plain',
-                'Content-Length: ' . strlen($json)
+                'Content-Length: ' . strlen($content)
             ),
             CURLOPT_TCP_NODELAY => true,
             CURLOPT_TIMEOUT_MS => 200,
