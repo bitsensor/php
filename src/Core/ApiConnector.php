@@ -171,7 +171,7 @@ class ApiConnector {
             CURLOPT_POSTFIELDS => $content,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => array(
-                'Content-Type: text/plain',
+                'Content-Type: application/json',
                 'Content-Length: ' . strlen($content)
             ),
             CURLOPT_TCP_NODELAY => true,
