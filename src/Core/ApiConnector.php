@@ -143,6 +143,13 @@ class ApiConnector {
      * @throws ApiException
      */
     public function send() {
+
+        $this->data[MetaContext::NAME] = array(
+            MetaContext::USER => $this->user,
+            MetaContext::API_KEY => $this->apiKey,
+            MetaContext::PROVIDER => MetaContext::PROVIDER_PHP
+        );
+
         $json = json_encode($this->data, JSON_FORCE_OBJECT);
 
         Log::d('<pre>' . json_encode($this->data, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT) . '</pre>');
@@ -157,15 +164,15 @@ class ApiConnector {
         openssl_free_key($pubKey);
 
         $content = json_encode(array(
-            'key' => base64_encode($eKeys[0]),
-            'content' => base64_encode($encryptedJson)
+            MetaContext::DATA => base64_encode($encryptedJson),
+            MetaContext::ENCRYPTION => true,
+            MetaContext::ENCRYPTION_KEY => base64_encode($eKeys[0])
         ));
 
-        // Generate signature
-        $signature = hash_hmac('sha256', $content, $this->apiKey);
+        Log::d('<pre>' . $content . '</pre>');
 
         // Create cURL handle
-        $ch = curl_init($this->uri . '/' . $this->action . '/?user=' . $this->user . '&sig=' . $signature);
+        $ch = curl_init($this->uri . '/' . $this->action);
         curl_setopt_array($ch, array(
             CURLOPT_CUSTOMREQUEST => self::getRequestType($this->action),
             CURLOPT_POSTFIELDS => $content,
