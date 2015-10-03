@@ -117,13 +117,13 @@ class Config {
      *
      * @var string
      */
-    private $mode = self::MODE_ON;
+    private $mode = self::MODE_DETECTION;
     /**
      * Action to perform when the connection to the BitSensor servers is lost.
      *
      * @var string
      */
-    private $connectionFail = self::ACTION_BLOCK;
+    private $connectionFail = self::ACTION_ALLOW;
     /**
      * Source of the IP address of the user.
      *
