@@ -12,7 +12,7 @@ abstract class Error {
     /**
      * Name.
      */
-    const NAME = 'error';
+    const NAME = 'errors';
     /**
      * Error code.
      */

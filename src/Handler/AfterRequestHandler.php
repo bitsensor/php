@@ -5,6 +5,7 @@ namespace BitSensor\Handler;
 
 use BitSensor\Core\ApiConnector;
 use BitSensor\Core\Collector;
+use BitSensor\Core\Config;
 use BitSensor\Exception\ApiException;
 
 /**
@@ -14,21 +15,25 @@ use BitSensor\Exception\ApiException;
 class AfterRequestHandler {
 
     /**
-     * @param string $user Your BitSensor username.
-     * @param string $apiKey Your BitSensor API key.
      * @param Collector $collector The Collector containing the data about the connecting user.
-     * @param string $uri The BitSensor server to connect to.
+     * @param Config $config The Config.
      * @throws ApiException
      */
-    public static function handle($user, $apiKey, $collector, $uri) {
+    public static function handle($collector, $config) {
 
         // Correctly sets working directory
         chdir(WORKING_DIR);
 
-        ApiConnector::from($user, $apiKey)
-            ->with($collector->toArray())
-            ->to($uri)
-            ->post(ApiConnector::ACTION_LOG)
-            ->send();
+        try {
+            ApiConnector::from($config->getUser(), $config->getApiKey())
+                ->with($collector->toArray())
+                ->to($config->getUri())
+                ->post(ApiConnector::ACTION_LOG)
+                ->send();
+        } catch (ApiException $e) {
+            if ($config->getLogLevel() === Config::LOG_LEVEL_ALL) {
+                error_log($e->getMessage());
+            }
+        }
     }
 }

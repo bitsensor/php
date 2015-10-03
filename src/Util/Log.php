@@ -20,7 +20,8 @@ class Log {
      * @param string $msg The message to print.
      */
     public static function d($msg) {
-        if (array_key_exists('debug', $GLOBALS)) {
+        global $debug;
+        if ($debug === true) {
             echo $msg;
         }
     }

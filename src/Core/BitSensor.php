@@ -14,9 +14,11 @@ use BitSensor\View\TamperView;
 /**
  * Entry point for starting the BitSensor Web Application Security plugin.
  * @package BitSensor\Core
- * @version 0.1.0
+ * @version 0.2.0
  */
 class BitSensor {
+
+    const VERSION = '0.2.0';
 
     /**
      * User tried to tamper with the application.
@@ -38,7 +40,7 @@ class BitSensor {
      */
     private $collector;
     /**
-     * Configuration.
+     * Reference to the global Configuration.
      *
      * @var Config
      */
@@ -51,16 +53,25 @@ class BitSensor {
     private $handlers;
 
     /**
-     * @param Config $config Object with configuration.
+     * @param Config|string $configPath Object with configuration.
      * @throws ApiException
      */
-    public function __construct($config = 'config.json') {
+    public function __construct($configPath = 'config.json') {
         /**
          * Working directory when the application started.
          */
         define('WORKING_DIR', getcwd());
 
-        $this->config = new Config(file_get_contents($config));
+        /**
+         * @global Config $config
+         */
+        global $config;
+        if ($configPath instanceof Config) {
+            $config = $configPath;
+        } else {
+            $config = new Config(file_get_contents($configPath));
+        }
+        $this->config = &$config;
 
         /**
          * @global Collector $collector
@@ -71,7 +82,7 @@ class BitSensor {
 
         set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
         set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
-        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $this->config->getUser(), $this->config->getApiKey(), $collector, $this->config->getUri());
+        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $collector, $config);
 
         $this->addHandler(new IpHandler());
         $this->addHandler(new HttpRequestHandler());

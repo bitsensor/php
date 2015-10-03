@@ -7,12 +7,25 @@
 This project uses composer to handle dependencies. Use ``php composer.phar install`` to install everything after checking out the source.
 
 ## Usage
-Upload ``BitSensor.phar`` to your server and create a ``config.json`` file.
+Upload ``BitSensor.phar`` to your server and create a ``config.json`` file, or define your config in PHP.
 
 ``index.php:``
 ```php
+use BitSensor\Core\BitSensor;
+use BitSensor\Core\Config;
+
 // Load BitSensor phar
 require_once '/path/to/BitSensor.phar';
+
+// Create config using PHP.
+$config = new Config();
+$config->setUri('http://bitsensor.io/api/');
+$config->setUser('your_username');
+$config->setApiKey('your_api_key');
+$config->setMode(Config::MODE_ON);
+$config->setConnectionFail(Config::ACTION_BLOCK);
+$config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
+$config->setLogLevel(Config::LOG_LEVEL_ALL);
 
 // Start BitSensor 
 $bitSensor = new BitSensor());
@@ -26,9 +39,25 @@ $bitSensor = new BitSensor());
   "apiKey": "your_api_key",
   "mode": "on",
   "connectionFail": "block",
-  "ipAddressSrc": "remoteAddr"
+  "ipAddressSrc": "remoteAddr",
+  "logLevel": "all"
 }
 ```
+
+### Config
+You have the following config options at your disposal:
+
+| PHP                       | JSON           | Value                                                                      | Default                                             | Description                                                             |
+|---------------------------|----------------|----------------------------------------------------------------------------|-----------------------------------------------------|-------------------------------------------------------------------------|
+| ```setUri()```            | uri            | uri                                                                        | <empty>                                             | URI to the BitSensor API.                                               |
+| ```setUser()```           | user           | username                                                                   | <empty>                                             | Your BitSensor username.                                                |
+| ```setApiKey()```         | apiKey         | api key                                                                    | <empty>                                             | Your BitSensor API key.                                                 |
+| ```setMode()```           | mode           | ```Config::MODE_ON``` ("on"), ```Config::MODE_DETECTION``` ("detection")   | ```Config::MODE_ON``` ("on")                        | Running mode. In detection mode only logging will be done.              |
+| ```setConnectionFail()``` | connectionFail | ```Config::ACTION_ALLOW``` ("allow"), ```Config::ACTION_BLOCK``` ("block") | ```Config::ACTION_BLOCK``` ("block")                | Action to perform when the connection to the BitSensor servers is lost. |
+| ```setIpAddressSrc()```   | ipAddressSrc   | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr")                        | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr") | Source of the IP address of the user.                                   |
+| ```setLogLevel()```       | logLevel       | ```Config::LOG_LEVEL_ALL``` ("all"), ```Config::LOG_LEVEL_NONE``` ("none") | ```Config::LOG_LEVEL_ALL``` ("all")                 | The logging level.                                                      |
+
+### Apache
 
 To log Apache errors add the following to your ``.htaccess``:
 ```ApacheConf
@@ -98,8 +127,11 @@ By default, the resulting file will be placed in the ``build/`` folder, but this
 
 ## Testing
 Debug logging can be printed using ``BitSensor\Util\Log::d($msg)``,
-this will only be printed when running in debug mode, activated by adding ``$debug`` to  the global scope like this:
+this will only be printed when running in debug mode, activated by setting ``$debug`` to true in the global scope like this:
 
-``global $debug;``
+```php
+global $debug;
+$debug = true;
+```
 
 This should be done in a test script and not in the actual source.

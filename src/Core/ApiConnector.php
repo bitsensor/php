@@ -143,22 +143,44 @@ class ApiConnector {
      * @throws ApiException
      */
     public function send() {
-        $json = json_encode($this->data);
-        
-        Log::d('<pre>' . json_encode($this->data, JSON_PRETTY_PRINT) . '</pre>');
-        
-        // Generate signature
-        $signature = hash_hmac('sha256', $json, $this->apiKey);
+
+        $this->data[MetaContext::NAME] = array(
+            MetaContext::USER => $this->user,
+            MetaContext::API_KEY => $this->apiKey,
+            MetaContext::PROVIDER => MetaContext::PROVIDER_PHP,
+            MetaContext::PROVIDER_VERSION => BitSensor::VERSION
+        );
+
+        $json = json_encode($this->data, JSON_FORCE_OBJECT);
+
+        Log::d('<pre>' . json_encode($this->data, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT) . '</pre>');
+
+        $fp = fopen(dirname(__DIR__) . '/bitbrain.pem', 'r');
+        $cert = fread($fp, 8192);
+        fclose($fp);
+        $pubKey = openssl_get_publickey($cert);
+
+        openssl_seal($json, $encryptedJson, $eKeys, array($pubKey));
+
+        openssl_free_key($pubKey);
+
+        $content = json_encode(array(
+            MetaContext::DATA => base64_encode($encryptedJson),
+            MetaContext::ENCRYPTION => true,
+            MetaContext::ENCRYPTION_KEY => base64_encode($eKeys[0])
+        ));
+
+        Log::d('<pre>' . $content . '</pre>');
 
         // Create cURL handle
-        $ch = curl_init($this->uri . '/' . $this->action . '/?user=' . $this->user . '&sig=' . $signature);
+        $ch = curl_init($this->uri . '/' . $this->action);
         curl_setopt_array($ch, array(
             CURLOPT_CUSTOMREQUEST => self::getRequestType($this->action),
-            CURLOPT_POSTFIELDS => $json,
+            CURLOPT_POSTFIELDS => $content,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
-                'Content-Length: ' . strlen($json)
+                'Content-Length: ' . strlen($content)
             ),
             CURLOPT_TCP_NODELAY => true,
             CURLOPT_TIMEOUT_MS => 200,

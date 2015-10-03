@@ -9,12 +9,12 @@
  */
 ?>
 <?php
-require_once 'version.php';
+require_once dirname(__DIR__) . '/src/index.php';
 
-$out = isset($argv[1]) ? $argv[1] : __DIR__ . '/../build/BitSensor.phar';
+$out = isset($argv[1]) ? $argv[1] : dirname(__DIR__) . '/build/BitSensor.phar';
 
 echo "Building $out\n";
-echo "Version: " . BITSENSOR_BUILD_VERSION . "\n";
+echo "Version: " . \BitSensor\Core\BitSensor::VERSION . "\n";
 
 echo "\n";
 
@@ -38,7 +38,7 @@ echo "done\n";
 
 echo "Adding metadata...";
 $phar->setMetadata(array(
-    'version' => BITSENSOR_BUILD_VERSION,
+    'version' => \BitSensor\Core\BitSensor::VERSION,
     'buildDate' => date('Y-m-d H:i:s'),
     'title' => 'BitSensor Web Application Security',
     'company' => 'BitSaver'
