@@ -14,9 +14,11 @@ use BitSensor\View\TamperView;
 /**
  * Entry point for starting the BitSensor Web Application Security plugin.
  * @package BitSensor\Core
- * @version 0.1.0
+ * @version 0.2.0
  */
 class BitSensor {
+
+    const VERSION = '0.2.0';
 
     /**
      * User tried to tamper with the application.
