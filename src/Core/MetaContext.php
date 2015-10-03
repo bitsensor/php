@@ -37,6 +37,10 @@ class MetaContext extends Context {
      * The provider used to collect the data.
      */
     const PROVIDER = 'provider';
+    /**
+     * The version of the provider.
+     */
+    const PROVIDER_VERSION = 'version';
 
     const PROVIDER_PHP = 'bitsensor-php';
     const PROVIDER_APACHE = 'apache-log';

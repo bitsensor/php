@@ -147,7 +147,8 @@ class ApiConnector {
         $this->data[MetaContext::NAME] = array(
             MetaContext::USER => $this->user,
             MetaContext::API_KEY => $this->apiKey,
-            MetaContext::PROVIDER => MetaContext::PROVIDER_PHP
+            MetaContext::PROVIDER => MetaContext::PROVIDER_PHP,
+            MetaContext::PROVIDER_VERSION => BitSensor::VERSION
         );
 
         $json = json_encode($this->data, JSON_FORCE_OBJECT);
