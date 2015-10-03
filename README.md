@@ -20,27 +20,27 @@ require_once '/path/to/BitSensor.phar';
 // Create config using PHP.
 $config = new Config();
 $config->setUri('http://bitsensor.io/api/');
-$config->setUser('your_username');
-$config->setApiKey('your_api_key');
-$config->setMode(Config::MODE_ON);
-$config->setConnectionFail(Config::ACTION_BLOCK);
+$config->setUser('example_user');
+$config->setApiKey('abcdefghijklmnopqrstuvwxyz');
+$config->setMode(Config::MODE_DETECTION);
+$config->setConnectionFail(Config::ACTION_ALLOW);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
-$config->setLogLevel(Config::LOG_LEVEL_ALL);
+$config->setLogLevel(Config::LOG_LEVEL_NONE);
 
 // Start BitSensor 
-$bitSensor = new BitSensor());
+$bitSensor = new BitSensor();
 ```
 
 ``config.json:``
 ```json
 {
-  "uri": "http://bitsensor.io/api/",
-  "user": "your_username",
-  "apiKey": "your_api_key",
-  "mode": "on",
-  "connectionFail": "block",
+  "uri": "http://bitsensor.io/",
+  "user": "example_user",
+  "apiKey": "abcdefghijklmnopqrstuvwxyz",
+  "mode": "detection",
+  "connectionFail": "allow",
   "ipAddressSrc": "remoteAddr",
-  "logLevel": "all"
+  "logLevel": "none"
 }
 ```
 
