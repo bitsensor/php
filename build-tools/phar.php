@@ -18,6 +18,10 @@ echo "Version: " . \BitSensor\Core\BitSensor::VERSION . "\n";
 
 echo "\n";
 
+if (!is_dir(dirname($out))) {
+    mkdir(dirname($out));
+}
+
 echo "Removing old archives...";
 @unlink($out);
 @unlink($out . '.bz2');
