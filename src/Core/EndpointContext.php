@@ -53,10 +53,6 @@ class EndpointContext extends Context {
      */
     const REQUEST_TIME = 'localtime';
     /**
-     * Request time in UNIX time.
-     */
-    const REQUEST_TIME_UNIX = 'localtimeUnix';
-    /**
      * Request URI.
      */
     const REQUEST_URI = 'uri';

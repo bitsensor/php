@@ -65,7 +65,6 @@ class HttpRequestHandler implements Handler {
             EndpointContext::GATEWAY_INTERFACE => $_SERVER['GATEWAY_INTERFACE'],
             EndpointContext::SCRIPT_FILENAME => $_SERVER['SCRIPT_FILENAME'],
             EndpointContext::REQUEST_TIME => $date . $time . $timezone,
-            EndpointContext::REQUEST_TIME_UNIX =>floor(microtime(true) * 1000),
             EndpointContext::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null
         );
 
