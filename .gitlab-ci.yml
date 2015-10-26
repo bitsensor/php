@@ -17,4 +17,5 @@ job1:
 job2:
   stage: test
   script:
+    - php build-tools/phar.php
     - test/test.sh
