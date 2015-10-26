@@ -1,0 +1,12 @@
+image: ruby:2.1
+
+before_script:
+  - sed -i -- 's/;phar.readonly = 1/phar.readonly = 0/g' /etc/php5/apache2/php.ini
+
+stages:
+  - build
+
+job1:
+  stage: build
+  script:
+    - php build-tools/phar.php
