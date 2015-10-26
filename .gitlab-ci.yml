@@ -1,6 +1,8 @@
 image: ruby:2.1
 
 before_script:
+  - apt-get update -y
+  - apt-get install php5 -y
   - sed -i -- 's/;phar.readonly = 1/phar.readonly = 0/g' /etc/php5/apache2/php.ini
 
 stages:
