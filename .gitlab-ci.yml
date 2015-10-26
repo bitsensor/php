@@ -7,8 +7,14 @@ before_script:
 
 stages:
   - build
+  - test
 
 job1:
   stage: build
   script:
     - php build-tools/phar.php
+
+job2:
+  stage: test
+  script:
+    - test/test.sh
