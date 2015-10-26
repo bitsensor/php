@@ -3,6 +3,7 @@ image: ruby:2.1
 before_script:
   - apt-get update -y
   - apt-get install php5 -y
+  - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /etc/php5/cli/php.ini
 
 stages:
   - build

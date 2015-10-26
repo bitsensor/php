@@ -22,10 +22,6 @@ if (!is_dir(dirname($out))) {
     mkdir(dirname($out));
 }
 
-echo "Enabling phar writing...";
-ini_set('phar.readonly', 0);
-echo "done\n";
-
 echo "Removing old archives...";
 @unlink($out);
 @unlink($out . '.bz2');
@@ -49,7 +45,7 @@ $phar->setMetadata(array(
     'version' => \BitSensor\Core\BitSensor::VERSION,
     'buildDate' => date('Y-m-d H:i:s'),
     'title' => 'BitSensor Web Application Security',
-    'company' => 'BitSaver'
+    'company' => 'BitSensor'
 ));
 echo "done\n";
 
