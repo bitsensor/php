@@ -9,12 +9,12 @@ stages:
   - build
   - test
 
-job1:
+build:
   stage: build
   script:
     - php build-tools/phar.php
 
-job2:
+test:
   stage: test
   script:
     - php build-tools/phar.php
