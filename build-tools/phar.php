@@ -22,6 +22,10 @@ if (!is_dir(dirname($out))) {
     mkdir(dirname($out));
 }
 
+echo "Enabling phar writing...";
+ini_set('phar.readonly', 0);
+echo "done\n";
+
 echo "Removing old archives...";
 @unlink($out);
 @unlink($out . '.bz2');
