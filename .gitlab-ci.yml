@@ -1,4 +1,4 @@
-image: php:5.5-cli
+image: php-test:5.5-cli
 
 before_script:
   - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /etc/php5/cli/php.ini
