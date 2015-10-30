@@ -1,7 +1,5 @@
 AddType application/x-httpd-php .phar
 
-SetEnv BITSENSOR_PATH /test/BitSensor.phar
-
 ErrorDocument 400 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=400
 ErrorDocument 401 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=401
 ErrorDocument 402 /test/BitSensor.phar/Handler/ErrorDocumentHandler.php?e=402
