@@ -151,9 +151,9 @@ class ApiConnector {
             MetaContext::PROVIDER_VERSION => BitSensor::VERSION
         );
 
-        $json = json_encode($this->data, JSON_FORCE_OBJECT);
+        $json = json_encode($this->data);
 
-        Log::d('<pre>' . json_encode($this->data, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT) . '</pre>');
+        Log::d('<pre>' . json_encode($this->data, JSON_PRETTY_PRINT) . '</pre>');
 
         $fp = fopen(dirname(__DIR__) . '/bitbrain.pem', 'r');
         $cert = fread($fp, 8192);

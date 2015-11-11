@@ -7,7 +7,7 @@ namespace BitSensor\Core;
  * Container for information about errors occurring during application execution.
  * @package BitSensor\Core
  */
-abstract class Error {
+class Error {
 
     /**
      * Name.
@@ -45,11 +45,11 @@ abstract class Error {
     private $errtype;
 
     /**
-     * @param int $errno Error code.
      * @param string $errstr Error description.
+     * @param int $errno Error code.
      * @param string $errtype Error type.
      */
-    public function __construct($errno = 0, $errstr = null, $errtype = null) {
+    public function __construct($errstr = null, $errno = 0, $errtype = null) {
         $this->setCode($errno);
         $this->setMessage($errstr);
         $this->setType($errtype);

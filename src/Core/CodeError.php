@@ -49,7 +49,7 @@ class CodeError extends Error {
      * @param array $errcontext Stacktrace of the error.
      */
     public function __construct($errno, $errstr, $errfile, $errline, $errcontext = null, $errtype = null) {
-        parent::__construct($errno, $errstr, $errtype);
+        parent::__construct($errstr, $errno, $errtype);
         $this->setFile($errfile);
         $this->setLine($errline);
         $this->setContext($errcontext);

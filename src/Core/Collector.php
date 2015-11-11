@@ -106,8 +106,7 @@ class Collector {
         foreach ($this->inputCollection as $input) {
             $all[InputContext::NAME][$input->getName()] = $input->getValue();
         }
-
-
+            
         foreach ($this->errorCollection as $error) {
             $all[Error::NAME][] = $error->toArray();
         }
