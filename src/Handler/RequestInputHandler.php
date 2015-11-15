@@ -5,6 +5,7 @@ namespace BitSensor\Handler;
 
 use BitSensor\Core\Collector;
 use BitSensor\Core\Config;
+use BitSensor\Core\FileContext;
 use BitSensor\Core\InputContext;
 use BitSensor\Core\SessionContext;
 
@@ -61,6 +62,19 @@ class RequestInputHandler implements Handler {
                 $collector->addInput(new InputContext(InputContext::COOKIE, $k, $v));
             }
         }
+
+        $files = array();
+        foreach ($_FILES as $k => $v) {
+            if (is_array($v)) {
+                self::flatten($v, $files, $k);
+            } else {
+                $files[$k] = $v;
+            }
+        }
+
+        foreach ($files as $k => $v) {
+            $collector->addInput(new FileContext($k, $v));
+        }
     }
 
     /**
@@ -74,9 +88,9 @@ class RequestInputHandler implements Handler {
     private static function flatten($input, &$output, $prefix) {
         foreach ($input as $k => $v) {
             if (is_array($v)) {
-                self::flatten($v, $output, $prefix . "[$k]");
+                self::flatten($v, $output, $prefix . '.' . $k);
             } else {
-                $output[$prefix . "[$k]"] = $v;
+                $output[$prefix . '.' . $k] = $v;
             }
         }
     }
