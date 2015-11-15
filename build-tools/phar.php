@@ -11,7 +11,7 @@
 <?php
 require_once dirname(__DIR__) . '/src/index.php';
 
-$out = isset($argv[1]) ? $argv[1] : dirname(__DIR__) . '/build/BitSensor.phar';
+$out = isset($argv[1]) ? $argv[1] : dirname(__DIR__) . '/target/bitsensor.phar';
 
 echo "Building $out\n";
 echo "Version: " . \BitSensor\Core\BitSensor::VERSION . "\n";
@@ -54,4 +54,18 @@ $phar->compress(Phar::BZ2);
 $phar->compress(Phar::GZ);
 echo "done\n";
 
+echo "Generating checksums...";
+generateChecksum($out);
+generateChecksum($out . '.bz2');
+generateChecksum($out . '.gz');
+
+echo "done\n";
+
 echo "Build finished.\n";
+
+function generateChecksum($file) {
+    $checksumfile = fopen($file . '.sha1.txt', 'w');
+    $checksum = sha1_file($file);
+    fwrite($checksumfile, $checksum . '  ' . basename($file));
+    fclose($checksumfile);
+}
