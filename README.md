@@ -15,7 +15,7 @@ use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
 
 // Load BitSensor phar
-require_once '/path/to/BitSensor.phar';
+require_once '/path/to/bitsensor.phar';
 
 // Create config using PHP.
 $config = new Config();
