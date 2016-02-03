@@ -7,7 +7,7 @@
 This project uses composer to handle dependencies. Use ``php composer.phar install`` to install everything after checking out the source.
 
 ## Usage
-Upload ``BitSensor.phar`` to your server and create a ``config.json`` file, or define your config in PHP.
+Upload ``bitsensor.phar`` to your server and create a ``config.json`` file, or define your config in PHP.
 
 ``index.php:``
 ```php
@@ -15,7 +15,7 @@ use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
 
 // Load BitSensor phar
-require_once '/path/to/BitSensor.phar';
+require_once '/path/to/bitsensor.phar';
 
 // Create config using PHP.
 $config = new Config();
