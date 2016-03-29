@@ -37,7 +37,7 @@ class HttpRequestHandler implements Handler {
         }
         
         if(function_exists("http_response_code")) {
-            $collector->addContext(new HttpContext(HttpContext::STATUS => http_response_code()));
+            $collector->addContext(new HttpContext(HttpContext::STATUS, http_response_code()));
         }
         
         $auth = array(
