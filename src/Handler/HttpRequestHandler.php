@@ -31,12 +31,15 @@ class HttpRequestHandler implements Handler {
             HttpContext::HTTP_ACCEPT_LANGUAGE => isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : null,
             HttpContext::PATH_INFO => isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : null,
             HttpContext::HTTPS => isset($_SERVER['HTTPS']),
-            HttpContext::STATUS => http_response_code()
         );
         foreach ($http as $k => $v) {
             $collector->addContext(new HttpContext($k, $v));
         }
-
+        
+        if(function_exists("http_response_code")) {
+            $collector->addContext(new HttpContext(HttpContext::STATUS => http_response_code()));
+        }
+        
         $auth = array(
             AuthenticationContext::PHP_AUTH_USER => isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null,
             AuthenticationContext::PHP_AUTH_PW => isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : null,
