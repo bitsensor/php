@@ -153,7 +153,7 @@ class ApiConnector {
 
         $json = json_encode($this->data);
 
-        Log::d('<pre>' . json_encode($this->data, JSON_PRETTY_PRINT) . '</pre>');
+        Log::d('<pre>' . json_encode($this->data, defined ("JSON_PRETTY_PRINT") ? JSON_PRETTY_PRINT : 0) . '</pre>');
 
         $fp = fopen(dirname(__DIR__) . '/bitbrain.pem', 'r');
         $cert = fread($fp, 8192);
