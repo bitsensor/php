@@ -14,9 +14,16 @@ require_once dirname(__DIR__) . '/src/index.php';
 $out = isset($argv[1]) ? $argv[1] : dirname(__DIR__) . '/target/bitsensor.phar';
 
 echo "Building $out\n";
-echo "Version: " . \BitSensor\Core\BitSensor::VERSION . "\n";
+echo "Version: " . \BitSensor\Core\BitSensor::VERSION . "\n\n";
 
-echo "\n";
+echo ("Checking configuration: writing phar files allowed? ");
+
+$parReadOnly = ini_get("phar.readonly");
+if($parReadOnly === "1"){
+   exit("Configuration error: phar.readonly must be set to `Off` in your php.ini CLI configuration. \n Please set phar.readonly = Off \n You might find php.ini in /etc/php5/cli/php.ini\n\n\n");
+} else {
+   echo("Yes \n");
+}
 
 if (!is_dir(dirname($out))) {
     mkdir(dirname($out));
