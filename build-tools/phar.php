@@ -37,7 +37,7 @@ $phar->buildFromDirectory( __DIR__ . '/../src/');
 echo "done\n";
 
 echo "Setting default stub...";
-$phar->setStub($phar->createDefaultStub('index.php', 'index.php'));
+$phar->setStub(Phar::createDefaultStub('index.php', 'index.php'));
 echo "done\n";
 
 echo "Adding metadata...";

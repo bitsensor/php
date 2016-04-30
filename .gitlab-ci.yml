@@ -1,19 +1,45 @@
-image: php-test:5.5-cli
+image: eriksencosta/php-dev
 
 before_script:
   - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /etc/php5/cli/php.ini
 
 stages:
-  - build
   - test
+  - build
+
+test:5.3:
+  stage: test
+  script:
+    - phpenv global 5.3
+    - php build-tools/phar.php
+    - test/test.sh
+
+test:5.4:
+  stage: test
+  script:
+    - phpenv global 5.4
+    - php build-tools/phar.php
+    - test/test.sh
+
+test:5.5:
+  stage: test
+  script:
+    - phpenv global 5.5
+    - php build-tools/phar.php
+    - test/test.sh
+
+test:5.6:
+  stage: test
+  script:
+    - phpenv global 5.6
+    - php build-tools/phar.php
+    - test/test.sh
 
 build:
   stage: build
   script:
+    - phpenv global 5.6
     - php build-tools/phar.php
-
-test:
-  stage: test
-  script:
-    - php build-tools/phar.php
-    - test/test.sh
+  artifacts:
+      paths:
+        - target
