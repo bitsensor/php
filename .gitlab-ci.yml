@@ -8,7 +8,7 @@ test:5.3:
   stage: test
   script:
     - echo $PATH
-    - build-tools/prepare-env.sh 5.3
+    - . build-tools/prepare-env.sh 5.3
     - echo $PATH
     - php build-tools/phar.php
     - test/test.sh
@@ -16,28 +16,28 @@ test:5.3:
 test:5.4:
   stage: test
   script:
-    - build-tools/prepare-env.sh 5.4
+    - . build-tools/prepare-env.sh 5.4
     - php build-tools/phar.php
     - test/test.sh
 
 test:5.5:
   stage: test
   script:
-    - build-tools/prepare-env.sh 5.5
+    - . build-tools/prepare-env.sh 5.5
     - php build-tools/phar.php
     - test/test.sh
 
 test:5.6:
   stage: test
   script:
-    - build-tools/prepare-env.sh 5.6
+    - . build-tools/prepare-env.sh 5.6
     - php build-tools/phar.php
     - test/test.sh
 
 build:
   stage: build
   script:
-    - build-tools/prepare-env.sh 5.6
+    - . build-tools/prepare-env.sh 5.6
     - php build-tools/phar.php
   artifacts:
       paths:
