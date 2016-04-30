@@ -24,7 +24,7 @@ if (!is_dir(dirname($out))) {
 
 echo "Removing old archives...";
 @unlink($out);
-@unlink($out . '.bz2');
+//@unlink($out . '.bz2');
 @unlink($out . '.gz');
 echo "done\n";
 
@@ -50,13 +50,13 @@ $phar->setMetadata(array(
 echo "done\n";
 
 echo "Compressing archive...";
-$phar->compress(Phar::BZ2);
+//$phar->compress(Phar::BZ2);
 $phar->compress(Phar::GZ);
 echo "done\n";
 
 echo "Generating checksums...";
 generateChecksum($out);
-generateChecksum($out . '.bz2');
+//generateChecksum($out . '.bz2');
 generateChecksum($out . '.gz');
 
 echo "done\n";
