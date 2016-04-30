@@ -9,7 +9,7 @@ test:5.3:
   script:
     - /opt/phpenv/bin/phpenv global 5.3
     - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /opt/phpenv/versions/5.3/etc/php.ini
-    - php build-tools/phar.php
+    - /opt/phpenv/shims/php build-tools/phar.php
     - test/test.sh
 
 test:5.4:
@@ -17,7 +17,7 @@ test:5.4:
   script:
     - /opt/phpenv/bin/phpenv global 5.4
     - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /opt/phpenv/versions/5.4/etc/php.ini
-    - php build-tools/phar.php
+    - /opt/phpenv/shims/php build-tools/phar.php
     - test/test.sh
 
 test:5.5:
@@ -25,7 +25,7 @@ test:5.5:
   script:
     - /opt/phpenv/bin/phpenv global 5.5
     - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /opt/phpenv/versions/5.5/etc/php.ini
-    - php build-tools/phar.php
+    - /opt/phpenv/shims/php build-tools/phar.php
     - test/test.sh
 
 test:5.6:
@@ -33,7 +33,7 @@ test:5.6:
   script:
     - /opt/phpenv/bin/phpenv global 5.6
     - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /opt/phpenv/versions/5.6/etc/php.ini
-    - php build-tools/phar.php
+    - /opt/phpenv/shims/php build-tools/phar.php
     - test/test.sh
 
 build:
@@ -41,7 +41,7 @@ build:
   script:
     - /opt/phpenv/bin/phpenv global 5.6
     - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /opt/phpenv/versions/5.6/etc/php.ini
-    - php build-tools/phar.php
+    - /opt/phpenv/shims/php build-tools/phar.php
   artifacts:
       paths:
         - target
