@@ -7,41 +7,36 @@ stages:
 test:5.3:
   stage: test
   script:
-    - /opt/phpenv/bin/phpenv global 5.3
-    - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /opt/phpenv/versions/5.3/etc/php.ini
-    - /opt/phpenv/shims/php build-tools/phar.php
+    - build-tools/prepare-env.sh 5.3
+    - php build-tools/phar.php
     - test/test.sh
 
 test:5.4:
   stage: test
   script:
-    - /opt/phpenv/bin/phpenv global 5.4
-    - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /opt/phpenv/versions/5.4/etc/php.ini
-    - /opt/phpenv/shims/php build-tools/phar.php
+    - build-tools/prepare-env.sh 5.4
+    - php build-tools/phar.php
     - test/test.sh
 
 test:5.5:
   stage: test
   script:
-    - /opt/phpenv/bin/phpenv global 5.5
-    - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /opt/phpenv/versions/5.5/etc/php.ini
-    - /opt/phpenv/shims/php build-tools/phar.php
+    - build-tools/prepare-env.sh 5.5
+    - php build-tools/phar.php
     - test/test.sh
 
 test:5.6:
   stage: test
   script:
-    - /opt/phpenv/bin/phpenv global 5.6
-    - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /opt/phpenv/versions/5.6/etc/php.ini
-    - /opt/phpenv/shims/php build-tools/phar.php
+    - build-tools/prepare-env.sh 5.6
+    - php build-tools/phar.php
     - test/test.sh
 
 build:
   stage: build
   script:
-    - /opt/phpenv/bin/phpenv global 5.6
-    - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /opt/phpenv/versions/5.6/etc/php.ini
-    - /opt/phpenv/shims/php build-tools/phar.php
+    - build-tools/prepare-env.sh 5.6
+    - php build-tools/phar.php
   artifacts:
       paths:
         - target
