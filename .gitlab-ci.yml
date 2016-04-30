@@ -1,5 +1,8 @@
 image: eriksencosta/php-dev
 
+before_script:
+  - /bin/bash
+
 stages:
   - test
   - build
