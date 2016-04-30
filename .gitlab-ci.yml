@@ -7,9 +7,7 @@ stages:
 test:5.3:
   stage: test
   script:
-    - echo $PATH
     - . build-tools/prepare-env.sh 5.3
-    - echo $PATH
     - php build-tools/phar.php
     - test/test.sh
 
@@ -39,6 +37,9 @@ build:
   script:
     - . build-tools/prepare-env.sh 5.6
     - php build-tools/phar.php
+  only:
+    - master
+    - develop
   artifacts:
       paths:
         - target
