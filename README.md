@@ -15,7 +15,7 @@ By default, the resulting file will be placed in the ``target/`` folder, but thi
 
 ## Testing
 Assuming default target location, a simple test run can be executed using ``curl localhost/php/test/index.php``. This should return "Accepted", the raw JSON datapoint and the encrypted datapoint.  
-To test successfull connection using your API key and endpoint, change the configuration in the ``test/index.php`` file and login to your BitSensor dashboard.
+To test successful connection using your API key and endpoint, change the configuration in the ``test/index.php`` file and login to your BitSensor dashboard.
 
 For more extensive debugging in your codebase, we provide the following hooks:
 
