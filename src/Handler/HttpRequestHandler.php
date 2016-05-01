@@ -35,11 +35,7 @@ class HttpRequestHandler implements Handler {
         foreach ($http as $k => $v) {
             $collector->addContext(new HttpContext($k, $v));
         }
-        
-        if(function_exists("http_response_code")) {
-            $collector->addContext(new HttpContext(HttpContext::STATUS, http_response_code()));
-        }
-        
+
         $auth = array(
             AuthenticationContext::PHP_AUTH_USER => isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null,
             AuthenticationContext::PHP_AUTH_PW => isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : null,
@@ -68,9 +64,12 @@ class HttpRequestHandler implements Handler {
             EndpointContext::GATEWAY_INTERFACE => array_key_exists('GATEWAY_INTERFACE', $_SERVER) ? $_SERVER['GATEWAY_INTERFACE'] : null,
             EndpointContext::SCRIPT_FILENAME => $_SERVER['SCRIPT_FILENAME'],
             EndpointContext::REQUEST_TIME => $date . $time . $timezone,
-            EndpointContext::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null,
-            HttpContext::STATUS => http_response_code()
+            EndpointContext::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null
         );
+
+        if (function_exists('http_response_code')) {
+            $endpoint[HttpContext::STATUS] = http_response_code();
+        }
 
         foreach ($endpoint as $k => $v) {
             $collector->addEndpointContext(new EndpointContext($k, $v));
