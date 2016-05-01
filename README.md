@@ -4,7 +4,7 @@
 * ``php5-curl >= 5.3.3``
 
 ## Composer
-This project uses composer to handle dependencies. Use ``php composer.phar install`` to install everything after checking out the source.
+This project uses Composer to handle dependencies. Use ``php composer.phar install`` to install everything after checking out the source.
 
 ## Building
 The application can be packaged as a PHP Archive (phar). Executing the following command will generate the archive:
@@ -15,7 +15,7 @@ By default, the resulting file will be placed in the ``target/`` folder, but thi
 
 ## Testing
 Assuming default target location, a simple test run can be executed using ``curl localhost/php/test/index.php``. This should return "Accepted", the raw JSON datapoint and the encrypted datapoint.  
-To test successfull connection using your API key and endpoint, change the configuration in the ``test/index.php`` file and login to your BitSensor dashboard.
+To test successful connection using your API key and endpoint, change the configuration in the ``test/index.php`` file and login to your BitSensor dashboard.
 
 For more extensive debugging in your codebase, we provide the following hooks:
 
@@ -30,10 +30,42 @@ $debug = true;
 This should be done in a test script and not in the actual source.
 
 ## Usage
+BitSensor can be used with Composer or as a standalone Phar.
+
+### Composer
+Add ``bitsensor/php`` to your ``composer.json``. After running ``php composer.phar install`` all required dependencies will be available to
+you. Refer to Composer's [Documentation](https://getcomposer.org/) for more information.
+
+``index.php:``
+```php
+<?php
+use BitSensor\Core\BitSensor;
+use BitSensor\Core\Config;
+
+// Load Composer's autoloader
+require_once __DIR__ . '/vendor/autoload.php';
+
+// Create config using PHP.
+$config = new Config();
+$config->setUri('http://bitsensor.io/api/');
+$config->setUser('example_user');
+$config->setApiKey('abcdefghijklmnopqrstuvwxyz');
+$config->setMode(Config::MODE_DETECTION);
+$config->setConnectionFail(Config::ACTION_ALLOW);
+$config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
+$config->setLogLevel(Config::LOG_LEVEL_NONE);
+
+// Start BitSensor 
+$bitSensor = new BitSensor($config);
+```
+
+### Phar
+
 Upload ``bitsensor.phar`` to your server and create a ``config.json`` file, or define your config in PHP.
 
 ``index.php:``
 ```php
+<?php
 use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
 
@@ -51,20 +83,7 @@ $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
 $config->setLogLevel(Config::LOG_LEVEL_NONE);
 
 // Start BitSensor 
-$bitSensor = new BitSensor();
-```
-
-``config.json:``
-```json
-{
-  "uri": "http://bitsensor.io/",
-  "user": "example_user",
-  "apiKey": "abcdefghijklmnopqrstuvwxyz",
-  "mode": "detection",
-  "connectionFail": "allow",
-  "ipAddressSrc": "remoteAddr",
-  "logLevel": "none"
-}
+$bitSensor = new BitSensor($config);
 ```
 
 ### Config
@@ -75,10 +94,30 @@ You have the following config options at your disposal:
 | ```setUri()```            | uri            | uri                                                                        | <empty>                                             | URI to the BitSensor API.                                               |
 | ```setUser()```           | user           | username                                                                   | <empty>                                             | Your BitSensor username.                                                |
 | ```setApiKey()```         | apiKey         | api key                                                                    | <empty>                                             | Your BitSensor API key.                                                 |
-| ```setMode()```           | mode           | ```Config::MODE_ON``` ("on"), ```Config::MODE_DETECTION``` ("detection")   | ```Config::MODE_ON``` ("on")                        | Running mode. In detection mode only logging will be done.              |
-| ```setConnectionFail()``` | connectionFail | ```Config::ACTION_ALLOW``` ("allow"), ```Config::ACTION_BLOCK``` ("block") | ```Config::ACTION_BLOCK``` ("block")                | Action to perform when the connection to the BitSensor servers is lost. |
+| ```setMode()```           | mode           | ```Config::MODE_ON``` ("on"), ```Config::MODE_DETECTION``` ("detection")   | ```Config::MODE_DETECTION``` ("detection")          | Running mode. In detection mode only logging will be done.              |
+| ```setConnectionFail()``` | connectionFail | ```Config::ACTION_ALLOW``` ("allow"), ```Config::ACTION_BLOCK``` ("block") | ```Config::ACTION_ALLOW``` ("allow")                | Action to perform when the connection to the BitSensor servers is lost. |
 | ```setIpAddressSrc()```   | ipAddressSrc   | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr")                        | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr") | Source of the IP address of the user.                                   |
 | ```setLogLevel()```       | logLevel       | ```Config::LOG_LEVEL_ALL``` ("all"), ```Config::LOG_LEVEL_NONE``` ("none") | ```Config::LOG_LEVEL_ALL``` ("all")                 | The logging level.                                                      |
+
+The configuration can be specified in either PHP or JSON. To use JSON instead of PHP use the following code:
+``index.php``
+```php
+<?php
+$bitSensor = new BitSensor('/path/to/config.json');
+```
+
+Sample configuration file:
+```json
+{
+  "uri": "http://bitsensor.io:8080/",
+  "user": "example_user",
+  "apiKey": "abcdefghijklmnopqrstuvwxyz",
+  "mode": "detection",
+  "connectionFail": "allow",
+  "ipAddressSrc": "remoteAddr",
+  "logLevel": "none"
+}
+```
 
 ### Apache
 After sinking BitSensor hooks in your application, you can extend BitSensor's visibility to include Apache events that aren't processed by your application. 
