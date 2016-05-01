@@ -18,6 +18,37 @@ echo "Version: " . \BitSensor\Core\BitSensor::VERSION . "\n";
 
 echo "\n";
 
+echo "Checking configuration:\n";
+$configErrors = array();
+
+echo "Writing phar files allowed? ";
+$parReadOnly = ini_get('phar.readonly');
+if ($parReadOnly === '1') {
+    echo "\033[31m" . "no" . "\033[0m" . "\n";
+    $configErrors[] = "phar.readonly must be set to `Off` in your php.ini CLI configuration.\nPlease set phar.readonly = Off\nYou might find php.ini in /etc/php5/cli/php.ini\n";
+} else {
+    echo "\033[32m" . "yes" . "\033[0m" . "\n";
+}
+
+echo "\n";
+
+if (count($configErrors) > 0) {
+    echo "Configuration errors:\n";
+
+    foreach ($configErrors as $configError) {
+        echo "----\n";
+        echo $configError;
+    }
+
+    echo "----\n";
+    echo "\n";
+
+    exit("\033[31m" . "Configuration check failed with " . count($configErrors) . " errors" . "\033[0m" . "\n");
+}
+
+echo "\033[32m" . "Configuration check passed" . "\033[0m" . "\n";
+echo "\n";
+
 if (!is_dir(dirname($out))) {
     mkdir(dirname($out));
 }
@@ -33,7 +64,7 @@ $phar = new Phar($out, 0);
 echo "done\n";
 
 echo "Adding files...";
-$phar->buildFromDirectory( __DIR__ . '/../src/');
+$phar->buildFromDirectory(__DIR__ . '/../src/');
 echo "done\n";
 
 echo "Setting default stub...";
@@ -45,7 +76,8 @@ $phar->setMetadata(array(
     'version' => \BitSensor\Core\BitSensor::VERSION,
     'buildDate' => date('Y-m-d H:i:s'),
     'title' => 'BitSensor Web Application Security',
-    'company' => 'BitSensor'
+    'vendor' => 'BitSensor',
+    'support' => 'support@bitsensor.io'
 ));
 echo "done\n";
 
