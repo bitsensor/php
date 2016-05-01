@@ -45,6 +45,9 @@ build:
 deploy:packagist:
   stage: deploy
   script:
+    - echo $PACKAGIST_USERNAME
+    - echo $PACKAGIST_API_KEY
+    - echo $PACKAGIST_URL
     - curl -XPOST -H'content-type:application/json' 'https://packagist.org/api/update-package?username=$PACKAGIST_USERNAME&apiToken=$PACKAGIST_API_KEY' -d'{"repository":{"url":"$PACKAGIST_URL"}}'
   only:
     - master
