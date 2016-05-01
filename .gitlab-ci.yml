@@ -3,6 +3,7 @@ image: eriksencosta/php-dev
 stages:
   - test
   - build
+  - deploy
 
 test:5.3:
   stage: test
@@ -36,6 +37,16 @@ build:
   only:
     - master
     - develop
+    - tags
   artifacts:
       paths:
         - target
+
+deploy:packagist:
+  stage: deploy
+  script:
+    - curl -XPOST -H'content-type:application/json' 'https://packagist.org/api/update-package?username=$PACKAGIST_USERNAME&apiToken=$PACKAGIST_API_KEY' -d'{"repository":{"url":"$PACKAGIST_URL"}}'
+  only:
+    - master
+    - develop
+    - tags
