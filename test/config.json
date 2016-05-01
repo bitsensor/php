@@ -1,9 +1,0 @@
-{
-  "uri": "http://localhost:8080/",
-  "user": "example_user",
-  "apiKey": "abcdefghijklmnopqrstuvwxyz",
-  "mode": "detection",
-  "connectionFail": "allow",
-  "ipAddressSrc": "remoteAddr",
-  "logLevel": "all"
-}

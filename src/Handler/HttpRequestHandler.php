@@ -65,10 +65,11 @@ class HttpRequestHandler implements Handler {
             EndpointContext::SERVER_SIGNATURE => $_SERVER['SERVER_SIGNATURE'],
             EndpointContext::SERVER_PORT => $_SERVER['SERVER_PORT'],
             EndpointContext::DOCUMENT_ROOT => $_SERVER['DOCUMENT_ROOT'],
-            EndpointContext::GATEWAY_INTERFACE => $_SERVER['GATEWAY_INTERFACE'],
+            EndpointContext::GATEWAY_INTERFACE => array_key_exists('GATEWAY_INTERFACE', $_SERVER) ? $_SERVER['GATEWAY_INTERFACE'] : null,
             EndpointContext::SCRIPT_FILENAME => $_SERVER['SCRIPT_FILENAME'],
             EndpointContext::REQUEST_TIME => $date . $time . $timezone,
-            EndpointContext::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null
+            EndpointContext::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null,
+            HttpContext::STATUS => http_response_code()
         );
 
         foreach ($endpoint as $k => $v) {

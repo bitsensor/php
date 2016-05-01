@@ -1,22 +1,21 @@
 {
-  "name": "bitsaver/bitsensor",
+  "name": "bitsensor/php",
   "description": "BitSensor Web Application Security",
   "minimum-stability": "stable",
   "license": "proprietary",
   "authors": [
     {
-      "name": "BitSaver",
-      "email": "info@bitsaver.nl"
+      "name": "BitSensor",
+      "email": "info@bitsensor.nl"
     },
     {
       "name": "Sven Dubbeld",
-      "email": "sven.dubbeld1@gmail.com",
-      "homepage": "http://svendubbeld.nl/",
+      "email": "sven@bitsensor.io",
       "role": "Developer"
     }
   ],
   "support": {
-    "email": "support@bitsaver.nl"
+    "email": "support@bitsensor.io"
   },
   "require": {
     "php": ">=5.3.3"
