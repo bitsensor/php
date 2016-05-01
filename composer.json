@@ -4,7 +4,7 @@
   "keywords": ["security"],
   "homepage": "https://bitsensor.io/",
   "minimum-stability": "stable",
-  "license": "proprietary",
+  "license": "MIT",
   "authors": [
     {
       "name": "BitSensor",
