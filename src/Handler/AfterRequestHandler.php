@@ -30,7 +30,6 @@ class AfterRequestHandler {
         }
 
         try {
-            sleep(5);
             ApiConnector::from($config->getUser(), $config->getApiKey())
                 ->with($collector->toArray())
                 ->to($config->getUri())
