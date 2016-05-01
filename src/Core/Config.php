@@ -2,7 +2,6 @@
 
 namespace BitSensor\Core;
 
-
 /**
  * Configuration for the BitSensor Web Application Security plugin.
  * @package BitSensor\Core
@@ -30,7 +29,7 @@ class Config {
     /**
      * Running mode.
      *
-     * <i>Defaults to {@link Config::MODE_ON}.</i>
+     * <i>Defaults to {@link BitSensor\Core\Config::MODE_ON Config::MODE_ON}.</i>
      */
     const MODE = 'mode';
     /**
@@ -44,7 +43,7 @@ class Config {
     /**
      * Action to perform when the connection to the BitSensor servers is lost.
      *
-     * <i>Defaults to {@link Config::ACTION_BLOCK}.</i>
+     * <i>Defaults to {@link BitSensor\Core\Config::ACTION_BLOCK Config::ACTION_BLOCK}.</i>
      */
     const CONNECTION_FAIL = 'connectionFail';
     /**
@@ -64,7 +63,7 @@ class Config {
     /**
      * Manual IP address.
      *
-     * <i>Optional. Only required when {@link Config::IP_ADDRESS_SRC} is set to {@link Config::IP_ADDRESS_MANUAL}.</i>
+     * <i>Optional. Only required when {@link BitSensor\Core\Config::IP_ADDRESS_SRC Config::IP_ADDRESS_SRC} is set to {@link BitSensor\Core\Config::IP_ADDRESS_MANUAL Config::IP_ADDRESS_MANUAL}.</i>
      */
     const IP_ADDRESS = 'ipAddress';
     /**
@@ -82,7 +81,7 @@ class Config {
     /**
      * Set the log level.
      *
-     * <i>Defaults to {@link Config::LOG_LEVEL_ALL}.</i>
+     * <i>Defaults to {@link BitSensor\Core\Config::LOG_LEVEL_ALL Config::LOG_LEVEL_ALL}.</i>
      */
     const LOG_LEVEL = 'logLevel';
     /**
@@ -93,6 +92,20 @@ class Config {
      * Log nothing.
      */
     const LOG_LEVEL_NONE = 'none';
+    /**
+     * Output buffering.
+     *
+     * <i>Defaults to {@link BitSensor\Core\Config::OUTPUT_BUFFERING_OFF Config::OUTPUT_BUFFERING_OFF}.</i>
+     */
+    const OUTPUT_BUFFERING = 'outputBuffering';
+    /**
+     * Use output buffering to reduce latency.
+     */
+    const OUTPUT_BUFFERING_ON = 'on';
+    /**
+     * Do not use output buffering.
+     */
+    const OUTPUT_BUFFERING_OFF = 'off';
 
     /**
      * The BitSensor server to connect to.
@@ -142,6 +155,12 @@ class Config {
      * @var string
      */
     private $logLevel = self::LOG_LEVEL_ALL;
+    /**
+     * Output buffering.
+     *
+     * @var string
+     */
+    private $outputBuffering = self::OUTPUT_BUFFERING_OFF;
 
     /**
      * @param $json
@@ -150,36 +169,40 @@ class Config {
         if ($json !== null) {
             $config = json_decode($json, true);
 
-            if (isset($config[self::URI])) {
+            if (array_key_exists(self::URI, $config)) {
                 $this->setUri($config[self::URI]);
             }
 
-            if (isset($config[self::USER])) {
+            if (array_key_exists(self::USER, $config)) {
                 $this->setUser($config[self::USER]);
-            };
+            }
 
-            if (isset($config[self::API_KEY])) {
+            if (array_key_exists(self::API_KEY, $config)) {
                 $this->setApiKey($config[self::API_KEY]);
             }
 
-            if (isset($config[self::MODE])) {
+            if (array_key_exists(self::MODE, $config)) {
                 $this->setMode($config[self::MODE]);
             }
 
-            if (isset($config[self::CONNECTION_FAIL])) {
+            if (array_key_exists(self::CONNECTION_FAIL, $config)) {
                 $this->setConnectionFail($config[self::CONNECTION_FAIL]);
             }
 
-            if (isset($config[self::IP_ADDRESS_SRC])) {
+            if (array_key_exists(self::IP_ADDRESS_SRC, $config)) {
                 $this->setIpAddressSrc($config[self::IP_ADDRESS_SRC]);
             }
 
-            if (isset($config[self::IP_ADDRESS])) {
+            if (array_key_exists(self::IP_ADDRESS, $config)) {
                 $this->setIpAddress($config[self::IP_ADDRESS]);
             }
 
-            if (isset($config[self::LOG_LEVEL])) {
+            if (array_key_exists(self::LOG_LEVEL, $config)) {
                 $this->setLogLevel($config[self::LOG_LEVEL]);
+            }
+
+            if (array_key_exists(self::OUTPUT_BUFFERING, $config)) {
+                $this->setOutputBuffering($config[self::OUTPUT_BUFFERING]);
             }
         }
     }
@@ -295,4 +318,20 @@ class Config {
     public function setLogLevel($logLevel) {
         $this->logLevel = $logLevel;
     }
+
+    /**
+     * @return string Output buffering.
+     */
+    public function getOutputBuffering() {
+        return $this->outputBuffering;
+    }
+
+    /**
+     * @param string $outputBuffering Output buffering.
+     */
+    public function setOutputBuffering($outputBuffering) {
+        $this->outputBuffering = $outputBuffering;
+    }
+
+
 }
