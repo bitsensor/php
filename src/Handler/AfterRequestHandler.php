@@ -24,7 +24,13 @@ class AfterRequestHandler {
         // Correctly sets working directory
         chdir(WORKING_DIR);
 
+        if ($config->getOutputFlushing() === Config::OUTPUT_FLUSHING_ON) {
+            ob_flush();
+            flush();
+        }
+
         try {
+            sleep(5);
             ApiConnector::from($config->getUser(), $config->getApiKey())
                 ->with($collector->toArray())
                 ->to($config->getUri())

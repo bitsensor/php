@@ -93,19 +93,19 @@ class Config {
      */
     const LOG_LEVEL_NONE = 'none';
     /**
-     * Output buffering.
+     * Output flushing. Turning this on allows the browser to render the page while BitSensor is still working in the background.
      *
-     * <i>Defaults to {@link BitSensor\Core\Config::OUTPUT_BUFFERING_OFF Config::OUTPUT_BUFFERING_OFF}.</i>
+     * <i>Defaults to {@link BitSensor\Core\Config::OUTPUT_FLUSHING_OFF Config::OUTPUT_FLUSHING_OFF}.</i>
      */
-    const OUTPUT_BUFFERING = 'outputBuffering';
+    const OUTPUT_FLUSHING = 'outputFlushing';
     /**
-     * Use output buffering to reduce latency.
+     * Use output flushing to reduce latency.
      */
-    const OUTPUT_BUFFERING_ON = 'on';
+    const OUTPUT_FLUSHING_ON = 'on';
     /**
-     * Do not use output buffering.
+     * Do not use output flushing.
      */
-    const OUTPUT_BUFFERING_OFF = 'off';
+    const OUTPUT_FLUSHING_OFF = 'off';
 
     /**
      * The BitSensor server to connect to.
@@ -156,11 +156,11 @@ class Config {
      */
     private $logLevel = self::LOG_LEVEL_ALL;
     /**
-     * Output buffering.
+     * Output flushing.
      *
      * @var string
      */
-    private $outputBuffering = self::OUTPUT_BUFFERING_OFF;
+    private $outputFlushing = self::OUTPUT_FLUSHING_OFF;
 
     /**
      * @param $json
@@ -201,8 +201,8 @@ class Config {
                 $this->setLogLevel($config[self::LOG_LEVEL]);
             }
 
-            if (array_key_exists(self::OUTPUT_BUFFERING, $config)) {
-                $this->setOutputBuffering($config[self::OUTPUT_BUFFERING]);
+            if (array_key_exists(self::OUTPUT_FLUSHING, $config)) {
+                $this->setOutputFlushing($config[self::OUTPUT_FLUSHING]);
             }
         }
     }
@@ -320,17 +320,17 @@ class Config {
     }
 
     /**
-     * @return string Output buffering.
+     * @return string Output flushing.
      */
-    public function getOutputBuffering() {
-        return $this->outputBuffering;
+    public function getOutputFlushing() {
+        return $this->outputFlushing;
     }
 
     /**
-     * @param string $outputBuffering Output buffering.
+     * @param string $outputFlushing Output flushing.
      */
-    public function setOutputBuffering($outputBuffering) {
-        $this->outputBuffering = $outputBuffering;
+    public function setOutputFlushing($outputFlushing) {
+        $this->outputFlushing = $outputFlushing;
     }
 
 
