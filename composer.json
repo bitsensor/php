@@ -1,7 +1,10 @@
 {
   "name": "bitsensor/php",
   "description": "BitSensor Web Application Security",
-  "keywords": ["security"],
+  "keywords": [
+    "security",
+    "insight"
+  ],
   "homepage": "https://bitsensor.io/",
   "minimum-stability": "stable",
   "license": "MIT",
