@@ -58,7 +58,7 @@ class HttpRequestHandler implements Handler {
             EndpointContext::SERVER_ADDR => $_SERVER['SERVER_ADDR'],
             EndpointContext::SERVER_NAME => $_SERVER['SERVER_NAME'],
             EndpointContext::SERVER_SOFTWARE => $_SERVER['SERVER_SOFTWARE'],
-            EndpointContext::SERVER_SIGNATURE => $_SERVER['SERVER_SIGNATURE'],
+            EndpointContext::SERVER_SIGNATURE => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : null,
             EndpointContext::SERVER_PORT => $_SERVER['SERVER_PORT'],
             EndpointContext::DOCUMENT_ROOT => $_SERVER['DOCUMENT_ROOT'],
             EndpointContext::GATEWAY_INTERFACE => array_key_exists('GATEWAY_INTERFACE', $_SERVER) ? $_SERVER['GATEWAY_INTERFACE'] : null,
