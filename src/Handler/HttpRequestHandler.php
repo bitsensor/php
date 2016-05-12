@@ -64,8 +64,7 @@ class HttpRequestHandler implements Handler {
             EndpointContext::GATEWAY_INTERFACE => array_key_exists('GATEWAY_INTERFACE', $_SERVER) ? $_SERVER['GATEWAY_INTERFACE'] : null,
             EndpointContext::SCRIPT_FILENAME => $_SERVER['SCRIPT_FILENAME'],
             EndpointContext::REQUEST_TIME => $date . $time . $timezone,
-            EndpointContext::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null,
-            HttpContext::STATUS => http_response_code()
+            EndpointContext::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null
         );
 
         if (function_exists('http_response_code')) {
