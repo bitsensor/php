@@ -1,21 +1,41 @@
-image: ruby:2.1
-
-before_script:
-  - apt-get update -y
-  - apt-get install php5 -y
-  - sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /etc/php5/cli/php.ini
+image: eriksencosta/php-dev
 
 stages:
-  - build
   - test
+  - build
+
+test:5.3:
+  stage: test
+  script:
+    - . build-tools/prepare-env.sh 5.3
+    - phpunit --bootstrap src/index.php --no-configuration test/
+
+test:5.4:
+  stage: test
+  script:
+    - . build-tools/prepare-env.sh 5.4
+    - phpunit --bootstrap src/index.php --no-configuration test/
+
+test:5.5:
+  stage: test
+  script:
+    - . build-tools/prepare-env.sh 5.5
+    - phpunit --bootstrap src/index.php --no-configuration test/
+
+test:5.6:
+  stage: test
+  script:
+    - . build-tools/prepare-env.sh 5.6
+    - phpunit --bootstrap src/index.php --no-configuration test/
 
 build:
   stage: build
   script:
+    - . build-tools/prepare-env.sh 5.6
     - php build-tools/phar.php
-
-test:
-  stage: test
-  script:
-    - php build-tools/phar.php
-    - test/test.sh
+  only:
+    - master
+    - develop
+  artifacts:
+      paths:
+        - target

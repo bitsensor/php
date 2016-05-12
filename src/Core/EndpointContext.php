@@ -56,6 +56,10 @@ class EndpointContext extends Context {
      * Request URI.
      */
     const REQUEST_URI = 'uri';
+    /**
+     * Status code.
+     */
+    const STATUS = 'code';
 
     public function __construct($key, $value) {
         $this->setName($key);

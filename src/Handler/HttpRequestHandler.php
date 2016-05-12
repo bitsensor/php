@@ -68,6 +68,10 @@ class HttpRequestHandler implements Handler {
             HttpContext::STATUS => http_response_code()
         );
 
+        if (function_exists('http_response_code')) {
+            $endpoint[EndpointContext::STATUS] = http_response_code();
+        }
+
         foreach ($endpoint as $k => $v) {
             $collector->addEndpointContext(new EndpointContext($k, $v));
         }
