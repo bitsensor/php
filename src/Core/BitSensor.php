@@ -4,6 +4,7 @@ namespace BitSensor\Core;
 
 
 use BitSensor\Exception\ApiException;
+use BitSensor\Util\Log;
 use BitSensor\Handler\Handler;
 use BitSensor\Handler\HttpRequestHandler;
 use BitSensor\Handler\IpHandler;
@@ -68,8 +69,10 @@ class BitSensor {
         global $config;
         if ($configPath instanceof Config) {
             $config = $configPath;
+            Log::d('Loaded from PHP Config');
         } else {
             $config = new Config(file_get_contents($configPath));
+            Log::d('Loaded from' . $configPath);
         }
         $this->config = &$config;
 
@@ -199,4 +202,7 @@ class BitSensor {
         }
     }
 
+    public function getConfig(){
+        return $this->config;
+    }
 }

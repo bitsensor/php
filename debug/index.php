@@ -15,6 +15,8 @@ $config->setApiKey('abcdefghijklmnopqrstuvwxyz');
 $config->setMode(Config::MODE_DETECTION);
 $config->setConnectionFail(Config::ACTION_ALLOW);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
+$config->setHostSrc(Config::HOST_MANUAL);
+$config->setHost("demohost");
 $config->setLogLevel(Config::LOG_LEVEL_ALL);
 
 $bitSensor = new BitSensor($config);
@@ -27,3 +29,5 @@ $bitSensor->addContext(new SessionContext(SessionContext::USERNAME, $_SESSION['u
 
 $bitSensor->addError(new \BitSensor\Core\CodeError(1, "a", "b.php", 2, null, "Custom"));
 $bitSensor->addError(new \BitSensor\Core\CodeError(1, "a", "b.php", 2, null, "Custom"));
+
+

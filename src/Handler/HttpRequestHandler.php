@@ -67,6 +67,22 @@ class HttpRequestHandler implements Handler {
             EndpointContext::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null
         );
 
+        $host = null;
+
+        switch ($config->getHostSrc()) {
+            case Config::HOST_SERVER_NAME:
+                $host = $_SERVER['SERVER_NAME'];
+                break;
+            case Config::HOST_HOST_HEADER:
+                $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
+                break;
+            case Config::HOST_MANUAL:
+                $host = $config->getHost();
+                break;
+        }
+
+        $endpoint[EndpointContext::SERVER_NAME] = $host;
+
         if (function_exists('http_response_code')) {
             $endpoint[EndpointContext::STATUS] = http_response_code();
         }
