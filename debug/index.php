@@ -15,8 +15,7 @@ $config->setApiKey('abcdefghijklmnopqrstuvwxyz');
 $config->setMode(Config::MODE_DETECTION);
 $config->setConnectionFail(Config::ACTION_ALLOW);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
-$config->setHostSrc(Config::HOST_MANUAL);
-$config->setHost("demohost");
+$config->setHostSrc(Config::HOST_SERVER_NAME);
 $config->setLogLevel(Config::LOG_LEVEL_ALL);
 
 $bitSensor = new BitSensor($config);
