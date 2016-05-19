@@ -7,6 +7,7 @@ use BitSensor\Core\Collector;
 use BitSensor\Core\Config;
 use BitSensor\Core\EndpointContext;
 use BitSensor\Core\HttpContext;
+use BitSensor\Util\ServerInfo;
 
 /**
  * Collects information about the HTTP request.
@@ -30,7 +31,7 @@ class HttpRequestHandler implements Handler {
             HttpContext::HTTP_ACCEPT_ENCODING => isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : null,
             HttpContext::HTTP_ACCEPT_LANGUAGE => isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : null,
             HttpContext::PATH_INFO => isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : null,
-            HttpContext::HTTPS => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+            HttpContext::HTTPS => ServerInfo::isHttps(),
         );
         foreach ($http as $k => $v) {
             if ($v !== null) {

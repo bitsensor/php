@@ -4,12 +4,13 @@ namespace BitSensor\Core;
 
 
 use BitSensor\Exception\ApiException;
-use BitSensor\Util\Log;
 use BitSensor\Handler\Handler;
 use BitSensor\Handler\HttpRequestHandler;
+use BitSensor\Handler\InterfaceHandler;
 use BitSensor\Handler\IpHandler;
 use BitSensor\Handler\ModSecurityHandler;
 use BitSensor\Handler\RequestInputHandler;
+use BitSensor\Util\Log;
 use BitSensor\View\TamperView;
 
 /**
@@ -91,6 +92,7 @@ class BitSensor {
         $this->addHandler(new HttpRequestHandler());
         $this->addHandler(new RequestInputHandler());
         $this->addHandler(new ModSecurityHandler());
+        $this->addHandler(new InterfaceHandler());
 
         $this->runHandlers();
         
