@@ -30,10 +30,12 @@ class HttpRequestHandler implements Handler {
             HttpContext::HTTP_ACCEPT_ENCODING => isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : null,
             HttpContext::HTTP_ACCEPT_LANGUAGE => isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : null,
             HttpContext::PATH_INFO => isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : null,
-            HttpContext::HTTPS => isset($_SERVER['HTTPS']),
+            HttpContext::HTTPS => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
         );
         foreach ($http as $k => $v) {
-            $collector->addContext(new HttpContext($k, $v));
+            if ($v !== null) {
+                $collector->addContext(new HttpContext($k, $v));
+            }
         }
 
         $auth = array(
@@ -44,7 +46,9 @@ class HttpRequestHandler implements Handler {
         );
 
         foreach ($auth as $k => $v) {
-            $collector->addContext(new AuthenticationContext($k, $v));
+            if ($v !== null) {
+                $collector->addContext(new AuthenticationContext($k, $v));
+            }
         }
 
         $micro_date = microtime();
@@ -53,16 +57,15 @@ class HttpRequestHandler implements Handler {
         $time = substr($date_array[0], 1);
         $timezone = date('O', $date_array[1]);
 
-
         $endpoint = array(
-            EndpointContext::SERVER_ADDR => $_SERVER['SERVER_ADDR'],
-            EndpointContext::SERVER_NAME => $_SERVER['SERVER_NAME'],
-            EndpointContext::SERVER_SOFTWARE => $_SERVER['SERVER_SOFTWARE'],
+            EndpointContext::SERVER_ADDR => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null,
+            EndpointContext::SERVER_NAME => isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : null,
+            EndpointContext::SERVER_SOFTWARE => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : null,
             EndpointContext::SERVER_SIGNATURE => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : null,
-            EndpointContext::SERVER_PORT => $_SERVER['SERVER_PORT'],
-            EndpointContext::DOCUMENT_ROOT => $_SERVER['DOCUMENT_ROOT'],
-            EndpointContext::GATEWAY_INTERFACE => array_key_exists('GATEWAY_INTERFACE', $_SERVER) ? $_SERVER['GATEWAY_INTERFACE'] : null,
-            EndpointContext::SCRIPT_FILENAME => $_SERVER['SCRIPT_FILENAME'],
+            EndpointContext::SERVER_PORT => isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : null,
+            EndpointContext::DOCUMENT_ROOT => isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : null,
+            EndpointContext::GATEWAY_INTERFACE => isset($_SERVER['GATEWAY_INTERFACE']) ? $_SERVER['GATEWAY_INTERFACE'] : null,
+            EndpointContext::SCRIPT_FILENAME => isset($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : null,
             EndpointContext::REQUEST_TIME => $date . $time . $timezone,
             EndpointContext::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null
         );
@@ -88,7 +91,9 @@ class HttpRequestHandler implements Handler {
         }
 
         foreach ($endpoint as $k => $v) {
-            $collector->addEndpointContext(new EndpointContext($k, $v));
+            if ($v !== null) {
+                $collector->addEndpointContext(new EndpointContext($k, $v));
+            }
         }
     }
 
