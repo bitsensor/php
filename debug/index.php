@@ -3,7 +3,7 @@ use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
 use BitSensor\Core\SessionContext;
 
-require_once '../target/bitsensor.phar';
+require_once __DIR__ . '/../target/bitsensor.phar';
 
 global $debug;
 $debug = true;

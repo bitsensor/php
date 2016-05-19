@@ -60,6 +60,14 @@ class EndpointContext extends Context {
      * Status code.
      */
     const STATUS = 'code';
+    /**
+     * SAPI name.
+     */
+    const SAPI = 'php.sapi';
+    /**
+     * Is CLI.
+     */
+    const CLI = 'cli';
 
     public function __construct($key, $value) {
         $this->setName($key);
