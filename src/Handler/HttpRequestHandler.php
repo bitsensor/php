@@ -75,7 +75,7 @@ class HttpRequestHandler implements Handler {
 
         switch ($config->getHostSrc()) {
             case Config::HOST_SERVER_NAME:
-                $host = $_SERVER['SERVER_NAME'];
+                $host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : null;
                 break;
             case Config::HOST_HOST_HEADER:
                 $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
@@ -85,7 +85,9 @@ class HttpRequestHandler implements Handler {
                 break;
         }
 
-        $endpoint[EndpointContext::SERVER_NAME] = $host;
+        if ($host !== null) {
+            $endpoint[EndpointContext::SERVER_NAME] = $host;
+        }
 
         if (function_exists('http_response_code')) {
             $endpoint[EndpointContext::STATUS] = http_response_code();

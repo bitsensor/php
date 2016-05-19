@@ -21,7 +21,7 @@ class IpHandler implements Handler {
 
         switch ($config->getIpAddressSrc()) {
             case Config::IP_ADDRESS_REMOTE_ADDR:
-                $ip = $_SERVER['REMOTE_ADDR'];
+                $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
                 break;
             case Config::IP_ADDRESS_X_FORWARDED_FOR:
                 $ip = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : null;
@@ -31,6 +31,8 @@ class IpHandler implements Handler {
                 break;
         }
 
-        $collector->addContext(new IpContext($ip));
+        if ($ip !== null) {
+            $collector->addContext(new IpContext($ip));
+        }
     }
 }
