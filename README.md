@@ -53,6 +53,7 @@ $config->setApiKey('abcdefghijklmnopqrstuvwxyz');
 $config->setMode(Config::MODE_DETECTION);
 $config->setConnectionFail(Config::ACTION_ALLOW);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
+$config->setHostSrc(Config::HOST_SERVER_NAME);
 $config->setLogLevel(Config::LOG_LEVEL_NONE);
 
 // Start BitSensor 
@@ -80,6 +81,7 @@ $config->setApiKey('abcdefghijklmnopqrstuvwxyz');
 $config->setMode(Config::MODE_DETECTION);
 $config->setConnectionFail(Config::ACTION_ALLOW);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
+$config->setHostSrc(Config::HOST_SERVER_NAME);
 $config->setLogLevel(Config::LOG_LEVEL_NONE);
 
 // Start BitSensor 
@@ -89,15 +91,18 @@ $bitSensor = new BitSensor($config);
 ### Config
 You have the following config options at your disposal:
 
-| PHP                       | JSON           | Value                                                                      | Default                                             | Description                                                             |
-|---------------------------|----------------|----------------------------------------------------------------------------|-----------------------------------------------------|-------------------------------------------------------------------------|
-| ```setUri()```            | uri            | uri                                                                        | <empty>                                             | URI to the BitSensor API.                                               |
-| ```setUser()```           | user           | username                                                                   | <empty>                                             | Your BitSensor username.                                                |
-| ```setApiKey()```         | apiKey         | api key                                                                    | <empty>                                             | Your BitSensor API key.                                                 |
-| ```setMode()```           | mode           | ```Config::MODE_ON``` ("on"), ```Config::MODE_DETECTION``` ("detection")   | ```Config::MODE_DETECTION``` ("detection")          | Running mode. In detection mode only logging will be done.              |
-| ```setConnectionFail()``` | connectionFail | ```Config::ACTION_ALLOW``` ("allow"), ```Config::ACTION_BLOCK``` ("block") | ```Config::ACTION_ALLOW``` ("allow")                | Action to perform when the connection to the BitSensor servers is lost. |
-| ```setIpAddressSrc()```   | ipAddressSrc   | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr")                        | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr") | Source of the IP address of the user.                                   |
-| ```setLogLevel()```       | logLevel       | ```Config::LOG_LEVEL_ALL``` ("all"), ```Config::LOG_LEVEL_NONE``` ("none") | ```Config::LOG_LEVEL_ALL``` ("all")                 | The logging level.                                                      |
+| PHP                       | JSON           | Value                                                                                                                                                      | Default                                             | Description                                                             |
+|---------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|-------------------------------------------------------------------------|
+| ```setUri()```            | uri            | uri                                                                                                                                                        | <empty>                                             | URI to the BitSensor API.                                               |
+| ```setUser()```           | user           | username                                                                                                                                                   | <empty>                                             | Your BitSensor username.                                                |
+| ```setApiKey()```         | apiKey         | api key                                                                                                                                                    | <empty>                                             | Your BitSensor API key.                                                 |
+| ```setMode()```           | mode           | ```Config::MODE_ON``` ("on"), ```Config::MODE_DETECTION``` ("detection")                                                                                   | ```Config::MODE_ON``` ("on")                        | Running mode. In detection mode only logging will be done.              |
+| ```setConnectionFail()``` | connectionFail | ```Config::ACTION_ALLOW``` ("allow"), ```Config::ACTION_BLOCK``` ("block")                                                                                 | ```Config::ACTION_BLOCK``` ("block")                | Action to perform when the connection to the BitSensor servers is lost. |
+| ```setIpAddressSrc()```   | ipAddressSrc   | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr"), ```Config::IP_ADDRESS_X_FORWARDED_FOR``` ("forwardedFor"), ```Config::IP_ADDRESS_MANUAL``` ("manual") | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr") | Source of the IP address of the user.                                   |
+| ```setIpAddress()```      | ipAddress      | ip override                                                                                                                                                | <empty>                                             | IP address manual override value.                                       |
+| ```setHostSrc()```        | hostSrc        | ```Config::HOST_SERVER_NAME``` ("serverName"), ```Config::HOST_HOST_HEADER``` ("hostHeader"), ```Config::HOST_MANUAL``` ("manual")                         | ```Config::HOST_SERVER_NAME``` ("serverName")       | Source of the hostname.                                                 |
+| ```setHost()```           | host           | host address override                                                                                                                                      | <empty>                                             | Hostname manual override value.                                         |
+| ```setLogLevel()```       | logLevel       | ```Config::LOG_LEVEL_ALL``` ("all"), ```Config::LOG_LEVEL_NONE``` ("none")                                                                                 | ```Config::LOG_LEVEL_ALL``` ("all")                 | The logging level.                                                      |
 
 The configuration can be specified in either PHP or JSON. To use JSON instead of PHP use the following code:
 ``index.php``
@@ -115,6 +120,7 @@ Sample configuration file:
   "mode": "detection",
   "connectionFail": "allow",
   "ipAddressSrc": "remoteAddr",
+  "hostSrc": "serverName",
   "logLevel": "none"
 }
 ```

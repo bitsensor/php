@@ -80,6 +80,30 @@ class Config {
      */
     const IP_ADDRESS_X_FORWARDED_FOR = 'forwardedFor';
     /**
+     * Source of the host address of the server.
+     *
+     * <i>Defaults to {@link Config::HOST_SERVER_NAME}.</i>
+     */
+    const HOST_SRC = 'hostSrc';
+    /**
+     * Manual host header.
+     *
+     * <i>Optional. Only required when {@link Config::HOST_SRC} is set to {@link Config::HOST_MANUAL}.</i>
+     */
+    const HOST = 'host';
+    /**
+     * Set host header manually.
+     */
+    const HOST_MANUAL = 'manual';
+    /**
+     * Set host according to <code>$_SERVER['SERVER_NAME']</code>.
+     */
+    const HOST_SERVER_NAME = 'serverName';
+    /**
+     * Set IP address according to the <code>host</code> HTTP header.
+     */
+    const HOST_HOST_HEADER = 'hostHeader';
+    /**
      * Set the log level.
      *
      * <i>Defaults to {@link Config::LOG_LEVEL_ALL}.</i>
@@ -137,6 +161,18 @@ class Config {
      */
     private $ipAddress;
     /**
+     * Source of the host header.
+     *
+     * @var string
+     */
+    private $hostSrc = self::HOST_SERVER_NAME;
+    /**
+     * Manual host header.
+     *
+     * @var string
+     */
+    private $host;
+    /**
      * Log level.
      *
      * @var string
@@ -176,6 +212,14 @@ class Config {
 
             if (isset($config[self::IP_ADDRESS])) {
                 $this->setIpAddress($config[self::IP_ADDRESS]);
+            }
+
+            if (isset($config[self::HOST_SRC])) {
+                $this->setHostSrc($config[self::HOST_SRC]);
+            }
+
+            if (isset($config[self::HOST])) {
+                $this->setHost($config[self::HOST]);
             }
 
             if (isset($config[self::LOG_LEVEL])) {
@@ -280,6 +324,34 @@ class Config {
      */
     public function setIpAddress($ipAddress) {
         $this->ipAddress = $ipAddress;
+    }
+
+    /**
+     * @return string Source of the server host.
+     */
+    public function getHostSrc() {
+        return $this->hostSrc;
+    }
+
+    /**
+     * @param string $ipAddressSrc Source of the server host.
+     */
+    public function setHostSrc($hostSrc) {
+        $this->hostSrc = $hostSrc;
+    }
+
+    /**
+     * @return string Manual host.
+     */
+    public function getHost() {
+        return $this->host;
+    }
+
+    /**
+     * @param string $ipAddress Manual host.
+     */
+    public function setHost($host) {
+        $this->host = $host;
     }
 
     /**

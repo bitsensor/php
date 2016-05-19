@@ -58,7 +58,7 @@ class HttpRequestHandler implements Handler {
             EndpointContext::SERVER_ADDR => $_SERVER['SERVER_ADDR'],
             EndpointContext::SERVER_NAME => $_SERVER['SERVER_NAME'],
             EndpointContext::SERVER_SOFTWARE => $_SERVER['SERVER_SOFTWARE'],
-            EndpointContext::SERVER_SIGNATURE => $_SERVER['SERVER_SIGNATURE'],
+            EndpointContext::SERVER_SIGNATURE => isset($_SERVER['SERVER_SIGNATURE']) ? $_SERVER['SERVER_SIGNATURE'] : null,
             EndpointContext::SERVER_PORT => $_SERVER['SERVER_PORT'],
             EndpointContext::DOCUMENT_ROOT => $_SERVER['DOCUMENT_ROOT'],
             EndpointContext::GATEWAY_INTERFACE => array_key_exists('GATEWAY_INTERFACE', $_SERVER) ? $_SERVER['GATEWAY_INTERFACE'] : null,
@@ -66,6 +66,22 @@ class HttpRequestHandler implements Handler {
             EndpointContext::REQUEST_TIME => $date . $time . $timezone,
             EndpointContext::REQUEST_URI => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null
         );
+
+        $host = null;
+
+        switch ($config->getHostSrc()) {
+            case Config::HOST_SERVER_NAME:
+                $host = $_SERVER['SERVER_NAME'];
+                break;
+            case Config::HOST_HOST_HEADER:
+                $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
+                break;
+            case Config::HOST_MANUAL:
+                $host = $config->getHost();
+                break;
+        }
+
+        $endpoint[EndpointContext::SERVER_NAME] = $host;
 
         if (function_exists('http_response_code')) {
             $endpoint[EndpointContext::STATUS] = http_response_code();
