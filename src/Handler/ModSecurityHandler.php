@@ -25,7 +25,9 @@ class ModSecurityHandler implements Handler {
         );
 
         foreach ($modSecurity as $k => $v) {
-            $collector->addContext(new ModSecurityContext($k, $v));
+            if ($v !== null) {
+                $collector->addContext(new ModSecurityContext($k, $v));
+            }
         }
     }
 
