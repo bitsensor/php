@@ -85,12 +85,12 @@ class RequestInputHandler implements Handler {
      * @param array $output The array in which the flattened elements should be placed.
      * @param string $prefix Prefix to add to each element.
      */
-    private static function flatten($input, &$output, $prefix) {
+    public static function flatten($input, &$output, $prefix) {
         foreach ($input as $k => $v) {
             if (is_array($v)) {
-                self::flatten($v, $output, $prefix . '.' . $k);
+                self::flatten($v, $output, $prefix . ($prefix !== '' ? '.' : '') . $k);
             } else {
-                $output[$prefix . '.' . $k] = $v;
+                $output[$prefix . ($prefix !== '' ? '.' : '') . $k] = $v;
             }
         }
     }
