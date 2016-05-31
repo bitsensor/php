@@ -32,7 +32,8 @@
   },
   "autoload": {
     "psr-4": {
-      "BitSensor\\": "src/"
+      "BitSensor\\": "src/",
+      "BitSensor\\Test\\": "test/"
     }
   }
 }
