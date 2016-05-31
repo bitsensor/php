@@ -18,7 +18,7 @@ class ApiConnectorTest extends \PHPUnit_Framework_TestCase {
             ->to($uri)
             ->post(ApiConnector::ACTION_LOG);
 
-        static::assertInstanceOf(ApiConnector::class, $connector);
+        static::assertTrue($connector instanceof ApiConnector);
     }
 
 }
