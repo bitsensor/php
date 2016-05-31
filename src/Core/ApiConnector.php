@@ -59,6 +59,9 @@ class ApiConnector {
      */
     private $action;
 
+    private function __construct() {
+    }
+
     /**
      * @param string $user The ID of the user.
      * @param string $apiKey The API key used to authenticate with the BitSensor servers.

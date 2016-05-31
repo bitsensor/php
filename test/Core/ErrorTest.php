@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace BitSensor\Test\Core;
 
 
 use BitSensor\Core\Error;

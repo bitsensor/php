@@ -59,10 +59,12 @@ class BitSensor {
      * @throws ApiException
      */
     public function __construct($configPath = 'config.json') {
-        /**
-         * Working directory when the application started.
-         */
-        define('WORKING_DIR', getcwd());
+        if (!defined('BITSENSOR_WORKING_DIR')) {
+            /**
+             * Working directory when the application started.
+             */
+            define('BITSENSOR_WORKING_DIR', getcwd());
+        }
 
         /**
          * @global Config $config
@@ -95,7 +97,7 @@ class BitSensor {
         $this->addHandler(new InterfaceHandler());
 
         $this->runHandlers();
-        
+
         if ($this->config->getMode() === Config::MODE_ON) {
             // Check if user is authorized
             try {
@@ -141,7 +143,7 @@ class BitSensor {
             /** @noinspection PhpMissingBreakStatementInspection */
             case BitSensor::BLOCK_REASON_ACCESS_DENIED:
                 error_log('The API key you provided does not appear to be valid. Please check your settings.');
-                error_log('WARNING! BITsensor is not active!');
+                error_log('WARNING! BitSensor is not active!');
             case BitSensor::BLOCK_REASON_UNKNOWN:
                 if ($this->config->getMode() === Config::MODE_ON && $this->config->getConnectionFail() === Config::ACTION_BLOCK) {
                     exit;
@@ -204,7 +206,7 @@ class BitSensor {
         }
     }
 
-    public function getConfig(){
+    public function getConfig() {
         return $this->config;
     }
 }
