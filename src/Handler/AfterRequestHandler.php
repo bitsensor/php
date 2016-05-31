@@ -20,9 +20,13 @@ class AfterRequestHandler {
      * @throws ApiException
      */
     public static function handle($collector, $config) {
+        global $bitsensorNoShutdownHandler;
+        if ($bitsensorNoShutdownHandler !== null && $bitsensorNoShutdownHandler) {
+            return;
+        }
 
         // Correctly sets working directory
-        chdir(WORKING_DIR);
+        chdir(BITSENSOR_WORKING_DIR);
 
         if ($config->getOutputFlushing() === Config::OUTPUT_FLUSHING_ON) {
             ob_flush();
