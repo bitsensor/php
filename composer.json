@@ -28,12 +28,17 @@
     "php": ">=5.3.3"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.3.*"
+    "phpunit/phpunit": "4.8.*"
   },
   "autoload": {
     "psr-4": {
       "BitSensor\\": "src/",
       "BitSensor\\Test\\": "test/"
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "5.3.3"
     }
   }
 }
