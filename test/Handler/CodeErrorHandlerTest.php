@@ -15,7 +15,7 @@ class CodeErrorHandlerTest extends HandlerTest {
         $file = 'test.php';
         $line = 5;
 
-        CodeErrorHandler::handle($code, $message, $file, $line);
+        CodeErrorHandler::handle($code, $message, $file, $line, NULL);
 
         $contexts = $this->collector->toArray();
         static::assertEquals($message, $contexts[Error::NAME][0][CodeError::ERRSTR]);
