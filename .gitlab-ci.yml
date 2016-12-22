@@ -9,25 +9,25 @@ test:5.3:
   stage: test
   script:
     - . build-tools/prepare-env.sh 5.3
-    - phpunit --bootstrap src/index.php --no-configuration test/
+    - phpunit --bootstrap vendor/autoload.php --no-configuration test/
 
 test:5.4:
   stage: test
   script:
     - . build-tools/prepare-env.sh 5.4
-    - phpunit --bootstrap src/index.php --no-configuration test/
+    - phpunit --bootstrap vendor/autoload.php --no-configuration test/
 
 test:5.5:
   stage: test
   script:
     - . build-tools/prepare-env.sh 5.5
-    - phpunit --bootstrap src/index.php --no-configuration test/
+    - phpunit --bootstrap vendor/autoload.php --no-configuration test/
 
 test:5.6:
   stage: test
   script:
     - . build-tools/prepare-env.sh 5.6
-    - phpunit --bootstrap src/index.php --no-configuration test/
+    - phpunit --bootstrap vendor/autoload.php --no-configuration test/
 
 build:
   stage: build

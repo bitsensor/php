@@ -18,12 +18,16 @@ class CodeErrorHandler {
      * @param string $errfile Name of the file in which the error occurred.
      * @param int $errline Line at which the error occurred.
      */
-    public static function handle($errno, $errstr, $errfile, $errline) {
+    public static function handle($errno, $errstr, $errfile, $errline, $errcontext) {
         /**
          * @global Collector $collector
          */
         global $collector;
 
         $collector->addError(new CodeError($errno, $errstr, $errfile, $errline, null, "Code"));
+
+    	global $bitSensor;
+    	if(isset($bitSensor->errorHandler))
+    	    call_user_func($bitSensor->errorHandler, $errno , $errstr, $errfile, $errline, $errcontext);
     }
 }

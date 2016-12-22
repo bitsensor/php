@@ -16,11 +16,11 @@ use BitSensor\View\TamperView;
 /**
  * Entry point for starting the BitSensor Web Application Security plugin.
  * @package BitSensor\Core
- * @version 0.9.3
+ * @version 0.9.4
  */
 class BitSensor {
 
-    const VERSION = '0.9.3';
+    const VERSION = '0.9.4';
 
     /**
      * User tried to tamper with the application.
@@ -55,14 +55,31 @@ class BitSensor {
     private $handlers;
 
     /**
+    * ErrorHandler method set by the application to be called
+    *
+    * @var string
+    **/
+    public $errorHandler;
+
+
+    /**
+    * ExceptionHandler method set by the application to be called
+    *
+    * @var string
+    **/
+    public $exceptionHandler;
+
+    /**
      * @param Config|string $configPath Object with configuration.
      * @throws ApiException
      */
     public function __construct($configPath = 'config.json') {
-        /**
-         * Working directory when the application started.
-         */
-        define('WORKING_DIR', getcwd());
+        if (!defined('BITSENSOR_WORKING_DIR')) {
+            /**
+             * Working directory when the application started.
+             */
+            define('BITSENSOR_WORKING_DIR', getcwd());
+        }
 
         /**
          * @global Config $config
@@ -84,8 +101,20 @@ class BitSensor {
         $collector = new Collector();
         $this->collector = &$collector;
 
-        set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
-        set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
+        $this->errorHandler = set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
+	Log::d('Previous error handler is: ' .
+		is_array($this->errorHandler) ?
+			implode($this->errorHandler) :
+		$this->errorHandler
+	);
+
+        $this->exceptionHandler = set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
+	Log::d('Previous error handler is: ' .
+        	is_array($this->errorHandler) ?
+			implode($this->errorHandler) :
+		$this->errorHandler
+	);
+
         register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $collector, $config);
 
         $this->addHandler(new IpHandler());
@@ -95,7 +124,7 @@ class BitSensor {
         $this->addHandler(new InterfaceHandler());
 
         $this->runHandlers();
-        
+
         if ($this->config->getMode() === Config::MODE_ON) {
             // Check if user is authorized
             try {
@@ -141,7 +170,7 @@ class BitSensor {
             /** @noinspection PhpMissingBreakStatementInspection */
             case BitSensor::BLOCK_REASON_ACCESS_DENIED:
                 error_log('The API key you provided does not appear to be valid. Please check your settings.');
-                error_log('WARNING! BITsensor is not active!');
+                error_log('WARNING! BitSensor is not active!');
             case BitSensor::BLOCK_REASON_UNKNOWN:
                 if ($this->config->getMode() === Config::MODE_ON && $this->config->getConnectionFail() === Config::ACTION_BLOCK) {
                     exit;
@@ -204,7 +233,7 @@ class BitSensor {
         }
     }
 
-    public function getConfig(){
+    public function getConfig() {
         return $this->config;
     }
 }
