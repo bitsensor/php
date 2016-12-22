@@ -25,12 +25,9 @@ class CodeErrorHandler {
         global $collector;
 
         $collector->addError(new CodeError($errno, $errstr, $errfile, $errline, null, "Code"));
-	
-	global $bitSensor;
-	if(isset($bitSensor->errorHandler))
-	    call_user_func($bitSensor->errorHandler, $errno , $errstr, $errfile, $errline, $errcontext);
-        /*if (mysql_errno()) {
-            $collector->addError(new CodeError(mysql_errno(), mysql_error(), $errfile, $errline, null, "MySQL"));
-        }*/
+
+    	global $bitSensor;
+    	if(isset($bitSensor->errorHandler))
+    	    call_user_func($bitSensor->errorHandler, $errno , $errstr, $errfile, $errline, $errcontext);
     }
 }
