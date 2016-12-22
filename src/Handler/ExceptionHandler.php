@@ -23,5 +23,7 @@ class ExceptionHandler {
         global $collector;
 
         $collector->addError(new CodeError($exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTrace(), 'Exception'));
+	global $bitSensor;
+	call_user_func($bitSensor->exceptionHandler, $exception);
     }
 }

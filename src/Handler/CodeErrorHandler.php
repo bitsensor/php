@@ -18,7 +18,7 @@ class CodeErrorHandler {
      * @param string $errfile Name of the file in which the error occurred.
      * @param int $errline Line at which the error occurred.
      */
-    public static function handle($errno, $errstr, $errfile, $errline) {
+    public static function handle($errno, $errstr, $errfile, $errline, $errcontext) {
         /**
          * @global Collector $collector
          */
@@ -26,6 +26,8 @@ class CodeErrorHandler {
 
         $collector->addError(new CodeError($errno, $errstr, $errfile, $errline, null, "Code"));
 
+	global $bitSensor;
+	call_user_func($bitSensor->errorHandler, $errno , $errstr, $errfile, $errline, $errcontext);
         /*if (mysql_errno()) {
             $collector->addError(new CodeError(mysql_errno(), mysql_error(), $errfile, $errline, null, "MySQL"));
         }*/

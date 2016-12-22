@@ -14,6 +14,8 @@ use BitSensor\Core\IpContext;
 
 class BitSensorTest extends \PHPUnit_Framework_TestCase {
 
+    public static $proofOfInvocation = false;
+
     protected function tearDown() {
         restore_error_handler();
         restore_exception_handler();
@@ -38,9 +40,40 @@ class BitSensorTest extends \PHPUnit_Framework_TestCase {
          */
         global $collector;
         $contexts = $collector->toArray();
-        static::assertEquals($ip, $contexts[Context::NAME][IpContext::NAME]);
+	static::assertEquals($ip, $contexts[Context::NAME][IpContext::NAME]);
         static::assertArrayNotHasKey(InputContext::NAME, $contexts);
         static::assertArrayNotHasKey(Error::NAME, $contexts);
+    }
+
+    /**
+    * @expectedException PHPUnit_Framework_Error
+    */
+    public function testOldErrorHandlerSet(){
+	global $bitSensor;
+	$bitSensor = new BitSensor(new Config());
+	static::assertEquals('PHPUnit_Util_ErrorHandler', $bitSensor->errorHandler[0]);
+
+    	trigger_error('test');
+	static::assertTrue(self::$proofOfInvocation);
+	self::$proofOfInvocation = false;
+    }
+
+    /**
+    * @expectedException PHPUnit_Framework_Error
+    */
+    public function testOldExceptionHandlerSet(){
+        set_exception_handler(array(__CLASS__, 'callback'));
+	global $bitSensor;
+	$bitSensor = new BitSensor(new Config());
+        static::assertEquals(__CLASS__, $bitSensor->exceptionHandler[0]);
+
+	trigger_error('test');
+        static::assertTrue(self::$proofOfInvocation);
+	self::$proofOfInvocation = false;
+    }
+
+    public static function callback($ex){
+	BitSensorTest::$proofOfInvocation = true;
     }
 
     public function testAddEndpointContext() {

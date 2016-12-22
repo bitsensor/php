@@ -55,6 +55,21 @@ class BitSensor {
     private $handlers;
 
     /**
+    * ErrorHandler method set by the application to be called
+    *
+    * @var string
+    **/
+    public $errorHandler;
+
+
+    /**
+    * ExceptionHandler method set by the application to be called
+    *
+    * @var string
+    **/
+    public $exceptionHandler;
+
+    /**
      * @param Config|string $configPath Object with configuration.
      * @throws ApiException
      */
@@ -86,8 +101,20 @@ class BitSensor {
         $collector = new Collector();
         $this->collector = &$collector;
 
-        set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
-        set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
+        $this->errorHandler = set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
+	Log::d('Previous error handler is: ' .
+		is_array($this->errorHandler) ?
+			implode($this->errorHandler) :
+		$this->errorHandler
+	);
+
+        $this->exceptionHandler = set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
+	Log::d('Previous error handler is: ' .
+        	is_array($this->errorHandler) ?
+			implode($this->errorHandler) :
+		$this->errorHandler
+	);
+
         register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $collector, $config);
 
         $this->addHandler(new IpHandler());
