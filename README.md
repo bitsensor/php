@@ -46,7 +46,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 // Create config using PHP.
 $config = new Config();
-$config->setUri('http://bitsensor.io/api/');
+$config->setUri('http://user.bitsensor.io:8080');
 $config->setUser('example_user');
 $config->setApiKey('abcdefghijklmnopqrstuvwxyz');
 $config->setMode(Config::MODE_DETECTION);
@@ -74,7 +74,7 @@ require_once '/path/to/bitsensor.phar';
 
 // Create config using PHP.
 $config = new Config();
-$config->setUri('http://bitsensor.io/api/');
+$config->setUri('http://user.bitsensor.io:8080');
 $config->setUser('example_user');
 $config->setApiKey('abcdefghijklmnopqrstuvwxyz');
 $config->setMode(Config::MODE_DETECTION);
