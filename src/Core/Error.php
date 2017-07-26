@@ -26,6 +26,10 @@ class Error {
      */
     const ERRTYPE = 'type';
     /**
+     * Error generatedby
+     */
+    const ERRGEN = 'generatedby';
+    /**
      * Error code.
      *
      * @var int
