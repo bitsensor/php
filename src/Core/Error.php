@@ -49,6 +49,13 @@ class Error {
     private $errtype;
 
     /**
+     * Error generatedby statement.
+     *
+     * @var string
+     */
+    private $errgen;
+
+    /**
      * @param string $errstr Error description.
      * @param int $errno Error code.
      * @param string $errtype Error type.
@@ -57,6 +64,7 @@ class Error {
         $this->setCode($errno);
         $this->setMessage($errstr);
         $this->setType($errtype);
+        $this->setGeneratedBy("PLUGIN");
     }
 
     /**
@@ -103,6 +111,20 @@ class Error {
     }
 
     /**
+     * @return string Error type.
+     */
+    public function getGeneratedBy() {
+        return $this->errgen;
+    }
+
+    /**
+     * @param string Error type.
+     */
+    public function setGeneratedBy($errgen) {
+        $this->errgen = $errgen;
+    }
+
+    /**
      * <p>Adds all elements of the error to an array.</p>
      *
      * <p>Child classes should add their own elements to this array. Example:</p>
@@ -123,7 +145,8 @@ class Error {
         return array(
             self::ERRNO => $this->getCode(),
             self::ERRSTR => $this->getMessage(),
-            self::ERRTYPE => $this->getType()
+            self::ERRTYPE => $this->getType(),
+            self::ERRGEN => $this->getGeneratedBy()
         );
     }
 
