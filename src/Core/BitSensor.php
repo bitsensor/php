@@ -20,7 +20,7 @@ use BitSensor\View\TamperView;
  */
 class BitSensor {
 
-    const VERSION = '0.9.4';
+    const VERSION = '0.9.5';
 
     /**
      * User tried to tamper with the application.
@@ -102,18 +102,10 @@ class BitSensor {
         $this->collector = &$collector;
 
         $this->errorHandler = set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
-	Log::d('Previous error handler is: ' .
-		is_array($this->errorHandler) ?
-			implode($this->errorHandler) :
-		$this->errorHandler
-	);
+        Log::d("Previous error handler is: " . (is_null($this->errorHandler) ? "not defined" : $this->errorHandler));
 
         $this->exceptionHandler = set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
-	Log::d('Previous error handler is: ' .
-        	is_array($this->errorHandler) ?
-			implode($this->errorHandler) :
-		$this->errorHandler
-	);
+        Log::d("Previous exception handler is: " . (is_null($this->exceptionHandler) ? "not defined" : $this->exceptionHandler));
 
         register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $collector, $config);
 
