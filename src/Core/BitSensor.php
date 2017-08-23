@@ -102,12 +102,10 @@ class BitSensor {
         $this->collector = &$collector;
 
         $this->errorHandler = set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
-        Log::d('Previous error handler is: ' . 
-            is_null($this->errorHandler) ? "not defined" : $this->errorHandler);
+        Log::d("Previous error handler is: " . (is_null($this->errorHandler) ? "not defined" : $this->errorHandler));
 
         $this->exceptionHandler = set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
-        Log::d('Previous exception handler is: ' . 
-            is_null($this->exceptionHandler) ? "not defined" : $this->exceptionHandler);
+        Log::d("Previous exception handler is: " . (is_null($this->exceptionHandler) ? "not defined" : $this->exceptionHandler));
 
         register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $collector, $config);
 
