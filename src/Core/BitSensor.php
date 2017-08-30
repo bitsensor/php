@@ -57,7 +57,7 @@ class BitSensor {
     /**
     * ErrorHandler method set by the application to be called
     *
-    * @var string
+    * @var mixed
     **/
     public $errorHandler;
 
@@ -65,7 +65,7 @@ class BitSensor {
     /**
     * ExceptionHandler method set by the application to be called
     *
-    * @var string
+    * @var callable
     **/
     public $exceptionHandler;
 
@@ -102,10 +102,14 @@ class BitSensor {
         $this->collector = &$collector;
 
         $this->errorHandler = set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
-        Log::d("Previous error handler is: " . (is_null($this->errorHandler) ? "not defined" : $this->errorHandler));
+        Log::d("Previous error handler is: " . (is_null($this->errorHandler) ?
+            "not defined" : is_array($this->errorHandler) ?
+                implode($this->errorHandler) : $this->errorHandler));
 
         $this->exceptionHandler = set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
-        Log::d("Previous exception handler is: " . (is_null($this->exceptionHandler) ? "not defined" : $this->exceptionHandler));
+        Log::d("Previous exception handler is: " . (is_null($this->exceptionHandler) ?
+            "not defined" : is_array($this->exceptionHandler) ?
+                implode($this->exceptionHandler) : $this->exceptionHandler));
 
         register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $collector, $config);
 
