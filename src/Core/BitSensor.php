@@ -20,7 +20,7 @@ use BitSensor\View\TamperView;
  */
 class BitSensor {
 
-    const VERSION = '0.9.5';
+    const VERSION = '0.9.6';
 
     /**
      * User tried to tamper with the application.
