@@ -5,29 +5,6 @@
 ## Composer
 This project uses Composer to handle dependencies. Use ``php composer.phar install`` to install everything after checking out the source.
 
-## Building
-The application can be packaged as a PHP Archive (phar). Executing the following command will generate the archive:
-
-``php build-tools/phar.php [output-file]``
-
-By default, the resulting file will be placed in the ``target/`` folder, but this can be changed via the optional ``output-file`` parameter.
-
-## Testing
-Assuming default target location, a simple test run can be executed using ``curl localhost/php/test/index.php``. This should return "Accepted", the raw JSON datapoint and the encrypted datapoint.  
-To test successful connection using your API key and endpoint, change the configuration in the ``test/index.php`` file and login to your BitSensor dashboard.
-
-For more extensive debugging in your codebase, we provide the following hooks:
-
-Debug logging can be printed using ``BitSensor\Util\Log::d($msg)``,
-this will only be printed when running in debug mode, activated by setting ``$debug`` to true in the global scope like this:
-
-```php
-global $debug;
-$debug = true;
-```
-
-This should be done in a test script and not in the actual source.
-
 ## Usage
 BitSensor can be used with Composer or as a standalone Phar.
 
@@ -183,6 +160,23 @@ SetEnv ERROR_DOCUMENT_503 /path/to/error/document.html
 SetEnv ERROR_DOCUMENT_504 /path/to/error/document.html
 SetEnv ERROR_DOCUMENT_505 /path/to/error/document.html
 ```
+
+
+## Testing
+Assuming default target location, a simple test run can be executed using ``curl localhost/php/test/index.php``. This should return "Accepted", the raw JSON datapoint and the encrypted datapoint.  
+To test successful connection using your API key and endpoint, change the configuration in the ``test/index.php`` file and login to your BitSensor dashboard.
+
+For more extensive debugging in your codebase, we provide the following hooks:
+
+Debug logging can be printed using ``BitSensor\Util\Log::d($msg)``,
+this will only be printed when running in debug mode, activated by setting ``$debug`` to true in the global scope like this:
+
+```php
+global $debug;
+$debug = true;
+```
+
+This should be done in a test script and not in the actual source.
 
 ## External dependencies
 Libraries not managed by Composer should go in the ``lib/`` folder.
