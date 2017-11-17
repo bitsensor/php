@@ -50,3 +50,17 @@ deploy:packagist:
     - master
     - develop
     - tags
+
+pages:
+  image: node:8.9.0
+  before_script:
+    - npm install gitbook-cli -g -q # install gitbook
+    - gitbook fetch latest # fetch latest stable version
+  script:
+    - gitbook build . public
+  artifacts:
+    paths:
+      - public
+    expire_in: 15m
+  only:
+    - master
