@@ -1,5 +1,10 @@
 image: eriksencosta/php-dev
 
+cache:
+  paths:
+  - vendor
+  untracked: true
+
 stages:
   - test
   - build
