@@ -7,8 +7,8 @@ namespace BitSensor\Core;
  * Information about the user trying to authenticate.
  * @package BitSensor\Core
  */
-class AuthenticationContext extends Context {
-
+class AuthenticationConstants extends Constants
+{
     /**
      * Authentication of the connecting user.
      */
@@ -29,11 +29,5 @@ class AuthenticationContext extends Context {
      * Username of the connecting user.
      */
     const REMOTE_USER = 'user';
-
-    public function __construct($key, $value) {
-        $this->setName(self::NAME . '.' . $key);
-        $this->setValue($value);
-    }
-
 
 }

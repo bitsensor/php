@@ -8,8 +8,8 @@ namespace BitSensor\Core;
  * @package BitSensor\Core
  * @see $_SERVER
  */
-class EndpointContext extends Context {
-
+class EndpointConstants extends Constants
+{
     /**
      * Server information.
      */
@@ -68,10 +68,5 @@ class EndpointContext extends Context {
      * Is CLI.
      */
     const CLI = 'cli';
-
-    public function __construct($key, $value) {
-        $this->setName($key);
-        $this->setValue($value);
-    }
 
 }

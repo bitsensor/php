@@ -7,9 +7,11 @@ namespace BitSensor\View;
  * Page to show when a server error occurs.
  * @package BitSensor\View
  */
-class ErrorView extends View {
+class ErrorView extends View
+{
 
-    public function __construct($error) {
+    public function __construct($error)
+    {
         $this->setContent('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html><head>
 <title>' . $error . ' ' . $this->getTitle($error) . '</title>
@@ -26,7 +28,8 @@ class ErrorView extends View {
      * @return string The name of the error.
      * @see https://github.com/apache/httpd/blob/trunk/modules/http/http_protocol.c
      */
-    private function getTitle($error) {
+    private function getTitle($error)
+    {
         $header = array(
             '400' => 'Bad Request',
             '401' => 'Unauthorized',
@@ -62,7 +65,8 @@ class ErrorView extends View {
      * @return string The description of the error.
      * @see https://github.com/apache/httpd/blob/trunk/modules/http/http_protocol.c
      */
-    private function getBody($error) {
+    private function getBody($error)
+    {
         $body = array(
             '400' => '<p>Your browser sent a request that this server could not understand.</p>',
             '401' => '<p>This server could not verify that you are authorized to access the document requested.  Either you supplied the wrong credentials (e.g., bad password), or your browser doesn\'t understand how to supply the credentials required.</p>',

@@ -8,18 +8,21 @@ use BitSensor\Core\Config;
 use BitSensor\Core\FileContext;
 use BitSensor\Core\InputContext;
 use BitSensor\Core\SessionContext;
+use Proto\Datapoint;
 
 /**
  * Collects information about the HTTP request data.
  * @package BitSensor\Handler
  */
-class RequestInputHandler implements Handler {
+class RequestInputHandler implements Handler
+{
 
     /**
-     * @param Collector $collector
+     * @param Datapoint $datapoint
      * @param Config $config
      */
-    public function handle(Collector $collector, Config $config) {
+    public function handle(Datapoint $datapoint, Config $config)
+    {
         $post = array();
         foreach ($_POST as $k => $v) {
             if (is_array($v)) {
@@ -30,7 +33,7 @@ class RequestInputHandler implements Handler {
         }
 
         foreach ($post as $k => $v) {
-            $collector->addInput(new InputContext(InputContext::POST, $k, $v));
+            $datapoint->getInput()[InputContext::POST . '.' . $k] = $v;
         }
 
         $get = array();
@@ -43,7 +46,7 @@ class RequestInputHandler implements Handler {
         }
 
         foreach ($get as $k => $v) {
-            $collector->addInput(new InputContext(InputContext::GET, $k, $v));
+            $datapoint->getInput()[InputContext::GET . '.' . $k] = $v;
         }
 
         $cookie = array();
@@ -57,9 +60,9 @@ class RequestInputHandler implements Handler {
 
         foreach ($cookie as $k => $v) {
             if ($k === 'PHPSESSID') {
-                $collector->addContext(new SessionContext(SessionContext::SESSION_ID, $v));
+                $datapoint->getContext()['php.' . SessionContext::NAME . '.' . SessionContext::SESSION_ID] = $v;
             } else {
-                $collector->addInput(new InputContext(InputContext::COOKIE, $k, $v));
+                $datapoint->getInput()[InputContext::COOKIE . '.' . $k] = $v;
             }
         }
 
@@ -73,7 +76,7 @@ class RequestInputHandler implements Handler {
         }
 
         foreach ($files as $k => $v) {
-            $collector->addInput(new FileContext($k, $v));
+            $datapoint->getInput()[FileContext::NAME . '.' . $k] = $v;
         }
     }
 
@@ -85,7 +88,8 @@ class RequestInputHandler implements Handler {
      * @param array $output The array in which the flattened elements should be placed.
      * @param string $prefix Prefix to add to each element.
      */
-    public static function flatten($input, &$output, $prefix) {
+    public static function flatten($input, &$output, $prefix)
+    {
         foreach ($input as $k => $v) {
             if (is_array($v)) {
                 self::flatten($v, $output, $prefix . ($prefix !== '' ? '.' : '') . $k);

@@ -3,22 +3,24 @@
 namespace BitSensor\Handler;
 
 
-use BitSensor\Core\Collector;
 use BitSensor\Core\Config;
 use BitSensor\Core\ModSecurityContext;
+use Proto\Datapoint;
 
 /**
  * Collects information from ModSecurity.
  * @package BitSensor\Handler
  * @see https://www.modsecurity.org/
  */
-class ModSecurityHandler implements Handler {
+class ModSecurityHandler implements Handler
+{
 
     /**
-     * @param Collector $collector
+     * @param Datapoint $datapoint
      * @param Config $config
      */
-    public function handle(Collector $collector, Config $config) {
+    public function handle(Datapoint $datapoint, Config $config)
+    {
         $modSecurity = array(
             ModSecurityContext::WAF_EVENTS => isset($_SERVER['HTTP_X_WAF_EVENTS']) ? $_SERVER['HTTP_X_WAF_EVENTS'] : null,
             ModSecurityContext::WAF_SCORE => isset($_SERVER['HTTP_X_WAF_SCORE']) ? $_SERVER['HTTP_X_WAF_SCORE'] : null
@@ -26,7 +28,7 @@ class ModSecurityHandler implements Handler {
 
         foreach ($modSecurity as $k => $v) {
             if ($v !== null) {
-                $collector->addContext(new ModSecurityContext($k, $v));
+                $datapoint->getContext()[ModSecurityContext::NAME . '.' . $k] = $v;
             }
         }
     }

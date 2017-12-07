@@ -2,21 +2,22 @@
 
 namespace BitSensor\Handler;
 
-use BitSensor\Core\Collector;
 use BitSensor\Core\Config;
-use BitSensor\Core\IpContext;
+use Proto\Datapoint;
 
 /**
  * Collects the IP address.
  * @package BitSensor\Handler
  */
-class IpHandler implements Handler {
+class IpHandler implements Handler
+{
 
     /**
-     * @param Collector $collector
+     * @param Datapoint $datapoint
      * @param Config $config
      */
-    public function handle(Collector $collector, Config $config) {
+    public function handle(Datapoint $datapoint, Config $config)
+    {
         $ip = null;
 
         switch ($config->getIpAddressSrc()) {
@@ -32,7 +33,7 @@ class IpHandler implements Handler {
         }
 
         if ($ip !== null) {
-            $collector->addContext(new IpContext($ip));
+            $datapoint->getContext()['ip'] = $ip;
         }
     }
 }
