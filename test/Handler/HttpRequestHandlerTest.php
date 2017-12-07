@@ -4,31 +4,33 @@ namespace BitSensor\Test\Handler;
 
 
 use BitSensor\Core\Config;
-use BitSensor\Core\Context;
-use BitSensor\Core\EndpointContext;
-use BitSensor\Core\HttpContext;
+use BitSensor\Core\EndpointConstants;
+use BitSensor\Core\HttpConstants;
 use BitSensor\Handler\HttpRequestHandler;
 use DateTime;
 
-class HttpRequestHandlerTest extends HandlerTest {
+class HttpRequestHandlerTest extends HandlerTest
+{
 
-    public function testHandle() {
+    public function testHandle()
+    {
         $handler = new HttpRequestHandler();
-        $handler->handle($this->collector, new Config());
+        $handler->handle($this->datapoint, new Config());
 
-        $contexts = $this->collector->toArray();
-        static::assertFalse($contexts[Context::NAME][HttpContext::NAME . '.' . HttpContext::HTTPS]);
+        $context = $this->datapoint->getContext();
+        $endpoint = $this->datapoint->getEndpoint();
 
-        $stringDate = substr($contexts[EndpointContext::NAME][EndpointContext::REQUEST_TIME], 0, 28);
+        self::assertEquals('false', $context[HttpConstants::NAME . '.' . HttpConstants::HTTPS]);
+
+        $stringDate = substr($endpoint[EndpointConstants::REQUEST_TIME], 0, 28);
         str_replace('T', ' ', $stringDate);
         $date = new DateTime($stringDate);
 
-        $microtime = $date->format('U.u');
         $now = microtime(true);
-        static::assertLessThan(1, $now - $microtime);
+        self::assertLessThan(2, $now - $date->getTimestamp());
 
         if (isset($_SERVER['DOCUMENT_ROOT'])) {
-            static::assertEquals($_SERVER['DOCUMENT_ROOT'], $contexts[EndpointContext::NAME][EndpointContext::DOCUMENT_ROOT]);
+            self::assertEquals($_SERVER['DOCUMENT_ROOT'], $endpoint[EndpointConstants::DOCUMENT_ROOT]);
         }
     }
 

@@ -2,28 +2,36 @@
 
 namespace BitSensor\Test\Handler;
 
-
-use BitSensor\Core\CodeError;
-use BitSensor\Core\Error;
 use BitSensor\Handler\ExceptionHandler;
+use Proto\Datapoint;
+use Proto\Error;
 
-class ExceptionHandlerTest extends HandlerTest {
+class ExceptionHandlerTest extends HandlerTest
+{
 
-    public function testHandle() {
+    public function testHandle()
+    {
         $message = 'Test Message';
         $code = 17;
-
         $line = __LINE__ + 1;
         $exception = new \Exception($message, $code);
+        $expectedContext = explode(PHP_EOL, $exception->getTraceAsString());
+
 
         ExceptionHandler::handle($exception);
 
-        $contexts = $this->collector->toArray();
-        static::assertEquals($message, $contexts[Error::NAME][0][CodeError::ERRSTR]);
-        static::assertEquals($code, $contexts[Error::NAME][0][CodeError::ERRNO]);
-        static::assertEquals(__FILE__, $contexts[Error::NAME][0][CodeError::ERRFILE]);
-        static::assertEquals($line, $contexts[Error::NAME][0][CodeError::ERRLINE]);
-        static::assertEquals('Exception', $contexts[Error::NAME][0][CodeError::ERRTYPE]);
+        /** @var Datapoint $datapoint */
+        global $datapoint;
+
+        self::assertEquals(1, $datapoint->getErrors()->count(), "Datapoint must contain 1 error.");
+
+        /** @var Error $err */
+        $err = $datapoint->getErrors()[0];
+
+        self::assertEquals($err->getCode(), $code);
+        self::assertEquals($err->getDescription(), $message);
+        self::assertEquals($err->getLine(), $line);
+        self::assertEquals($err->getContext(), $expectedContext);
     }
 
 }

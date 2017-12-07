@@ -95,7 +95,8 @@ echo "done\n";
 
 echo "Build finished.\n";
 
-function generateChecksum($file) {
+function generateChecksum($file)
+{
     $checksumfile = fopen($file . '.sha1.txt', 'w');
     $checksum = sha1_file($file);
     fwrite($checksumfile, $checksum . '  ' . basename($file));

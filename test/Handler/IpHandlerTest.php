@@ -8,16 +8,19 @@ use BitSensor\Core\Context;
 use BitSensor\Core\IpContext;
 use BitSensor\Handler\IpHandler;
 
-class IpHandlerTest extends HandlerTest {
+class IpHandlerTest extends HandlerTest
+{
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
 
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         $_SERVER['HTTP_X_FORWARDED_FOR'] = '127.0.0.2';
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         parent::tearDown();
 
         unset(
@@ -26,48 +29,37 @@ class IpHandlerTest extends HandlerTest {
         );
     }
 
-    public function testHandle() {
+    public function testHandle()
+    {
         $handler = new IpHandler();
-        $handler->handle($this->collector, new Config());
+        $handler->handle($this->datapoint, new Config());
 
-        $contexts = $this->collector->toArray();
-        static::assertEquals('127.0.0.1', $contexts[Context::NAME][IpContext::NAME]);
+        $context = $this->datapoint->getContext();
+        self::assertEquals('127.0.0.1', $context['ip']);
     }
 
-    public function testHandleForwarded() {
+    public function testHandleForwarded()
+    {
         $config = new Config();
         $config->setIpAddressSrc(Config::IP_ADDRESS_X_FORWARDED_FOR);
 
         $handler = new IpHandler();
-        $handler->handle($this->collector, $config);
+        $handler->handle($this->datapoint, $config);
 
-        $contexts = $this->collector->toArray();
-        static::assertEquals('127.0.0.2', $contexts[Context::NAME][IpContext::NAME]);
+        $context = $this->datapoint->getContext();
+        self::assertEquals('127.0.0.2', $context['ip']);
     }
 
-    public function testHandleManual() {
+    public function testHandleManual()
+    {
         $config = new Config();
         $config->setIpAddressSrc(Config::IP_ADDRESS_MANUAL);
         $config->setIpAddress('127.0.0.3');
 
         $handler = new IpHandler();
-        $handler->handle($this->collector, $config);
+        $handler->handle($this->datapoint, $config);
 
-        $contexts = $this->collector->toArray();
-        static::assertEquals('127.0.0.3', $contexts[Context::NAME][IpContext::NAME]);
+        $context = $this->datapoint->getContext();
+        self::assertEquals('127.0.0.3', $context['ip']);
     }
-
-    public function testHandleUnset() {
-        unset(
-            $_SERVER['REMOTE_ADDR'],
-            $_SERVER['HTTP_X_FORWARDED_FOR']
-        );
-
-        $handler = new IpHandler();
-        $handler->handle($this->collector, new Config());
-
-        $contexts = $this->collector->toArray();
-        static::assertArrayNotHasKey(Context::NAME, $contexts);
-    }
-
 }
