@@ -105,6 +105,13 @@ You have the following config options at your disposal:
 | ```setLogLevel()```       | logLevel       | ```Config::LOG_LEVEL_ALL``` ("all"), ```Config::LOG_LEVEL_NONE``` ("none")                                                                                 | ```Config::LOG_LEVEL_ALL``` ("all")                 | The logging level.                                                                                                         |
 | ```setOutputFlushing```   | outputFlushing | ```Config::OUTPUT_FLUSHING_ON``` ("on"), ```Config::OUTPUT_FLUSHING_OFF``` ("off")                                                                         | ```Config::OUTPUT_FLUSHING_OFF``` ("off")           | Output flushing. Turning this on allows the browser to render the page while BitSensor is still working in the background. |
 
+### Tags
+If you are running many applications, it might be sensible to group them by a tag. You can create a tag using the following snipplet
+```php
+global $collector;
+$collector->addEndpointContext(new EndpointContext("tag", "cool-applications"));
+```
+
 The configuration can be specified in either PHP or JSON. To use JSON instead of PHP use the following code:
 ``index.php``
 ```php

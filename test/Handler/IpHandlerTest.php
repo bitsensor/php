@@ -14,7 +14,7 @@ class IpHandlerTest extends HandlerTest {
         parent::setUp();
 
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-        $_SERVER['HTTP_X_FORWARDED_FOR'] = '127.0.0.2';
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = '127.0.0.2, 8.8.8.8';
     }
 
     public function tearDown() {
