@@ -1,32 +1,33 @@
+<a id="about"></a>
+![logo](https://dl2.pushbulletusercontent.com/3WwxLx0wKhfLB4sMWZ2QjLqFzwT5nwWD/Logo_BitSensorSmall_Light.png)
+
 # BitSensor PHP Plugin
-## Requirements
-* ``php >= 5.3.3``
 
-## Composer
+[![Latest Stable Version](https://poser.pugx.org/bitsensor/php/v/stable)](https://packagist.org/packages/bitsensor/php)[![Total Downloads](https://poser.pugx.org/bitsensor/php/downloads)](https://packagist.org/packages/bitsensor/php)[![License](https://poser.pugx.org/bitsensor/php/license)](https://packagist.org/packages/bitsensor/php)[![composer.lock](https://poser.pugx.org/bitsensor/php/composerlock)](https://packagist.org/packages/bitsensor/php)
+
+[![pipeline status](https://git.bitsensor.io/plugins/php/badges/master/pipeline.svg)](https://git.bitsensor.io/plugins/nodejs/commits/master)
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/EnableBitSensor.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=EnableBitSensor)
+
+The BitSensor PHP plugin.
+
+[BitSensor](https://bitsensor.io/)
+
+[Documentation](https://plugins.bitsensor.io/php)
+
+[Gitlab repo](https://git.bitsensor.io/plugins/php)
+
+
+
+## Setup BitSensor
+
+### Requirements
+* `php >= 5.3.3`
+* `composer`
+  
+### Installation
+
 This project uses Composer to handle dependencies. Use ``php composer.phar install`` to install everything after checking out the source.
-
-## Building
-The application can be packaged as a PHP Archive (phar). Executing the following command will generate the archive:
-
-``php build-tools/phar.php [output-file]``
-
-By default, the resulting file will be placed in the ``target/`` folder, but this can be changed via the optional ``output-file`` parameter.
-
-## Testing
-Assuming default target location, a simple test run can be executed using ``curl localhost/php/test/index.php``. This should return "Accepted", the raw JSON datapoint and the encrypted datapoint.  
-To test successful connection using your API key and endpoint, change the configuration in the ``test/index.php`` file and login to your BitSensor dashboard.
-
-For more extensive debugging in your codebase, we provide the following hooks:
-
-Debug logging can be printed using ``BitSensor\Util\Log::d($msg)``,
-this will only be printed when running in debug mode, activated by setting ``$debug`` to true in the global scope like this:
-
-```php
-global $debug;
-$debug = true;
-```
-
-This should be done in a test script and not in the actual source.
 
 ## Usage
 BitSensor can be used with Composer or as a standalone Phar.
@@ -87,7 +88,7 @@ $config->setLogLevel(Config::LOG_LEVEL_NONE);
 $bitSensor = new BitSensor($config);
 ```
 
-### Config
+## Configuration
 You have the following config options at your disposal:
 
 | PHP                       | JSON           | Value                                                                                                                                                      | Default                                             | Description                                                                                                                |
@@ -132,7 +133,7 @@ Sample configuration file:
 }
 ```
 
-### Apache
+## Apache
 After sinking BitSensor hooks in your application, you can extend BitSensor's visibility to include Apache events that aren't processed by your application. 
 
 To log Apache errors add the following to your ``.htaccess``:
@@ -190,6 +191,23 @@ SetEnv ERROR_DOCUMENT_503 /path/to/error/document.html
 SetEnv ERROR_DOCUMENT_504 /path/to/error/document.html
 SetEnv ERROR_DOCUMENT_505 /path/to/error/document.html
 ```
+
+
+## Testing
+Assuming default target location, a simple test run can be executed using ``curl localhost/php/test/index.php``. This should return "Accepted", the raw JSON datapoint and the encrypted datapoint.  
+To test successful connection using your API key and endpoint, change the configuration in the ``test/index.php`` file and login to your BitSensor dashboard.
+
+For more extensive debugging in your codebase, we provide the following hooks:
+
+Debug logging can be printed using ``BitSensor\Util\Log::d($msg)``,
+this will only be printed when running in debug mode, activated by setting ``$debug`` to true in the global scope like this:
+
+```php
+global $debug;
+$debug = true;
+```
+
+This should be done in a test script and not in the actual source.
 
 ## External dependencies
 Libraries not managed by Composer should go in the ``lib/`` folder.
