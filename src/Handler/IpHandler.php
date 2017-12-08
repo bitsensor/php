@@ -24,7 +24,7 @@ class IpHandler implements Handler {
                 $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
                 break;
             case Config::IP_ADDRESS_X_FORWARDED_FOR:
-                $ip = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : null;
+                $ip = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR'], 2)[0] : null;
                 break;
             case Config::IP_ADDRESS_MANUAL:
                 $ip = $config->getIpAddress();
