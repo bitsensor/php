@@ -2,29 +2,39 @@
 
 namespace BitSensor\Handler;
 
-
-use BitSensor\Core\CodeError;
-use BitSensor\Core\Collector;
 use Exception;
+use Proto\Datapoint;
+use Proto\Error;
 
 /**
  * Collects information about thrown exceptions.
  * @package BitSensor\Handler
  */
-class ExceptionHandler {
+class ExceptionHandler
+{
 
     /**
      * @param Exception $exception
      */
-    public static function handle($exception) {
-        /**
-         * @global Collector $collector
-         */
-        global $collector;
-        $collector->addError(new CodeError($exception->getCode(), $exception->getMessage(), $exception->getFile(), $exception->getLine(), $exception->getTrace(), 'Exception'));
+    public static function handle($exception)
+    {
+        global /** @var Datapoint $datapoint */
+        $datapoint;
 
-	global $bitSensor;
-	if(isset($bitSensor->exceptionHandler))
+        $error = new Error();
+        $error->setCode($exception->getCode());
+        $error->setDescription($exception->getMessage());
+        $error->setLocation($exception->getFile());
+        $error->setLine($exception->getLine());
+        $error->setType('Exception');
+
+        $traces = explode(PHP_EOL, $exception->getTraceAsString());
+        $error->setContext($traces);
+
+        $datapoint->getErrors()[] = $error;
+
+        global $bitSensor;
+        if (isset($bitSensor->exceptionHandler))
             call_user_func($bitSensor->exceptionHandler, $exception);
     }
 }

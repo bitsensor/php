@@ -1,7 +1,6 @@
 #!/bin/bash
-VERSION=${1:-"5.6"}
-export PATH="/opt/phpenv/shims:/opt/phpenv/bin:/opt/php-build/bin/:/opt/composer/vendor/bin:${PATH}"
-phpenv global $VERSION
-sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /opt/phpenv/versions/$VERSION/etc/php.ini
+export PATH="/home/ubuntu/.phpenv/shims:/home/ubuntu/.phpenv/bin:/home/ubuntu/.phpenv/bin:${PATH}"
+phpenv version
+sed -i -- 's/;phar.readonly = On/phar.readonly = Off/g' /home/ubuntu/.phpenv/versions/*/etc/php.ini
 composer self-update
 composer install --no-progress

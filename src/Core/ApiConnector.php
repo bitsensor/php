@@ -4,13 +4,15 @@ namespace BitSensor\Core;
 
 use BitSensor\Exception\ApiException;
 use BitSensor\Util\Log;
+use Proto\Datapoint;
 
 
 /**
  * Handles the connection with the BitSensor servers.
  * @package BitSensor\Core
  */
-class ApiConnector {
+class ApiConnector
+{
 
     /**
      * Authorize the connecting user.
@@ -43,7 +45,7 @@ class ApiConnector {
      */
     private $uri;
     /**
-     * @var array JSON array
+     * @var Datapoint datapoint to send
      */
     private $data;
     /**
@@ -59,7 +61,8 @@ class ApiConnector {
      */
     private $action;
 
-    private function __construct() {
+    private function __construct()
+    {
     }
 
     /**
@@ -67,7 +70,8 @@ class ApiConnector {
      * @param string $apiKey The API key used to authenticate with the BitSensor servers.
      * @return ApiConnector
      */
-    public static function from($user, $apiKey) {
+    public static function from($user, $apiKey)
+    {
         $connector = new self;
         $connector->setUser($user);
         $connector->setApiKey($apiKey);
@@ -75,10 +79,11 @@ class ApiConnector {
     }
 
     /**
-     * @param string $data The data to send as a JSON encoded object.
+     * @param Datapoint $data The data to send as a JSON encoded object.
      * @return ApiConnector
      */
-    public function with($data) {
+    public function with($data)
+    {
         $this->setData($data);
         return $this;
     }
@@ -87,7 +92,8 @@ class ApiConnector {
      * @param string $uri The server to send the data to.
      * @return ApiConnector
      */
-    public function to($uri) {
+    public function to($uri)
+    {
         $this->setUri($uri);
         return $this;
     }
@@ -98,7 +104,8 @@ class ApiConnector {
      * {@link ApiConnector::$ACTION_LOG}
      * @return ApiConnector
      */
-    public function post($action) {
+    public function post($action)
+    {
         $this->setAction($action);
         return $this;
     }
@@ -106,28 +113,32 @@ class ApiConnector {
     /**
      * @param string $data The data to send as a JSON encoded object.
      */
-    public function setData($data) {
+    public function setData($data)
+    {
         $this->data = $data;
     }
 
     /**
      * @param string $uri The server to send the data to.
      */
-    public function setUri($uri) {
+    public function setUri($uri)
+    {
         $this->uri = $uri;
     }
 
     /**
      * @param string $user The ID of the user.
      */
-    public function setUser($user) {
+    public function setUser($user)
+    {
         $this->user = $user;
     }
 
     /**
      * @param string $apiKey The API key used to authenticate with the BitSensor servers.
      */
-    public function setApiKey($apiKey) {
+    public function setApiKey($apiKey)
+    {
         $this->apiKey = $apiKey;
     }
 
@@ -136,7 +147,8 @@ class ApiConnector {
      * {@link ApiConnector::$ACTION_AUTHORIZE},
      * {@link ApiConnector::$ACTION_LOG}
      */
-    public function setAction($action) {
+    public function setAction($action)
+    {
         $this->action = $action;
     }
 
@@ -145,18 +157,22 @@ class ApiConnector {
      *
      * @throws ApiException
      */
-    public function send() {
-
-        $this->data[MetaContext::NAME] = array(
+    public function send()
+    {
+        $meta = array(
             MetaContext::USER => $this->user,
             MetaContext::API_KEY => $this->apiKey,
             MetaContext::PROVIDER => MetaContext::PROVIDER_PHP,
             MetaContext::PROVIDER_VERSION => BitSensor::VERSION
         );
 
-        $json = json_encode($this->data);
+        foreach ($meta as $k => $v) {
+            $this->data->getMeta()[$k] = $v;
+        }
 
-        Log::d('<pre>' . json_encode($this->data, defined ("JSON_PRETTY_PRINT") ? JSON_PRETTY_PRINT : 0) . '</pre>');
+        $json = $this->data->serializeToJsonString();
+
+        Log::d('<pre>' . json_encode($this->data, defined("JSON_PRETTY_PRINT") ? JSON_PRETTY_PRINT : 0) . '</pre>');
 
         $fp = fopen(dirname(__DIR__) . '/bitbrain.pem', 'r');
         $cert = fread($fp, 8192);
@@ -210,7 +226,8 @@ class ApiConnector {
      *
      * @see ApiConnector::setAction()
      */
-    private static function getRequestType($action) {
+    private static function getRequestType($action)
+    {
         switch ($action) {
             case ApiConnector::ACTION_AUTHORIZE:
                 return 'POST';

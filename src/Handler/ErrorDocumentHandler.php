@@ -1,7 +1,7 @@
 <?php
 
 use BitSensor\Core\BitSensor;
-use BitSensor\Core\HttpContext;
+use BitSensor\Core\EndpointConstants;
 use BitSensor\View\ErrorView;
 
 require_once '../index.php';
@@ -28,4 +28,4 @@ if (isset($_GET['e'])) {
 
 $bitSensor = new BitSensor();
 
-$bitSensor->addContext(new HttpContext(HttpContext::STATUS, $_GET['e']));
+$bitSensor->putEndpoint(EndpointConstants::STATUS, $_GET['e']);

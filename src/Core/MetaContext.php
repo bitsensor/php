@@ -6,8 +6,8 @@ namespace BitSensor\Core;
  * Container for metadata.
  * @package BitSensor\Core
  */
-class MetaContext extends Context {
-
+class MetaContext extends Constants
+{
     /**
      * Key for metadata.
      */
@@ -46,16 +46,5 @@ class MetaContext extends Context {
     const PROVIDER_APACHE = 'apache-log';
     const PROVIDER_NODEJS = 'bitsensor-nodejs';
     const PROVIDER_OTHER = 'other';
-
-    /**
-     * MetaContext constructor.
-     * @param $key
-     * @param $value
-     */
-    public function __construct($key, $value) {
-        $this->setName($key);
-        $this->setValue($value);
-    }
-
 
 }

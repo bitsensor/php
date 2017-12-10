@@ -1,28 +1,29 @@
 <?php
 
-
 namespace BitSensor\Test\Handler;
 
+use Proto\Datapoint;
 
-use BitSensor\Core\Collector;
-
-abstract class HandlerTest extends \PHPUnit_Framework_TestCase {
+abstract class HandlerTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
-     * @var Collector
+     * @var Datapoint
      */
-    protected $collector;
+    protected $datapoint;
 
-    protected function setUp() {
-        global $collector;
-        $collector = new Collector();
-        $this->collector = &$collector;
+    protected function setUp()
+    {
+        global $datapoint;
+        $datapoint = new Datapoint();
+        $this->datapoint = &$datapoint;
     }
 
 
-    protected function tearDown() {
-        global $collector;
-        unset($collector);
+    protected function tearDown()
+    {
+        global $datapoint;
+        unset($datapoint);
     }
 
     public abstract function testHandle();

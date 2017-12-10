@@ -12,13 +12,16 @@ use BitSensor\Handler\ModSecurityHandler;
 use BitSensor\Handler\RequestInputHandler;
 use BitSensor\Util\Log;
 use BitSensor\View\TamperView;
+use Proto\Datapoint;
+use Proto\GeneratedBy;
 
 /**
  * Entry point for starting the BitSensor Web Application Security plugin.
  * @package BitSensor\Core
  * @version 0.9.4
  */
-class BitSensor {
+class BitSensor
+{
 
     const VERSION = '0.9.6';
 
@@ -36,11 +39,11 @@ class BitSensor {
     const BLOCK_REASON_UNKNOWN = 3;
 
     /**
-     * Reference to the global collector instance.
+     * Reference to the global Datapoint instance.
      *
-     * @var Collector
+     * @var Datapoint
      */
-    private $collector;
+    private $datapoint;
     /**
      * Reference to the global Configuration.
      *
@@ -55,25 +58,25 @@ class BitSensor {
     private $handlers;
 
     /**
-    * ErrorHandler method set by the application to be called
-    *
-    * @var mixed
-    **/
+     * ErrorHandler method set by the application to be called
+     *
+     * @var mixed
+     **/
     public $errorHandler;
 
 
     /**
-    * ExceptionHandler method set by the application to be called
-    *
-    * @var callable
-    **/
+     * ExceptionHandler method set by the application to be called
+     *
+     * @var callable
+     **/
     public $exceptionHandler;
 
     /**
      * @param Config|string $configPath Object with configuration.
-     * @throws ApiException
      */
-    public function __construct($configPath = 'config.json') {
+    public function __construct($configPath = 'config.json')
+    {
         if (!defined('BITSENSOR_WORKING_DIR')) {
             /**
              * Working directory when the application started.
@@ -95,23 +98,23 @@ class BitSensor {
         $this->config = &$config;
 
         /**
-         * @global Collector $collector
+         * @global Datapoint $datapoint
          */
-        global $collector;
-        $collector = new Collector();
-        $this->collector = &$collector;
+        global $datapoint;
+        $datapoint = new Datapoint();
+        $this->datapoint = &$datapoint;
 
         $this->errorHandler = set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
         Log::d("Previous error handler is: " . (is_null($this->errorHandler) ?
-            "not defined" : (is_array($this->errorHandler) ?
-                implode($this->errorHandler) : $this->errorHandler)));
+                "not defined" : (is_array($this->errorHandler) ?
+                    implode($this->errorHandler) : $this->errorHandler)));
 
         $this->exceptionHandler = set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
         Log::d("Previous exception handler is: " . (is_null($this->exceptionHandler) ?
-            "not defined" : (is_array($this->exceptionHandler) ?
-                implode($this->exceptionHandler) : $this->exceptionHandler)));
+                "not defined" : (is_array($this->exceptionHandler) ?
+                    implode($this->exceptionHandler) : $this->exceptionHandler)));
 
-        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $collector, $config);
+        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $datapoint, $config);
 
         $this->addHandler(new IpHandler());
         $this->addHandler(new HttpRequestHandler());
@@ -126,7 +129,7 @@ class BitSensor {
             try {
                 $authorizationResponse = json_decode(ApiConnector::from($this->config->getUser(), $this->config->getApiKey())
                     ->to($this->config->getUri())
-                    ->with($collector->toArray())
+                    ->with($datapoint)
                     ->post(ApiConnector::ACTION_AUTHORIZE)
                     ->send(), true);
             } catch (ApiException $e) {
@@ -153,7 +156,8 @@ class BitSensor {
      * {@link BitSensor::BLOCK_REASON_ACCESS_DENIED},
      * {@link BitSensor::BLOCK_REASON_UNKNOWN}
      */
-    public function requestBlockAccess($reason) {
+    public function requestBlockAccess($reason)
+    {
         switch ($reason) {
             case BitSensor::BLOCK_REASON_TAMPER:
                 if ($this->config->getMode() === Config::MODE_ON) {
@@ -176,39 +180,47 @@ class BitSensor {
     }
 
     /**
-     * Adds a new {@link Context} to the context collection.
+     * Adds a new entry to the context map.
      *
-     * @param Context $context
+     * @param $key
+     * @param $value
      */
-    public function addContext(Context $context) {
-        $this->collector->addContext($context);
+    public function putContext($key, $value)
+    {
+        $this->datapoint->getContext()[$key] = $value;
     }
 
     /**
-     * Adds a new {@link Context} to the endpoint collection.
+     * Adds a new entry to the endpoint map.
      *
-     * @param Context $context
+     * @param $key
+     * @param $value
      */
-    public function addEndpointContext(Context $context) {
-        $this->collector->addEndpointContext($context);
+    public function putEndpoint($key, $value)
+    {
+        $this->datapoint->getEndpoint()[$key] = $value;
     }
 
     /**
      * Adds a new {@link Error} to the error collection.
      *
-     * @param Error $error
+     * @param \Proto\Error $error
      */
-    public function addError(Error $error) {
-        $this->collector->addError($error);
+    public function addError(\Proto\Error $error)
+    {
+        $error->setGeneratedby(GeneratedBy::PLUGIN);
+        $this->datapoint->getErrors()[] = $error;
     }
 
     /**
-     * Adds a new {@link Context} to the input collection.
+     * Adds a new entry to the input map.
      *
-     * @param Context $input
+     * @param $key
+     * @param $value
      */
-    public function addInput(Context $input) {
-        $this->collector->addInput($input);
+    public function putInput($key, $value)
+    {
+        $this->datapoint->getInput()[$key] = $value;
     }
 
     /**
@@ -216,20 +228,23 @@ class BitSensor {
      *
      * @param Handler $handler
      */
-    private function addHandler(Handler $handler) {
+    private function addHandler(Handler $handler)
+    {
         $this->handlers[] = $handler;
     }
 
     /**
      * Run all registered Handlers to collect data about the current request.
      */
-    private function runHandlers() {
+    private function runHandlers()
+    {
         foreach ($this->handlers as $handler) {
-            $handler->handle($this->collector, $this->config);
+            $handler->handle($this->datapoint, $this->config);
         }
     }
 
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->config;
     }
 }

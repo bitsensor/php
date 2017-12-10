@@ -8,8 +8,8 @@ namespace BitSensor\Core;
  * @package BitSensor\Core
  * @see https://www.modsecurity.org/
  */
-class ModSecurityContext extends Context {
-
+class ModSecurityContext extends Constants
+{
     /**
      * ModSecurity.
      */
@@ -22,10 +22,5 @@ class ModSecurityContext extends Context {
      * Score from ModSecurity.
      */
     const WAF_SCORE = 'score';
-
-    public function __construct($key, $value) {
-        $this->setName(self::NAME . '.' . $key);
-        $this->setValue($value);
-    }
 
 }
