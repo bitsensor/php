@@ -468,8 +468,14 @@ class Config
      */
     public function setFastcgiFinishRequest($executeFastcgiFinishRequest)
     {
+        if($executeFastcgiFinishRequest == self::EXECUTE_FASTCGI_FINISH_REQUEST_ON) {
+            if(!function_exists('fastcgi_finish_request')) {
+                trigger_error("fastcgi is not available, however you wanted to enable it in the BitSensor configuration. Please install fastcgi or disable " . self::EXECUTE_FASTCGI_FINISH_REQUEST, E_WARNING);
+                $executeFastcgiFinishRequest = self::EXECUTE_FASTCGI_FINISH_REQUEST_OFF;
+            }
+        }
+
         $this->executeFastcgiFinishRequest = $executeFastcgiFinishRequest;
     }
-
 
 }

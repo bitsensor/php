@@ -23,6 +23,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF, $config->getFastcgiFinishRequest());
     }
 
+    /**
+     * @expectedException	 PHPUnit_Framework_Error_Warning
+     */
     public function testJsonConstructor()
     {
         $json = '{' .
