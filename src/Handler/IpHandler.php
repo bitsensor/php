@@ -22,10 +22,17 @@ class IpHandler implements Handler
 
         switch ($config->getIpAddressSrc()) {
             case Config::IP_ADDRESS_REMOTE_ADDR:
-                $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+                if(isset($_SERVER['REMOTE_ADDR'])) {
+                    $ip = $_SERVER['REMOTE_ADDR'];
+                }
+
                 break;
             case Config::IP_ADDRESS_X_FORWARDED_FOR:
-                $ip = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR'], 2)[0] : null;
+                if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                    $ip_array = explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR'], 2);
+                    $ip = $ip_array[0];
+                }
+
                 break;
             case Config::IP_ADDRESS_MANUAL:
                 $ip = $config->getIpAddress();
