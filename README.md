@@ -22,7 +22,7 @@ The BitSensor PHP plugin.
 ## Setup BitSensor
 
 ### Requirements
-* `php >= 5.3.3`
+* `php >= 5.6.0`
 * `composer`
   
 ### Installation
