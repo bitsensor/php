@@ -28,7 +28,8 @@ class IpHandler implements Handler {
                 break;
             case Config::IP_ADDRESS_X_FORWARDED_FOR:
                 if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-                    $ip = explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR'], 2)[0];
+                    $ip_array = explode(', ', $_SERVER['HTTP_X_FORWARDED_FOR'], 2);
+                    $ip = $ip_array[0];
                 }
 
                 break;
