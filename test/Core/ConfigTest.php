@@ -5,9 +5,11 @@ namespace BitSensor\Test\Core;
 
 use BitSensor\Core\Config;
 
-class ConfigTest extends \PHPUnit_Framework_TestCase {
+class ConfigTest extends \PHPUnit_Framework_TestCase
+{
 
-    public function testEmptyConstructor() {
+    public function testEmptyConstructor()
+    {
         $config = new Config();
 
         static::assertEmpty($config->getUri());
@@ -21,7 +23,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase {
         static::assertEquals(Config::OUTPUT_FLUSHING_OFF, $config->getOutputFlushing());
     }
 
-    public function testJsonConstructor() {
+    public function testJsonConstructor()
+    {
         $json = '{' .
             '"uri": "http://localhost:8080/",' .
             '"user": "example_user",' .

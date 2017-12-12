@@ -5,11 +5,12 @@ namespace BitSensor\Core;
 
 /**
  * Information about the HTTP request.
+ *
  * @package BitSensor\Core
  * @see $_SERVER
  */
-class HttpContext extends Context {
-
+class HttpConstants extends Constants
+{
     /**
      * HTTP request.
      */
@@ -58,10 +59,5 @@ class HttpContext extends Context {
      * HTTPS connection.
      */
     const HTTPS = 'https';
-
-    public function __construct($key, $value) {
-        $this->setName(self::NAME . '.' . $key);
-        $this->setValue($value);
-    }
 
 }

@@ -8,8 +8,8 @@ namespace BitSensor\Core;
  * @package BitSensor\Core
  * @see $_FILES
  */
-class FileContext extends Context {
-
+class FileContext extends Constants
+{
     /**
      * File information.
      */
@@ -34,16 +34,5 @@ class FileContext extends Context {
      * The error code associated with this file upload.
      */
     const ERROR_CODE = 'error';
-
-    /**
-     * FileContext constructor.
-     * @param $key string
-     * @param $value array|string
-     */
-    public function __construct($key, $value) {
-        $this->setName(self::NAME . '.' . $key);
-        $this->setValue($value);
-    }
-
 
 }

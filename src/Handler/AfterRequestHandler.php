@@ -7,19 +7,21 @@ use BitSensor\Core\ApiConnector;
 use BitSensor\Core\Collector;
 use BitSensor\Core\Config;
 use BitSensor\Exception\ApiException;
+use Proto\Datapoint;
 
 /**
  * Handler to run after the PHP script finished. Sends logged data to the BitSensor servers.
  * @package BitSensor\Handler
  */
-class AfterRequestHandler {
+class AfterRequestHandler
+{
 
     /**
-     * @param Collector $collector The Collector containing the data about the connecting user.
+     * @param Datapoint $datapoint Datapoint containing the data about the connecting user.
      * @param Config $config The Config.
-     * @throws ApiException
      */
-    public static function handle($collector, $config) {
+    public static function handle($datapoint, $config)
+    {
         global $bitsensorNoShutdownHandler;
         if ($bitsensorNoShutdownHandler !== null && $bitsensorNoShutdownHandler) {
             return;
@@ -35,10 +37,11 @@ class AfterRequestHandler {
 
         try {
             ApiConnector::from($config->getUser(), $config->getApiKey())
-                ->with($collector->toArray())
+                ->with($datapoint)
                 ->to($config->getUri())
                 ->post(ApiConnector::ACTION_LOG)
                 ->send();
+
         } catch (ApiException $e) {
             if ($config->getLogLevel() === Config::LOG_LEVEL_ALL) {
                 error_log($e->getMessage());

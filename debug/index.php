@@ -1,4 +1,5 @@
 <?php
+
 use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
 use BitSensor\Core\SessionContext;
@@ -24,9 +25,16 @@ session_start();
 
 $_SESSION['user'] = 'le moi';
 
-$bitSensor->addContext(new SessionContext(SessionContext::USERNAME, $_SESSION['user']));
+$bitSensor->putContext('php.' . SessionContext::NAME . '.' . SessionContext::USERNAME, $_SESSION['user']);
 
-$bitSensor->addError(new \BitSensor\Core\CodeError(1, "a", "b.php", 2, null, "Custom"));
-$bitSensor->addError(new \BitSensor\Core\CodeError(1, "a", "b.php", 2, null, "Custom"));
+$error = new \Proto\Error();
+$error->setCode(1);
+$error->setDescription('a');
+$error->setLocation('b.php');
+$error->setLine(2);
+$error->setType('Custom');
+
+$bitSensor->addError($error);
+$bitSensor->addError($error);
 
 

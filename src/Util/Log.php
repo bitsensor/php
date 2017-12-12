@@ -7,7 +7,8 @@ namespace BitSensor\Util;
  * Helper class for logging stuff.
  * @package BitSensor\Util
  */
-class Log {
+class Log
+{
 
     /**
      * Prints a messages if <code>$debug</code> is in the global scope.
@@ -19,7 +20,8 @@ class Log {
      *
      * @param string $msg The message to print.
      */
-    public static function d($msg) {
+    public static function d($msg)
+    {
         global $debug;
         if ($debug === true) {
             echo $msg;

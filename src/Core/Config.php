@@ -7,7 +7,8 @@ namespace BitSensor\Core;
  * Configuration for the BitSensor Web Application Security plugin.
  * @package BitSensor\Core
  */
-class Config {
+class Config
+{
 
     /**
      * The BitSensor server to connect to.
@@ -202,7 +203,8 @@ class Config {
     /**
      * @param $json
      */
-    public function __construct($json = null) {
+    public function __construct($json = null)
+    {
         if ($json !== null) {
             $config = json_decode($json, true);
 
@@ -255,154 +257,176 @@ class Config {
     /**
      * @return string The BitSensor server to connect to.
      */
-    public function getUri() {
+    public function getUri()
+    {
         return $this->uri;
     }
 
     /**
      * @param string $uri The BitSensor server to connect to.
      */
-    public function setUri($uri) {
+    public function setUri($uri)
+    {
         $this->uri = $uri;
     }
 
     /**
      * @return string Your BitSensor username.
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->user;
     }
 
     /**
      * @param string $user Your BitSensor username.
      */
-    public function setUser($user) {
+    public function setUser($user)
+    {
         $this->user = $user;
     }
 
     /**
      * @return string Your BitSensor API key.
      */
-    public function getApiKey() {
+    public function getApiKey()
+    {
         return $this->apiKey;
     }
 
     /**
      * @param string $apiKey Your BitSensor API key.
      */
-    public function setApiKey($apiKey) {
+    public function setApiKey($apiKey)
+    {
         $this->apiKey = $apiKey;
     }
 
     /**
      * @return string Running mode.
      */
-    public function getMode() {
+    public function getMode()
+    {
         return $this->mode;
     }
 
     /**
      * @param string $mode Running mode.
      */
-    public function setMode($mode) {
+    public function setMode($mode)
+    {
         $this->mode = $mode;
     }
 
     /**
      * @return string Action to perform when the connection to the BitSensor servers is lost.
      */
-    public function getConnectionFail() {
+    public function getConnectionFail()
+    {
         return $this->connectionFail;
     }
 
     /**
      * @param string $connectionFail Action to perform when the connection to the BitSensor servers is lost.
      */
-    public function setConnectionFail($connectionFail) {
+    public function setConnectionFail($connectionFail)
+    {
         $this->connectionFail = $connectionFail;
     }
 
     /**
      * @return string Source of the IP address of the user.
      */
-    public function getIpAddressSrc() {
+    public function getIpAddressSrc()
+    {
         return $this->ipAddressSrc;
     }
 
     /**
      * @param string $ipAddressSrc Source of the IP address of the user.
      */
-    public function setIpAddressSrc($ipAddressSrc) {
+    public function setIpAddressSrc($ipAddressSrc)
+    {
         $this->ipAddressSrc = $ipAddressSrc;
     }
 
     /**
      * @return string Manual IP address.
      */
-    public function getIpAddress() {
+    public function getIpAddress()
+    {
         return $this->ipAddress;
     }
 
     /**
      * @param string $ipAddress Manual IP address.
      */
-    public function setIpAddress($ipAddress) {
+    public function setIpAddress($ipAddress)
+    {
         $this->ipAddress = $ipAddress;
     }
 
     /**
      * @return string Source of the server host.
      */
-    public function getHostSrc() {
+    public function getHostSrc()
+    {
         return $this->hostSrc;
     }
 
     /**
      * @param string $ipAddressSrc Source of the server host.
      */
-    public function setHostSrc($hostSrc) {
+    public function setHostSrc($hostSrc)
+    {
         $this->hostSrc = $hostSrc;
     }
 
     /**
      * @return string Manual host.
      */
-    public function getHost() {
+    public function getHost()
+    {
         return $this->host;
     }
 
     /**
      * @param string $ipAddress Manual host.
      */
-    public function setHost($host) {
+    public function setHost($host)
+    {
         $this->host = $host;
     }
 
     /**
      * @return string Log level.
      */
-    public function getLogLevel() {
+    public function getLogLevel()
+    {
         return $this->logLevel;
     }
 
     /**
      * @param string $logLevel Log level.
      */
-    public function setLogLevel($logLevel) {
+    public function setLogLevel($logLevel)
+    {
         $this->logLevel = $logLevel;
     }
 
     /**
      * @return string Output flushing.
      */
-    public function getOutputFlushing() {
+    public function getOutputFlushing()
+    {
         return $this->outputFlushing;
     }
 
     /**
      * @param string $outputFlushing Output flushing.
      */
-    public function setOutputFlushing($outputFlushing) {
+    public function setOutputFlushing($outputFlushing)
+    {
         $this->outputFlushing = $outputFlushing;
     }
 

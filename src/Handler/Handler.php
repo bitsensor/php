@@ -2,21 +2,21 @@
 
 namespace BitSensor\Handler;
 
-
-use BitSensor\Core\Collector;
 use BitSensor\Core\Config;
+use Proto\Datapoint;
 
 /**
  * Interface Handler
  * @package BitSensor\Handler
  */
-interface Handler {
+interface Handler
+{
 
     /**
-     * @param Collector $collector
+     * @param Datapoint $datapoint
      * @param Config $config
      * @return void
      */
-    public function handle(Collector $collector, Config $config);
+    public function handle(Datapoint $datapoint, Config $config);
 
 }

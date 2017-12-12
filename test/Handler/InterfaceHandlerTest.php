@@ -2,19 +2,21 @@
 
 namespace BitSensor\Test\Handler;
 
-
 use BitSensor\Core\Config;
-use BitSensor\Core\EndpointContext;
+use BitSensor\Core\EndpointConstants;
 use BitSensor\Handler\InterfaceHandler;
 
-class InterfaceHandlerTest extends HandlerTest {
+class InterfaceHandlerTest extends HandlerTest
+{
 
-    public function testHandle() {
+    public function testHandle()
+    {
         $handler = new InterfaceHandler();
-        $handler->handle($this->collector, new Config());
+        $handler->handle($this->datapoint, new Config());
 
-        $contexts = $this->collector->toArray();
-        static::assertTrue($contexts[EndpointContext::NAME][EndpointContext::CLI]);
-        static::assertEquals('cli', $contexts[EndpointContext::NAME][EndpointContext::SAPI]);
+        $endpoint = $this->datapoint->getEndpoint();
+
+        self::assertEquals('true', $endpoint[EndpointConstants::CLI]);
+        self::assertEquals('cli', $endpoint[EndpointConstants::SAPI]);
     }
 }
