@@ -24,10 +24,27 @@ The BitSensor PHP plugin.
 ### Requirements
 * `php >= 5.6.0`
 * `composer`
+* `uopz` [optional]
   
 ### Installation
 
-This project uses Composer to handle dependencies. Use ``php composer.phar install`` to install everything after checking out the source.
+* Install bitsensor/php package using composer:
+
+    ```bash
+    composer require bitsensor/php
+    ```
+    
+* Install from source:
+
+    ```bash
+    php composer.phar install
+    ```
+    
+* [Optional] The application contains hooks that are used to trace PDO executions. This feature only works with [uopz](https://github.com/krakjoe/uopz) installed.
+
+    ```bash
+    pecl install uopz
+    ```
 
 ## Usage
 BitSensor can be used with Composer or as a standalone Phar.
@@ -108,8 +125,8 @@ You have the following config options at your disposal:
 ### Tags
 If you are running many applications, it might be sensible to group them by a tag. You can create a tag using the following snipplet
 ```php
-global $collector;
-$collector->addEndpointContext(new EndpointContext("tag", "cool-applications"));
+global $datapoint;
+$datapoint->putContext("tag", "cool-applications");
 ```
 
 The configuration can be specified in either PHP or JSON. To use JSON instead of PHP use the following code:
