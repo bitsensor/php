@@ -10,6 +10,7 @@ use BitSensor\Handler\InterfaceHandler;
 use BitSensor\Handler\IpHandler;
 use BitSensor\Handler\ModSecurityHandler;
 use BitSensor\Handler\RequestInputHandler;
+use BitSensor\Hook\PDOHook;
 use BitSensor\Util\Log;
 use BitSensor\View\TamperView;
 use Proto\Datapoint;
@@ -146,6 +147,9 @@ class BitSensor
                 $this->requestBlockAccess(BitSensor::BLOCK_REASON_UNKNOWN);
             }
         }
+
+        // Load plugins
+        PDOHook::instance()->start();
     }
 
     /**
