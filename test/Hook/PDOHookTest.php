@@ -12,11 +12,28 @@ class PDOHookTest extends \PHPUnit_Framework_TestCase
 
     /** @var Datapoint $datapoint */
     private $datapoint;
+    private $host;
+    private $pass;
+
+    /**
+     * PDOHookTest constructor.
+     */
+    public function __construct()
+    {
+        $this->host = getenv('BITSENSOR_MYSQL_HOST') ?: 'localhost';
+        $this->pass = getenv('MYSQL_ROOT_PASSWORD') ?: '';
+    }
+
 
     protected function setUp()
     {
-        $dsn = 'mysql:host=localhost;charset=utf8;port=3306';
-        $pdo = new PDO($dsn, 'root', '');
+        if (!extension_loaded('uopz')) {
+            self::markTestSkipped('UOPZ plugin not loaded. Skip test.');
+        }
+
+
+        $dsn = 'mysql:host=' . $this->host . ';charset=utf8;port=3306';
+        $pdo = new PDO($dsn, 'root', $this->pass);
 
         $pdo->exec("DROP DATABASE unittest");
         $pdo->exec("CREATE DATABASE unittest");
@@ -40,11 +57,14 @@ class PDOHookTest extends \PHPUnit_Framework_TestCase
         unset($datapoint);
     }
 
+    /**
+     * @group hook
+     */
     public function testConstructorHook()
     {
         $username = 'root';
-        $dsn = 'mysql:host=localhost;dbname=unittest;charset=utf8;port=3306';
-        $pdo = new PDO($dsn, $username, '');
+        $dsn = 'mysql:host=' . $this->host . ';dbname=unittest;charset=utf8;port=3306';
+        $pdo = new PDO($dsn, $username, $this->pass);
 
         $pdo->query('*');
 
@@ -56,12 +76,15 @@ class PDOHookTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * @group hook
+     */
     public function testQuery()
     {
         $query = "select * from pet";
 
-        $dsn = 'mysql:host=localhost;dbname=unittest;charset=utf8;port=3306';
-        $pdo = new PDO($dsn, 'root', '');
+        $dsn = 'mysql:host=' . $this->host . ';dbname=unittest;charset=utf8;port=3306';
+        $pdo = new PDO($dsn, 'root', $this->pass);
         $pdo->query($query);
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
@@ -73,12 +96,15 @@ class PDOHookTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('1', $sqlInvocation->getEndpoint()['hits']);
     }
 
+    /**
+     * @group hook
+     */
     public function testQueryFailure()
     {
         $query = "select *";
 
-        $dsn = 'mysql:host=localhost;dbname=unittest;charset=utf8;port=3306';
-        $pdo = new PDO($dsn, 'root', '');
+        $dsn = 'mysql:host=' . $this->host . ';dbname=unittest;charset=utf8;port=3306';
+        $pdo = new PDO($dsn, 'root', $this->pass);
         $pdo->query($query);
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
@@ -89,12 +115,15 @@ class PDOHookTest extends \PHPUnit_Framework_TestCase
         self::assertArrayNotHasKey('hits', $sqlInvocation->getEndpoint());
     }
 
+    /**
+     * @group hook
+     */
     public function testPrepareBindParam()
     {
         $prepare = "INSERT INTO pet VALUES ('Puffball',:owner,'hamster','f','1999-03-30',NULL)";
 
-        $dsn = 'mysql:host=localhost;dbname=unittest;charset=utf8;port=3306';
-        $pdo = new PDO($dsn, 'root', '');
+        $dsn = 'mysql:host=' . $this->host . ';dbname=unittest;charset=utf8;port=3306';
+        $pdo = new PDO($dsn, 'root', $this->pass);
         $stmt = $pdo->prepare($prepare);
         $stmt->bindParam(':owner', $owner);
 
@@ -115,12 +144,15 @@ class PDOHookTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($owner, $sqlInvocation->getQueries()[1]->getParameter()[':owner']);
     }
 
+    /**
+     * @group hook
+     */
     public function testPrepareBindValue()
     {
         $prepare = "INSERT INTO pet VALUES ('Puffball',:owner,'hamster','f','1999-03-30',NULL)";
 
-        $dsn = 'mysql:host=localhost;dbname=unittest;charset=utf8;port=3306';
-        $pdo = new PDO($dsn, 'root', '');
+        $dsn = 'mysql:host=' . $this->host . ';dbname=unittest;charset=utf8;port=3306';
+        $pdo = new PDO($dsn, 'root', $this->pass);
         $stmt = $pdo->prepare($prepare);
 
         $stmt->bindValue(':owner', 'Harry');
@@ -140,12 +172,15 @@ class PDOHookTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('Miley', $sqlInvocation->getQueries()[1]->getParameter()[':owner']);
     }
 
+    /**
+     * @group hook
+     */
     public function testPrepareExecute()
     {
         $query = "SELECT name, owner FROM pet";
 
-        $dsn = 'mysql:host=localhost;dbname=unittest;charset=utf8;port=3306';
-        $pdo = new PDO($dsn, 'root', '');
+        $dsn = 'mysql:host=' . $this->host . ';dbname=unittest;charset=utf8;port=3306';
+        $pdo = new PDO($dsn, 'root', $this->pass);
         $stmt = $pdo->prepare($query);
         $stmt->execute();
 

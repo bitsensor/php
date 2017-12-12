@@ -40,7 +40,7 @@ The BitSensor PHP plugin.
     php composer.phar install
     ```
     
-* [Optional] The application contains hooks that are used to trace PDO executions. This feature only works with [uopz](https://github.com/krakjoe/uopz) installed.
+* [Optional] The application contains hooks that are used to trace PDO executions. This feature only works with php 7 and [uopz](https://github.com/krakjoe/uopz) installed.
 
     ```bash
     pecl install uopz

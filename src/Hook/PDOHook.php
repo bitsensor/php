@@ -18,6 +18,7 @@ use Proto\Invocation_SQLInvocation_Query;
  */
 class PDOHook extends Singleton
 {
+    const VERSION_REQUIREMENT = "5.0.0";
     const EXEC = 'exec';
     const QUERY = 'query';
     const PREPARE = 'prepare';
@@ -25,16 +26,21 @@ class PDOHook extends Singleton
     private $connection;
     private $username;
     public $prepareStmts = array();
+    private $started = false;
 
     /**
      * Starts PDO execution hooks.
      */
     public function start()
     {
-        if (!extension_loaded('uopz'))
+        if (!extension_loaded('uopz') || $this->started)
             return;
 
-        $this->stop();
+        if (version_compare(phpversion('uopz'), self::VERSION_REQUIREMENT) < 0)
+            trigger_error("PDOHook not starting with 'uopz' version (" . phpversion('uopz') . ") lower than " . self::VERSION_REQUIREMENT,
+                E_USER_WARNING);
+
+        $this->started = true;
 
         /** Hook PDO::__construct for connection information */
         uopz_set_hook(PDO::class, '__construct', function ($dsn, $username) {
@@ -116,8 +122,10 @@ class PDOHook extends Singleton
      */
     public function stop()
     {
-        if (!extension_loaded('uopz'))
+        if (!$this->started)
             return;
+
+        $this->started = false;
 
         uopz_unset_hook(PDO::class, '__construct');
         uopz_unset_return(PDO::class, self::EXEC);
@@ -174,7 +182,8 @@ class PDOHook extends Singleton
             $datapoint->setInvocation($invocation);
         }
 
-        $datapoint->getInvocation()->getSqlInvocations()[] = $sqlInvocation;
+        $invocation = $datapoint->getInvocation();
+        $invocation->getSqlInvocations()[] = $sqlInvocation;
 
         return $result;
     }
