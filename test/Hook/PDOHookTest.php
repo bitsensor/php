@@ -5,11 +5,16 @@ namespace BitSensor\Test\Hook;
 use BitSensor\Hook\PDOHook;
 use PDO;
 use Proto\Invocation_SQLInvocation;
+use SuperClosure\SerializableClosure;
 
+/**
+ * @author Khanh Nguyen
+ * @runTestsInSeparateProcesses
+ */
 class PDOHookTest extends DatabaseTestBase
 {
     /**
-     * Initialize connection to database and test table.
+     * @inheritdoc
      */
     function prepareDatabase()
     {
@@ -22,12 +27,10 @@ class PDOHookTest extends DatabaseTestBase
         $pdo->exec("CREATE TABLE pet (name VARCHAR(20), owner VARCHAR(20), species VARCHAR(20), sex CHAR(1), birth DATE, death DATE);");
         $pdo->exec("INSERT INTO pet VALUES ('Puffball','Diane','hamster','f','1999-03-30',NULL);");
         $pdo = null;
-
     }
 
     /**
-     * Returns Hook instance.
-     * @return mixed
+     * @inheritdoc
      */
     function getHookInstance()
     {
@@ -35,21 +38,21 @@ class PDOHookTest extends DatabaseTestBase
     }
 
     /**
-     * @param string $query
-     * @return mixed
+     * @inheritdoc
      */
-    function runQuery($query)
+    function queryFuncProvider()
     {
-        $dsn = 'mysql:host=' . $this->host . ';dbname=unittest;charset=utf8;port=3306';
-        $pdo = new PDO($dsn, 'root', $this->pass);
-        $pdo->query($query);
+        return [
+            [new SerializableClosure(function ($query) {
+                $dsn = 'mysql:host=' . $this->host . ';dbname=unittest;charset=utf8;port=3306';
+                $pdo = new PDO($dsn, 'root', $this->pass);
+                $pdo->query($query);
+            })]
+        ];
     }
 
     /** TEST CASES  */
 
-    /**
-     * @group hook
-     */
     public function testPrepareBindParam()
     {
         $prepare = "INSERT INTO pet VALUES ('Puffball',:owner,'hamster','f','1999-03-30',NULL)";
@@ -76,9 +79,6 @@ class PDOHookTest extends DatabaseTestBase
         self::assertEquals($owner, $sqlInvocation->getQueries()[1]->getParameter()[':owner']);
     }
 
-    /**
-     * @group hook
-     */
     public function testPrepareBindValue()
     {
         $prepare = "INSERT INTO pet VALUES ('Puffball',:owner,'hamster','f','1999-03-30',NULL)";
@@ -104,9 +104,6 @@ class PDOHookTest extends DatabaseTestBase
         self::assertEquals('Miley', $sqlInvocation->getQueries()[1]->getParameter()[':owner']);
     }
 
-    /**
-     * @group hook
-     */
     public function testPrepareExecute()
     {
         $query = "SELECT name, owner FROM pet";

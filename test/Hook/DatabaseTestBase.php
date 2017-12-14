@@ -2,22 +2,33 @@
 
 namespace BitSensor\Test\Hook;
 
+use PHPUnit_Framework_TestCase;
 use Proto\Datapoint;
 use Proto\Invocation_SQLInvocation;
 
-abstract class DatabaseTestBase extends \PHPUnit_Framework_TestCase
+/**
+ * Class DatabaseTestBase contains test suite setup and basic test cases.
+ * @package BitSensor\Test\Hook
+ */
+abstract class DatabaseTestBase extends PHPUnit_Framework_TestCase
 {
     /** @var Datapoint $datapoint */
+    /** @var string $host */
+    /** @var string $pass */
     protected $datapoint;
     protected $host;
     protected $pass;
 
     /**
      * DataBaseTestBase constructor.
+     *
+     * @param null $name
+     * @param array $data
+     * @param string $dataName
      */
-    public function __construct()
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
-        parent::__construct();
+        parent::__construct($name, $data, $dataName);
 
         $this->host = getenv('BITSENSOR_MYSQL_HOST') ?: 'localhost';
         $this->pass = getenv('MYSQL_ROOT_PASSWORD') ?: '';
@@ -49,12 +60,13 @@ abstract class DatabaseTestBase extends \PHPUnit_Framework_TestCase
     /** TEST CASES */
 
     /**
-     * @group hook
+     * @dataProvider queryFuncProvider
+     * @param $queryFunc
      */
-    public function testConstructorHook()
+    public function testConstructorHook($queryFunc)
     {
         $query = "*";
-        $this->runQuery($query);
+        call_user_func($queryFunc, $query);
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
         $sqlInvocation = $this->datapoint->getInvocation()->getSQLInvocations()[0];
@@ -64,12 +76,13 @@ abstract class DatabaseTestBase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group hook
+     * @dataProvider queryFuncProvider
+     * @param $queryFunc
      */
-    public function testQuery()
+    public function testQuery($queryFunc)
     {
         $query = "select * from pet";
-        $this->runQuery($query);
+        call_user_func($queryFunc, $query);
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
         $sqlInvocation = $this->datapoint->getInvocation()->getSQLInvocations()[0];
@@ -81,12 +94,13 @@ abstract class DatabaseTestBase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group hook
+     * @dataProvider queryFuncProvider
+     * @param $queryFunc
      */
-    public function testQueryFailure()
+    public function testQueryFailure($queryFunc)
     {
         $query = "select *";
-        $this->runQuery($query);
+        call_user_func($queryFunc, $query);
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
         $sqlInvocation = $this->datapoint->getInvocation()->getSQLInvocations()[0];
@@ -111,7 +125,8 @@ abstract class DatabaseTestBase extends \PHPUnit_Framework_TestCase
     abstract function getHookInstance();
 
     /**
-     * @param string $query
+     * Returns Query functions used for querying.
+     * @return array
      */
-    abstract function runQuery($query);
+    abstract function queryFuncProvider();
 }

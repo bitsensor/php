@@ -4,10 +4,11 @@ image: miya0001/phpenv:7.1
 .test_template: &test_job
   stage: test
   image: miya0001/phpenv:$PHP_VERSION
-  script:
+  before_script:
     - . build-tools/prepare-env.sh
     - composer config cache-files-dir .composercache
-    - vendor/bin/phpunit --bootstrap vendor/autoload.php --exclude-group hook test/
+  script:
+    - vendor/bin/phpunit --bootstrap vendor/autoload.php test/
 
 .test_template7: &test_job7
   <<: *test_job
@@ -33,10 +34,6 @@ image: miya0001/phpenv:7.1
     - php composer.phar config cache-files-dir .composercache
     - pecl install uopz
     - docker-php-ext-enable uopz
-  script:
-    - vendor/bin/phpunit --bootstrap vendor/autoload.php --exclude-group hook test/
-    # Test hooks separately
-    - vendor/bin/phpunit --bootstrap vendor/autoload.php --group hook test/
 
 cache:
   key: $CI_COMMIT_REF_NAME
