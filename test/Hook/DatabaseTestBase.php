@@ -60,7 +60,7 @@ abstract class DatabaseTestBase extends PHPUnit_Framework_TestCase
     /** TEST CASES */
 
     /**
-     * @dataProvider queryFuncProvider
+     * @dataProvider constructorProvider
      * @param $queryFunc
      */
     public function testConstructorHook($queryFunc)
@@ -78,8 +78,9 @@ abstract class DatabaseTestBase extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider queryFuncProvider
      * @param $queryFunc
+     * @param bool $hasHits
      */
-    public function testQuery($queryFunc)
+    public function testQuery($queryFunc, $hasHits = true)
     {
         $query = "select * from pet";
         call_user_func($queryFunc, $query);
@@ -90,7 +91,9 @@ abstract class DatabaseTestBase extends PHPUnit_Framework_TestCase
         self::assertEquals($query, $sqlInvocation->getQueries()[0]->getQuery());
 
         self::assertEquals('true', $sqlInvocation->getEndpoint()['successful']);
-        self::assertEquals('1', $sqlInvocation->getEndpoint()['hits']);
+
+        if ($hasHits)
+            self::assertEquals('1', $sqlInvocation->getEndpoint()['hits']);
     }
 
     /**
@@ -125,8 +128,14 @@ abstract class DatabaseTestBase extends PHPUnit_Framework_TestCase
     abstract function getHookInstance();
 
     /**
-     * Returns Query functions used for querying.
+     * Returns Query functions used for testing constructor.
      * @return array
+     */
+    abstract function constructorProvider();
+
+    /**
+     * Returns Query functions used for querying.
+     * @return array of array of query functions and optionally $hasHit boolean
      */
     abstract function queryFuncProvider();
 }

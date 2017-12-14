@@ -4,6 +4,12 @@ namespace BitSensor\Hook;
 
 use BitSensor\Core\Singleton;
 use mysqli;
+use mysqli_result;
+use mysqli_stmt;
+use Proto\Datapoint;
+use Proto\Invocation;
+use Proto\Invocation_SQLInvocation;
+use Proto\Invocation_SQLInvocation_Query;
 
 /**
  * Class MysqlHook.
@@ -14,8 +20,83 @@ use mysqli;
 class MysqliHook extends Singleton
 {
     const VERSION_REQUIREMENT = "5.0.0";
-    const QUERY = 'query';
-    const PREPARE = 'prepare';
+
+    /**
+     * mysqli constructor functions.
+     *
+     * mysqli->__construct ($host, $username, $passwd, $dbname, $port, $socket)
+     * mysqli->connect ($host, $user, $password, $database, $port, $socket)
+     * mysqli->real_connect ($host = null, $username = null, $passwd = null, $dbname = null, $port = null, $socket = null, $flags = null)
+     * mysqli_connect ($host = '', $user = '', $password = '', $database = '', $port = '', $socket = '')
+     * mysqli_real_connect ($link, $host = '', $user = '', $password = '', $database = '', $port = '', $socket = '', $flags = null)
+     */
+    const CONSTRUCTOR_FUNCTIONS = [
+        [mysqli::class, '__construct'],
+        [mysqli::class, 'connect'],
+        [mysqli::class, 'real_connect'],
+        ['mysqli_connect'],
+        ['mysqli_real_connect']
+    ];
+
+    /**
+     * mysqli query functions.
+     *
+     * mysqli->multi_query ($query)
+     * mysqli->query ($query, $resultmode = MYSQLI_STORE_RESULT)
+     * mysqli->real_query ($query)
+     * mysqli_multi_query ($link, $query)
+     * mysqli_query ($link, $query, $resultmode = MYSQLI_STORE_RESULT)
+     * mysqli_real_query ($link, $query)
+     */
+    const QUERY_FUNCTIONS = [
+        [mysqli::class, 'multi_query'],
+        [mysqli::class, 'query'],
+        [mysqli::class, 'real_query'],
+        ['mysqli_multi_query'],
+        ['mysqli_query'],
+        ['mysqli_real_query']
+    ];
+
+    /**
+     * mysqli prepare functions.
+     *
+     * mysqli->prepare ($query)
+     * mysqli_stmt->prepare ($query)
+     * mysqli_prepare ($link, $query)
+     * mysqli_stmt_prepare (mysqli_stmt $stmt, $query)
+     */
+    const PREPARE_FUNCTIONS = [
+        [mysqli::class, 'prepare'],
+        [mysqli_stmt::class, 'prepare'],
+        ['mysqli_prepare'],
+        ['mysqli_stmt_prepare']
+    ];
+
+    /**
+     * mysqli_stmt bind_param functions.
+     *
+     * mysqli_stmt->bind_param ($types, &$var1, &$_ = null)
+     * mysqli_stmt_bind_param ($stmt, $types, &...$var1)
+     * mysqli_bind_param ($stmt, $types)
+     */
+    const BIND_PARAM_FUNCTIONS = [
+        [mysqli_stmt::class, 'bind_param'],
+        ['mysqli_stmt_bind_param'],
+        ['mysqli_bind_param']
+    ];
+
+    /**
+     * mysqli_stmt execute functions.
+     *
+     * mysqli_stmt->execute ()
+     * mysqli_stmt_execute ($stmt)
+     * mysqli_execute ($stmt)
+     */
+    const EXECUTE_FUNCTIONS = [
+        [mysqli_stmt::class, 'execute'],
+        ['mysqli_stmt_execute'],
+        ['mysqli_execute']
+    ];
 
     private $connection;
     private $username;
@@ -38,53 +119,49 @@ class MysqliHook extends Singleton
 
         $this->started = true;
 
-        /**
-         * Hook mysqli constructor
-         *
-         * mysqli->__construct ($host, $username, $passwd, $dbname, $port, $socket)
-         * mysqli->connect ($host, $user, $password, $database, $port, $socket)
-         * mysqli->real_connect ($host = null, $username = null, $passwd = null, $dbname = null, $port = null, $socket = null, $flags = null)
-         * mysqli->mysqli ($host, $user, $password, $database, $port, $socket)
-         * mysqli_connect ($host = '', $user = '', $password = '', $database = '', $port = '', $socket = '')
-         * mysqli_real_connect ($link, $host = '', $user = '', $password = '', $database = '', $port = '', $socket = '', $flags = null)
-         */
-        uopz_set_hook(mysqli::class, '__construct', self::hookConstruct());
-        uopz_set_hook(mysqli::class, 'connect', self::hookConstruct());
-        uopz_set_hook('mysqli_connect', self::hookConstruct());
 
         /**
-         * Hook mysqli query
-         *
-         * mysqli->multi_query ($query)
-         * mysqli->query ($query, $resultmode = MYSQLI_STORE_RESULT)
-         * mysqli->real_query ($query)
-         * mysqli_multi_query ($link, $query)
-         * mysqli_query ($link, $query, $resultmode = MYSQLI_STORE_RESULT)
-         * mysqli_real_query ($link, $query)
+         * Hook constructor functions.
          */
-        uopz_set_return(mysqli::class, self::QUERY, $this->hookQuery(), true);
-        uopz_set_return('mysqli_query', $this->hookQuery(), true);
+        foreach (self::CONSTRUCTOR_FUNCTIONS as $function) {
+            $function[] = $this->hookConstruct();
+            Util::call_ignore_exception_array('uopz_set_hook', $function);
+        }
 
         /**
-         * Hook mysqli prepare
-         *
-         * mysqli->prepare ($query)
-         * mysqli_stmt->prepare ($query)
-         * mysqli_prepare ($link, $query)
-         * mysqli_stmt_prepare (mysqli_stmt $stmt, $query)
+         * Hook query functions.
          */
-        uopz_set_hook(mysqli::class, self::PREPARE, $this->hookPrepare());
-        uopz_set_hook('mysqli_prepare', $this->hookPrepare());
+        foreach (self::QUERY_FUNCTIONS as $function) {
+            $function[] = $this->hookQuery($function);
+            $function[] = true;
+            Util::call_ignore_exception_array('uopz_set_return', $function);
+        }
 
+        /**
+         * Hook mysqli prepare functions.
+         */
+        foreach (self::PREPARE_FUNCTIONS as $function) {
+            $function[] = $this->hookPrepare();
+            Util::call_ignore_exception_array('uopz_set_hook', $function);
+        }
+
+        /**
+         * Hook mysqli_stmt bindParam functions.
+         */
+        foreach (self::BIND_PARAM_FUNCTIONS as $function) {
+            $function[] = $this->hookBindParam($function);
+            $function[] = true;
+            Util::call_ignore_exception_array('uopz_set_return', $function);
+        }
 
         /**
          * Hook mysqli_stmt execute.
-         *
-         * mysqli_stmt->execute ()
-         * mysqli_stmt_execute ($stmt)
-         * mysqli_execute ($stmt)
          */
-
+        foreach (self::EXECUTE_FUNCTIONS as $function) {
+            $function[] = $this->hookExecute($function);
+            $function[] = true;
+            Util::call_ignore_exception_array('uopz_set_return', $function);
+        }
     }
 
     /**
@@ -97,18 +174,28 @@ class MysqliHook extends Singleton
 
         $this->started = false;
 
-        uopz_unset_hook(mysqli::class, '__construct');
-        uopz_unset_hook(mysqli::class, 'connect');
-        uopz_unset_hook('mysqli_connect');
+        $hookFunctions = array_merge(self::CONSTRUCTOR_FUNCTIONS,
+            self::PREPARE_FUNCTIONS);
+        $returnFunctions = array_merge(self::QUERY_FUNCTIONS,
+            self::BIND_PARAM_FUNCTIONS,
+            self::EXECUTE_FUNCTIONS);
 
-        uopz_unset_return(mysqli::class, self::QUERY);
+        foreach ($hookFunctions as $function) {
+            call_user_func_array('uopz_unset_hook', $function);
+        }
+        foreach ($returnFunctions as $function) {
+            call_user_func_array('uopz_unset_return', $function);
+        }
     }
 
-    public function hookConstruct()
+    private function hookConstruct()
     {
         return function (...$args) {
             if (empty($args))
                 return;
+
+            if (is_a($args[0], mysqli::class))
+                array_shift($args);
 
             $host = $args[0];
             $port = $args[4];
@@ -121,22 +208,72 @@ class MysqliHook extends Singleton
         };
     }
 
-    public function hookQuery()
+    private function hookQuery($function)
+    {
+        return function (...$args) use ($function) {
+            /** @var Datapoint $datapoint */
+
+            $function = isset($function[1]) ? [$this, $function[1]] : $function[0];
+
+            if (empty($args)) {
+                call_user_func($function);
+            }
+
+            $mysqli = is_a($args[0], mysqli::class)
+                ? $args[0]
+                : $this;
+            $query = is_a($args[0], mysqli::class)
+                ? $args[1]
+                : $args[0];
+
+            // Pre-handle
+            $sqlInvocation = new Invocation_SQLInvocation();
+            MysqliHook::instance()->preHandle($mysqli, $sqlInvocation);
+
+            $sqlQuery = new Invocation_SQLInvocation_Query();
+            $sqlQuery->setQuery($query);
+            $sqlInvocation->getQueries()[] = $sqlQuery;
+
+            //Execute
+            $result = call_user_func_array($function, $args);
+
+            // Post-handle
+            MysqliHook::instance()->postHandle($result, $sqlInvocation);
+
+            // Add datapoint
+            global $datapoint;
+            if ($datapoint->getInvocation() == null) {
+                $invocation = new Invocation();
+                $datapoint->setInvocation($invocation);
+            }
+
+            $invocation = $datapoint->getInvocation();
+            $invocation->getSqlInvocations()[] = $sqlInvocation;
+
+            return $result;
+        };
+    }
+
+    private function hookPrepare()
     {
         return function (...$args) {
-            /** @var mysqli $this */
             throw new \Error('not implemented');
         };
     }
 
-
-    public function hookPrepare()
+    private function hookBindParam($function)
     {
         return function (...$args) {
-
+            throw new \Error('not implemented');
         };
     }
 
+    private function hookExecute($function)
+    {
+        return function (...$args) {
+            throw new \Error('not implemented');
+        };
+    }
 
     /**
      * @param string $connection
@@ -148,5 +285,47 @@ class MysqliHook extends Singleton
         $this->connection = $connection;
         $this->username = $username;
         $this->database = $database;
+    }
+
+    /**
+     * Pre-handling PDO execution.
+     *
+     * @param mysqli $mysqli
+     * @param Invocation_SQLInvocation $sqlInvocation
+     */
+    public function preHandle($mysqli, $sqlInvocation)
+    {
+        $endpoint = array(
+            'url' => $this->connection,
+            'user' => $this->username,
+            'catalog' => $this->database,
+            'server_version' => $mysqli->server_info,
+            'driver_version' => $mysqli->client_info,
+            'database_type' => 'mysql',
+            'start_time' => round(microtime(true) * 1000),
+            'successful' => 'false'
+        );
+
+        foreach ($endpoint as $k => $v) {
+            $sqlInvocation->getEndpoint()[$k] = $v;
+        }
+    }
+
+    /**
+     * Post-handling PDO execution.
+     *
+     * @param mixed $result
+     * @param Invocation_SQLInvocation $sqlInvocation
+     */
+    public function postHandle($result, $sqlInvocation)
+    {
+        $sqlInvocation->getEndpoint()['execution_time'] = round(microtime(true) * 1000) - (float)$sqlInvocation->getEndpoint()['start_time'];
+
+        if ($result !== null && $result !== false) {
+            $sqlInvocation->getEndpoint()['successful'] = 'true';
+
+            if (is_a($result, mysqli_result::class))
+                $sqlInvocation->getEndpoint()['hits'] = $result->num_rows;
+        }
     }
 }

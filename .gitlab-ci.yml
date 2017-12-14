@@ -24,6 +24,7 @@ image: miya0001/phpenv:7.1
     # Install dev environment
     - docker-php-ext-install zip
     - docker-php-ext-install pdo_mysql
+    - docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
     # Install composer
     - curl -sS https://getcomposer.org/installer | php
@@ -32,8 +33,7 @@ image: miya0001/phpenv:7.1
     - php composer.phar self-update
     - php composer.phar install --no-progress
     - php composer.phar config cache-files-dir .composercache
-    - pecl install uopz
-    - docker-php-ext-enable uopz
+    - pecl install uopz && docker-php-ext-enable uopz
 
 cache:
   key: $CI_COMMIT_REF_NAME

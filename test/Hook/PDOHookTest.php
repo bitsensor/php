@@ -40,7 +40,7 @@ class PDOHookTest extends DatabaseTestBase
     /**
      * @inheritdoc
      */
-    function queryFuncProvider()
+    function constructorProvider()
     {
         return [
             [new SerializableClosure(function ($query) {
@@ -50,6 +50,15 @@ class PDOHookTest extends DatabaseTestBase
             })]
         ];
     }
+
+    /**
+     * @inheritdoc
+     */
+    function queryFuncProvider()
+    {
+        return $this->constructorProvider();
+    }
+
 
     /** TEST CASES  */
 

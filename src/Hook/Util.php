@@ -33,5 +33,35 @@ class Util
         }
         return null;
     }
+
+    /**
+     * Call a function and ignore its exception if any.
+     *
+     * @param callback $function
+     * @param array ...$args
+     */
+    public static function call_ignore_exception($function, ...$args)
+    {
+        try {
+            call_user_func_array($function, $args);
+        } catch (\Exception $e) {
+
+        }
+    }
+
+    /**
+     * Call a function and ignore its exception if any.
+     *
+     * @param callback $function
+     * @param array $args
+     */
+    public static function call_ignore_exception_array($function, array $args)
+    {
+        try {
+            call_user_func_array($function, $args);
+        } catch (\Exception $e) {
+
+        }
+    }
 }
 

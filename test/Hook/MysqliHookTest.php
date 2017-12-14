@@ -38,7 +38,7 @@ class MysqliHookTest extends DatabaseTestBase
     /**
      * @inheritdoc
      */
-    function queryFuncProvider()
+    function constructorProvider()
     {
         /**
          * mysqli->__construct ($host, $username, $passwd, $dbname, $port, $socket)
@@ -48,29 +48,70 @@ class MysqliHookTest extends DatabaseTestBase
          * mysqli_real_connect ($link, $host = '', $user = '', $password = '', $database = '', $port = '', $socket = '', $flags = null)
          */
         return [
-            [new SerializableClosure(function ($query) {
-                $conn = new mysqli($this->host, 'root', $this->pass, null, 3306);
+            "mysqli->__construct" => [new SerializableClosure(function ($query) {
+                $conn = new mysqli($this->host, 'root', $this->pass, 'unittest', 3306);
                 $conn->query($query);
             })],
-            [new SerializableClosure(function ($query) {
+            "mysqli->connect" => [new SerializableClosure(function ($query) {
                 $conn = new mysqli();
-                $conn->connect($this->host, 'root', $this->pass, null, 3306);
+                $conn->connect($this->host, 'root', $this->pass, 'unittest', 3306);
                 $conn->query($query);
             })],
-            [new SerializableClosure(function ($query) {
+            "mysqli->real_connect" => [new SerializableClosure(function ($query) {
                 $conn = new mysqli();
-                $conn->real_connect($this->host, 'root', $this->pass, null, 3306);
+                $conn->real_connect($this->host, 'root', $this->pass, 'unittest', 3306);
                 $conn->query($query);
             })],
-            [new SerializableClosure(function ($query) {
-                $conn = mysqli_connect($this->host, 'root', $this->pass, null, 3306);
+            "mysqli_connect" => [new SerializableClosure(function ($query) {
+                $conn = mysqli_connect($this->host, 'root', $this->pass, 'unittest', 3306);
                 $conn->query($query);
             })],
-            [new SerializableClosure(function ($query) {
+            "mysqli_real_connect" => [new SerializableClosure(function ($query) {
                 $conn = new mysqli();
-                mysqli_real_connect($conn, $this->host, 'root', $this->pass, null, 3306);
+                mysqli_real_connect($conn, $this->host, 'root', $this->pass, 'unittest', 3306);
                 $conn->query($query);
             })]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    function queryFuncProvider()
+    {
+        /**
+         * mysqli->multi_query ($query)
+         * mysqli->query ($query, $resultmode = MYSQLI_STORE_RESULT)
+         * mysqli->real_query ($query)
+         * mysqli_multi_query ($link, $query)
+         * mysqli_query ($link, $query, $resultmode = MYSQLI_STORE_RESULT)
+         * mysqli_real_query ($link, $query)
+         */
+        return [
+            "mysqli->multi_query" => [new SerializableClosure(function ($query) {
+                $conn = mysqli_connect($this->host, 'root', $this->pass, 'unittest', 3306);
+                $conn->multi_query($query);
+            }), false],
+            "mysqli->query" => [new SerializableClosure(function ($query) {
+                $conn = mysqli_connect($this->host, 'root', $this->pass, 'unittest', 3306);
+                $conn->query($query);
+            })],
+            "mysqli->real_query" => [new SerializableClosure(function ($query) {
+                $conn = mysqli_connect($this->host, 'root', $this->pass, 'unittest', 3306);
+                $conn->real_query($query);
+            }), false],
+            "mysqli_multi_query" => [new SerializableClosure(function ($query) {
+                $conn = mysqli_connect($this->host, 'root', $this->pass, 'unittest', 3306);
+                mysqli_multi_query($conn, $query);
+            }), false],
+            "mysqli_query" => [new SerializableClosure(function ($query) {
+                $conn = mysqli_connect($this->host, 'root', $this->pass, 'unittest', 3306);
+                mysqli_query($conn, $query);
+            })],
+            "mysqli_real_query" => [new SerializableClosure(function ($query) {
+                $conn = mysqli_connect($this->host, 'root', $this->pass, 'unittest', 3306);
+                mysqli_real_query($conn, $query);
+            }), false],
         ];
     }
 }
