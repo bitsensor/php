@@ -10,6 +10,7 @@ use BitSensor\Handler\InterfaceHandler;
 use BitSensor\Handler\IpHandler;
 use BitSensor\Handler\ModSecurityHandler;
 use BitSensor\Handler\RequestInputHandler;
+use BitSensor\Hook\MysqliHook;
 use BitSensor\Hook\PDOHook;
 use BitSensor\Util\Log;
 use BitSensor\View\TamperView;
@@ -149,7 +150,10 @@ class BitSensor
         }
 
         // Load plugins
-        PDOHook::instance()->start();
+        if ($this->config->getUopzHook() === Config::UOPZ_HOOK_ON) {
+            PDOHook::instance()->start();
+            MysqliHook::instance()->start();
+        }
     }
 
     /**

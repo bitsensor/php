@@ -78,6 +78,7 @@ $config->setConnectionFail(Config::ACTION_ALLOW);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
 $config->setHostSrc(Config::HOST_SERVER_NAME);
 $config->setLogLevel(Config::LOG_LEVEL_NONE);
+$config->setUopzHook(Config::UOPZ_HOOK_ON);
 
 // Start BitSensor 
 $bitSensor = new BitSensor($config);
@@ -106,6 +107,7 @@ $config->setConnectionFail(Config::ACTION_ALLOW);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
 $config->setHostSrc(Config::HOST_SERVER_NAME);
 $config->setLogLevel(Config::LOG_LEVEL_NONE);
+$config->setUopzHook(Config::UOPZ_HOOK_ON);
 
 // Start BitSensor 
 $bitSensor = new BitSensor($config);
@@ -127,6 +129,7 @@ You have the following config options at your disposal:
 | ```setHost()```           | host           | host address override                                                                                                                                      | <empty>                                             | Hostname manual override value.                                                                                            |
 | ```setLogLevel()```       | logLevel       | ```Config::LOG_LEVEL_ALL``` ("all"), ```Config::LOG_LEVEL_NONE``` ("none")                                                                                 | ```Config::LOG_LEVEL_ALL``` ("all")                 | The logging level.                                                                                                         |
 | ```setOutputFlushing```   | outputFlushing | ```Config::OUTPUT_FLUSHING_ON``` ("on"), ```Config::OUTPUT_FLUSHING_OFF``` ("off")                                                                         | ```Config::OUTPUT_FLUSHING_OFF``` ("off")           | Output flushing. Turning this on allows the browser to render the page while BitSensor is still working in the background. |
+| ```setUopzHook```         | uopzHook       | ```Config::UOPZ_HOOK_ON``` ("on"), ```Config::UOPZ_HOOK_OFF``` ("off")                                                                                     | ```Config::UOPZ_HOOK_ON``` ("on")                   | Uopz Hooking. Turning this on enables BitSensor to hook into function calls.                                               |
 
 ### Tags
 If you are running many applications, it might be sensible to group them by a tag. You can create a tag using the following snipplet
@@ -152,7 +155,8 @@ Sample configuration file:
   "connectionFail": "allow",
   "ipAddressSrc": "remoteAddr",
   "hostSrc": "serverName",
-  "logLevel": "none"
+  "logLevel": "none",
+  "uopzHook": "on"
 }
 ```
 
