@@ -2,7 +2,6 @@
 
 namespace BitSensor\Hook;
 
-use BitSensor\Core\Singleton;
 use PDO;
 use PDOStatement;
 use Proto\Datapoint;
@@ -16,9 +15,8 @@ use Proto\Invocation_SQLInvocation_Query;
  * @author Khanh Nguyen
  * @package BitSensor\Hook
  */
-class PDOHook extends Singleton
+class PDOHook extends AbstractHook
 {
-    const VERSION_REQUIREMENT = "5.0.0";
     const EXEC = 'exec';
     const QUERY = 'query';
     const PREPARE = 'prepare';
@@ -26,107 +24,99 @@ class PDOHook extends Singleton
     private $connection;
     private $username;
     public $prepareStmts = array();
-    private $started = false;
 
     /**
      * Starts PDO execution hooks.
      */
-    public function start()
+    public function init()
     {
-        if (!extension_loaded('uopz') || $this->started)
-            return;
-
-        if (version_compare(phpversion('uopz'), self::VERSION_REQUIREMENT) < 0)
-            trigger_error("PDOHook not starting with 'uopz' version (" . phpversion('uopz') . ") lower than " . self::VERSION_REQUIREMENT,
-                E_USER_WARNING);
-
-        $this->started = true;
-
         /** Hook PDO::__construct for connection information */
-        uopz_set_hook(PDO::class, '__construct', function ($dsn, $username) {
-            /** @var PDO $this */
-            PDOHook::instance()->hookConstruct($dsn, $username);
-        });
+        Util::call_ignore_exception('uopz_set_hook',
+            PDO::class, '__construct', function ($dsn, $username) {
+                /** @var PDO $this */
+                PDOHook::instance()->hookConstruct($dsn, $username);
+            });
 
         /** Hook PDO::exec */
-        uopz_set_return(PDO::class, self::EXEC, function (...$args) {
-            /** @var PDO $this */
-            return PDOHook::instance()->hookQuery($this, PDOHook::EXEC, $args);
-        }, true);
+        Util::call_ignore_exception('uopz_set_return',
+            PDO::class, self::EXEC, function (...$args) {
+                /** @var PDO $this */
+                return PDOHook::instance()->hookQuery($this, PDOHook::EXEC, $args);
+            }, true);
 
         /** Hook PDO::query */
-        uopz_set_return(PDO::class, self::QUERY, function (...$args) {
-            /** @var PDO $this */
-            return PDOHook::instance()->hookQuery($this, PDOHook::QUERY, $args);
-        }, true);
+        Util::call_ignore_exception('uopz_set_return',
+            PDO::class, self::QUERY, function (...$args) {
+                /** @var PDO $this */
+                return PDOHook::instance()->hookQuery($this, PDOHook::QUERY, $args);
+            }, true);
 
         /** Hook PDO::prepare */
-        uopz_set_hook(PDO::class, self::PREPARE, function ($statement) {
-            /** @var Datapoint $datapoint */
-            /** @var PDO $pdo */
+        Util::call_ignore_exception('uopz_set_hook',
+            PDO::class, self::PREPARE, function ($statement) {
+                /** @var Datapoint $datapoint */
+                /** @var PDO $pdo */
 
-            global $datapoint;
-            if ($datapoint->getInvocation() == null) {
-                $invocation = new Invocation();
-                $datapoint->setInvocation($invocation);
-            }
-
-            $sqlInvocations = $datapoint->getInvocation()->getSQLInvocations();
-            $sqlInvocation = Util::array_find($sqlInvocations,
-                function (Invocation_SQLInvocation $i) use ($statement) {
-                    return $i->getPrepareStatement() == $statement;
+                global $datapoint;
+                if ($datapoint->getInvocation() == null) {
+                    $invocation = new Invocation();
+                    $datapoint->setInvocation($invocation);
                 }
-            );
 
-            // Skip execution if SQLInvocation for this statement is already created
-            if ($sqlInvocation !== null)
-                return;
+                $sqlInvocations = $datapoint->getInvocation()->getSQLInvocations();
+                $sqlInvocation = Util::array_find($sqlInvocations,
+                    function (Invocation_SQLInvocation $i) use ($statement) {
+                        return $i->getPrepareStatement() == $statement;
+                    }
+                );
 
-            $sqlInvocation = new Invocation_SQLInvocation();
-            $sqlInvocation->setPrepareStatement($statement);
-            $sqlInvocations[] = $sqlInvocation;
+                // Skip execution if SQLInvocation for this statement is already created
+                if ($sqlInvocation !== null)
+                    return;
 
-            $pdo = $this;
-            PDOHook::instance()->preHandle($pdo, $sqlInvocation);
-        });
+                $sqlInvocation = new Invocation_SQLInvocation();
+                $sqlInvocation->setPrepareStatement($statement);
+                $sqlInvocations[] = $sqlInvocation;
+
+                $pdo = $this;
+                PDOHook::instance()->preHandle($pdo, $sqlInvocation);
+            });
 
         /** Hook PDOStatement::bindParam */
-        uopz_set_return(PDOStatement::class, 'bindParam', function ($parameter, &$variable, ...$args) {
-            /** @var PDOStatement $this */
-            PDOHook::instance()->prepareStmts[$this->queryString][$parameter] = &$variable;
-            Util::array_unshift_ref($args, $variable);
-            array_unshift($args, $parameter);
+        Util::call_ignore_exception('uopz_set_return',
+            PDOStatement::class, 'bindParam', function ($parameter, &$variable, ...$args) {
+                /** @var PDOStatement $this */
+                PDOHook::instance()->prepareStmts[$this->queryString][$parameter] = &$variable;
+                Util::array_unshift_ref($args, $variable);
+                array_unshift($args, $parameter);
 
-            return call_user_func_array(array($this, 'bindParam'), $args);
-        }, true);
+                return call_user_func_array(array($this, 'bindParam'), $args);
+            }, true);
 
         /** Hook PDOStatement::bindValue */
-        uopz_set_return(PDOStatement::class, 'bindValue', function ($parameter, $variable, ...$args) {
-            /** @var PDOStatement $this */
-            PDOHook::instance()->prepareStmts[$this->queryString][$parameter] = $variable;
-            array_unshift($args, $variable);
-            array_unshift($args, $parameter);
+        Util::call_ignore_exception('uopz_set_return',
+            PDOStatement::class, 'bindValue', function ($parameter, $variable, ...$args) {
+                /** @var PDOStatement $this */
+                PDOHook::instance()->prepareStmts[$this->queryString][$parameter] = $variable;
+                array_unshift($args, $variable);
+                array_unshift($args, $parameter);
 
-            return call_user_func_array(array($this, 'bindValue'), $args);
-        }, true);
+                return call_user_func_array(array($this, 'bindValue'), $args);
+            }, true);
 
         /** Hook PDOStatement::execute */
-        uopz_set_return(PDOStatement::class, 'execute', function (...$args) {
-            /** @var PDOStatement $this */
-            return PDOHook::instance()->hookStatementExecute($this, $args);
-        }, true);
+        Util::call_ignore_exception('uopz_set_return',
+            PDOStatement::class, 'execute', function (...$args) {
+                /** @var PDOStatement $this */
+                return PDOHook::instance()->hookStatementExecute($this, $args);
+            }, true);
     }
 
     /**
      * Removes all PDO, PDOStatement execution hooks.
      */
-    public function stop()
+    public function destroy()
     {
-        if (!$this->started)
-            return;
-
-        $this->started = false;
-
         uopz_unset_hook(PDO::class, '__construct');
         uopz_unset_return(PDO::class, self::EXEC);
         uopz_unset_return(PDO::class, self::QUERY);
@@ -243,11 +233,12 @@ class PDOHook extends Singleton
      */
     public function preHandle($pdo, $sqlInvocation)
     {
-        preg_match('/dbname=(.*?);/', $this->connection, $dbMatch);
+        $matchCount = preg_match('/dbname=(.*?);/', $this->connection, $dbMatch);
+        if ($matchCount > 0)
+            $sqlInvocation->getEndpoint()['catalog'] = $dbMatch[1];
 
         $endpoint = array(
             'url' => $this->connection,
-            'catalog' => $dbMatch[1],
             'user' => $this->username,
             'server_version' => $pdo->getAttribute(PDO::ATTR_SERVER_VERSION),
             'driver_version' => $pdo->getAttribute(PDO::ATTR_CLIENT_VERSION),

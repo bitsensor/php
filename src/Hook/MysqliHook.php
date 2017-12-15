@@ -2,7 +2,6 @@
 
 namespace BitSensor\Hook;
 
-use BitSensor\Core\Singleton;
 use mysqli;
 use mysqli_result;
 use mysqli_stmt;
@@ -17,10 +16,8 @@ use Proto\Invocation_SQLInvocation_Query;
  * @author Khanh Nguyen
  * @package BitSensor\Hook
  */
-class MysqliHook extends Singleton
+class MysqliHook extends AbstractHook
 {
-    const VERSION_REQUIREMENT = "5.0.0";
-
     /**
      * mysqli constructor functions.
      *
@@ -103,23 +100,11 @@ class MysqliHook extends Singleton
     private $database;
     public $prepareStmts = array();
 
-    private $started = false;
-
     /**
-     * Starts PDO execution hooks.
+     * Starts Mysqli execution hooks.
      */
-    public function start()
+    public function init()
     {
-        if (!extension_loaded('uopz') || $this->started)
-            return;
-
-        if (version_compare(phpversion('uopz'), self::VERSION_REQUIREMENT) < 0)
-            trigger_error("PDOHook not starting with 'uopz' version (" . phpversion('uopz') . ") lower than " . self::VERSION_REQUIREMENT,
-                E_USER_WARNING);
-
-        $this->started = true;
-
-
         /**
          * Hook constructor functions.
          */
@@ -165,15 +150,10 @@ class MysqliHook extends Singleton
     }
 
     /**
-     * Removes all PDO, PDOStatement execution hooks.
+     * Removes all mysqli, mysqli_stmt execution hooks.
      */
-    public function stop()
+    public function destroy()
     {
-        if (!$this->started)
-            return;
-
-        $this->started = false;
-
         $hookFunctions = array_merge(self::CONSTRUCTOR_FUNCTIONS,
             self::PREPARE_FUNCTIONS);
         $returnFunctions = array_merge(self::QUERY_FUNCTIONS,
@@ -212,6 +192,7 @@ class MysqliHook extends Singleton
     {
         return function (...$args) use ($function) {
             /** @var Datapoint $datapoint */
+            /** @var Invocation $invocation */
 
             $function = isset($function[1]) ? [$this, $function[1]] : $function[0];
 
@@ -288,7 +269,7 @@ class MysqliHook extends Singleton
     }
 
     /**
-     * Pre-handling PDO execution.
+     * Pre-handling Mysqli execution.
      *
      * @param mysqli $mysqli
      * @param Invocation_SQLInvocation $sqlInvocation
@@ -312,7 +293,7 @@ class MysqliHook extends Singleton
     }
 
     /**
-     * Post-handling PDO execution.
+     * Post-handling Mysqli execution.
      *
      * @param mixed $result
      * @param Invocation_SQLInvocation $sqlInvocation
