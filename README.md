@@ -44,6 +44,12 @@ The BitSensor PHP plugin.
 
     ```bash
     pecl install uopz
+    
+    # You might have to add `extension=uopz.so` to your php.ini, if that does not happen automatically
+    echo 'extension=uopz.so' >> /etc/php/7.0/fpm/php.ini
+    
+    # Check successful installation, the output should be `1`
+    php -r 'echo extension_loaded("uopz");'
     ```
 
 ## Usage
