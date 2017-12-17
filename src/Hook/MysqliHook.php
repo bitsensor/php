@@ -177,12 +177,12 @@ class MysqliHook extends AbstractHook
             if (is_a($args[0], mysqli::class))
                 array_shift($args);
 
-            $host = $args[0];
-            $port = $args[4];
-            $username = $args[1];
-            $database = $args[3];
+            $host = isset($args[0]) : $args[0] : '';
+            $port = isset($args[4]) ? $args[4] : -1;
+            $username = isset($args[1]) ? $args[1] : '';
+            $database = isset($args[3]) ? $args[3] : '';
 
-            $connection = 'mysql://' . $host . ($port ? ':' . $port : '') . ($database ? '/' . $database : '');
+            $connection = 'mysql://' . $host . ($port > -1 ? ':' . $port : '') . ($database ? '/' . $database : '');
 
             MysqliHook::instance()->updateConnectionInfo($connection, $username, $database);
         };
