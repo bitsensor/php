@@ -20,9 +20,12 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(Config::IP_ADDRESS_REMOTE_ADDR, $config->getIpAddressSrc());
         static::assertEmpty($config->getIpAddress());
         static::assertEquals(Config::LOG_LEVEL_ALL, $config->getLogLevel());
-        static::assertEquals(Config::OUTPUT_FLUSHING_OFF, $config->getOutputFlushing());
+        static::assertEquals(Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF, $config->getFastcgiFinishRequest());
     }
 
+    /**
+     * @expectedException	 PHPUnit_Framework_Error_Warning
+     */
     public function testJsonConstructor()
     {
         $json = '{' .
@@ -34,7 +37,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             '"ipAddressSrc": "manual",' .
             '"ipAddress": "127.0.0.1",' .
             '"logLevel": "none",' .
-            '"outputFlushing": "on"' .
+            '"outputFlushing": "on", ' .
+            '"executeFastCgi": "on"' .
             '}';
         $config = new Config($json);
 
@@ -47,5 +51,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         static::assertEquals('127.0.0.1', $config->getIpAddress());
         static::assertEquals(Config::LOG_LEVEL_NONE, $config->getLogLevel());
         static::assertEquals(Config::OUTPUT_FLUSHING_ON, $config->getOutputFlushing());
+        static::assertEquals(Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON, $config->getFastcgiFinishRequest());
     }
 }

@@ -132,6 +132,21 @@ class Config
      * Do not use output flushing.
      */
     const OUTPUT_FLUSHING_OFF = 'off';
+    /**
+     * Execute fastcgi_finish_request() in AfterRequestHandler. Turning this on allows the browser to render the page while BitSensor is still working in the background. A side effect is that output will not be flushed in shutdown_hooks that run after BitSensor.
+     *
+     * <i>Defaults to {@link BitSensor\Core\Config::OUTPUT_FLUSHING_OFF Config::OUTPUT_FLUSHING_OFF}.</i>
+     */
+    const EXECUTE_FASTCGI_FINISH_REQUEST = 'executeFastCgi';
+    /**
+     * Use fastcgi_finish_request flushing to reduce latency. A side effect is that output will not be flushed in shutdown_hooks that run after BitSensor.
+     */
+    const EXECUTE_FASTCGI_FINISH_REQUEST_ON = 'on';
+    /**
+     * Do not use fastcgi_finish_request.
+     */
+    const EXECUTE_FASTCGI_FINISH_REQUEST_OFF = 'off';
+
 
     /**
      * The BitSensor server to connect to.
@@ -199,6 +214,12 @@ class Config
      * @var string
      */
     private $outputFlushing = self::OUTPUT_FLUSHING_OFF;
+    /**
+     * Execute fastcgi_finish_request() in the AfterRequestHandler.
+     *
+     * @var string
+     */
+    private $executeFastcgiFinishRequest = self::EXECUTE_FASTCGI_FINISH_REQUEST_OFF;
 
     /**
      * @param $json
@@ -250,6 +271,10 @@ class Config
 
             if (array_key_exists(self::OUTPUT_FLUSHING, $config)) {
                 $this->setOutputFlushing($config[self::OUTPUT_FLUSHING]);
+            }
+
+            if (array_key_exists(self::EXECUTE_FASTCGI_FINISH_REQUEST, $config)) {
+                $this->setFastcgiFinishRequest($config[self::EXECUTE_FASTCGI_FINISH_REQUEST]);
             }
         }
     }
@@ -430,5 +455,27 @@ class Config
         $this->outputFlushing = $outputFlushing;
     }
 
+    /**
+     * @return string Execute fastcgi finish request.
+     */
+    public function getFastcgiFinishRequest()
+    {
+        return $this->executeFastcgiFinishRequest;
+    }
+
+    /**
+     * @param string $executeFastcgiFinishRequest Execute fastcgi finish request.
+     */
+    public function setFastcgiFinishRequest($executeFastcgiFinishRequest)
+    {
+        if($executeFastcgiFinishRequest == self::EXECUTE_FASTCGI_FINISH_REQUEST_ON) {
+            if(!function_exists('fastcgi_finish_request')) {
+                trigger_error("fastcgi is not available, however you wanted to enable it in the BitSensor configuration. Please install fastcgi or disable " . self::EXECUTE_FASTCGI_FINISH_REQUEST, E_USER_WARNING);
+                $executeFastcgiFinishRequest = self::EXECUTE_FASTCGI_FINISH_REQUEST_OFF;
+            }
+        }
+
+        $this->executeFastcgiFinishRequest = $executeFastcgiFinishRequest;
+    }
 
 }
