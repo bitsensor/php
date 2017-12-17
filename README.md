@@ -51,6 +51,9 @@ The BitSensor PHP plugin.
     # You might have to add `extension=uopz.so` to your php.ini, if that does not happen automatically
     echo 'extension=uopz.so' >> /etc/php/7.0/fpm/php.ini
     
+    # In case of php-fpm, reload the service
+    service php7.0-fpm reload
+    
     # Check successful installation, the output should be `1`
     php -r 'echo extension_loaded("uopz");'
     ```
