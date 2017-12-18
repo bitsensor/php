@@ -146,7 +146,18 @@ class Config
      * Do not use fastcgi_finish_request.
      */
     const EXECUTE_FASTCGI_FINISH_REQUEST_OFF = 'off';
-
+    /**
+     * Uopz Hooking. Turning this on enables BitSensor to hook into function calls.
+     */
+    const UOPZ_HOOK = 'uopzHook';
+    /**
+     * Use uopz hook.
+     */
+    const UOPZ_HOOK_ON = 'on';
+    /**
+     * Do not use uopz hook.
+     */
+    const UOPZ_HOOK_OFF = 'off';
 
     /**
      * The BitSensor server to connect to.
@@ -220,6 +231,13 @@ class Config
      * @var string
      */
     private $executeFastcgiFinishRequest = self::EXECUTE_FASTCGI_FINISH_REQUEST_OFF;
+    /**
+     * Uopz Hook setting
+     *
+     * @var string
+     */
+    private $uopzHook = self::UOPZ_HOOK_ON;
+
 
     /**
      * @param $json
@@ -275,6 +293,10 @@ class Config
 
             if (array_key_exists(self::EXECUTE_FASTCGI_FINISH_REQUEST, $config)) {
                 $this->setFastcgiFinishRequest($config[self::EXECUTE_FASTCGI_FINISH_REQUEST]);
+            }
+
+            if (array_key_exists(self::UOPZ_HOOK, $config)) {
+                $this->setUopzHook($config[self::UOPZ_HOOK]);
             }
         }
     }
@@ -468,8 +490,8 @@ class Config
      */
     public function setFastcgiFinishRequest($executeFastcgiFinishRequest)
     {
-        if($executeFastcgiFinishRequest == self::EXECUTE_FASTCGI_FINISH_REQUEST_ON) {
-            if(!function_exists('fastcgi_finish_request')) {
+        if ($executeFastcgiFinishRequest == self::EXECUTE_FASTCGI_FINISH_REQUEST_ON) {
+            if (!function_exists('fastcgi_finish_request')) {
                 trigger_error("fastcgi is not available, however you wanted to enable it in the BitSensor configuration. Please install fastcgi or disable " . self::EXECUTE_FASTCGI_FINISH_REQUEST, E_USER_WARNING);
                 $executeFastcgiFinishRequest = self::EXECUTE_FASTCGI_FINISH_REQUEST_OFF;
             }
@@ -478,4 +500,19 @@ class Config
         $this->executeFastcgiFinishRequest = $executeFastcgiFinishRequest;
     }
 
+    /**
+     * @return string
+     */
+    public function getUopzHook()
+    {
+        return $this->uopzHook;
+    }
+
+    /**
+     * @param string $uopzHook
+     */
+    public function setUopzHook($uopzHook)
+    {
+        $this->uopzHook = $uopzHook;
+    }
 }

@@ -4,7 +4,6 @@ namespace BitSensor\Test\Handler;
 
 
 use BitSensor\Core\Config;
-use BitSensor\Core\Context;
 use BitSensor\Core\SessionContext;
 use BitSensor\Handler\RequestInputHandler;
 

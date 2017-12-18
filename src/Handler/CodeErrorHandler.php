@@ -2,7 +2,6 @@
 
 namespace BitSensor\Handler;
 
-use Proto\Datapoint;
 use Proto\Error;
 
 /**
@@ -21,9 +20,7 @@ class CodeErrorHandler
      */
     public static function handle($errno, $errstr, $errfile, $errline, $errcontext)
     {
-
-        global /** @var Datapoint $datapoint */
-        $datapoint;
+        global $bitSensor;
 
         $error = new Error();
         $error->setCode($errno);
@@ -32,10 +29,9 @@ class CodeErrorHandler
         $error->setLine($errline);
         $error->setType("Code");
 
-        $datapoint->getErrors()[] = $error;
+        $bitSensor->addError($error);
 
-        global $bitSensor;
-        if (isset($bitSensor->errorHandler))
+        if (isset($bitSensor->errorHandler) && stripos($bitSensor->errorHandler[0], 'BitSensor'))
             call_user_func($bitSensor->errorHandler, $errno, $errstr, $errfile, $errline, $errcontext);
     }
 }

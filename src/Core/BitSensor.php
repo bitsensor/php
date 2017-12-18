@@ -4,12 +4,17 @@ namespace BitSensor\Core;
 
 
 use BitSensor\Exception\ApiException;
+use BitSensor\Handler\AfterRequestHandler;
+use BitSensor\Handler\CodeErrorHandler;
+use BitSensor\Handler\ExceptionHandler;
 use BitSensor\Handler\Handler;
 use BitSensor\Handler\HttpRequestHandler;
 use BitSensor\Handler\InterfaceHandler;
 use BitSensor\Handler\IpHandler;
 use BitSensor\Handler\ModSecurityHandler;
 use BitSensor\Handler\RequestInputHandler;
+use BitSensor\Hook\MysqliHook;
+use BitSensor\Hook\PDOHook;
 use BitSensor\Util\Log;
 use BitSensor\View\TamperView;
 use Proto\Datapoint;
@@ -72,10 +77,8 @@ class BitSensor
      **/
     public $exceptionHandler;
 
-    /**
-     * @param Config|string $configPath Object with configuration.
-     */
-    public function __construct($configPath = 'config.json')
+
+    public function __construct()
     {
         if (!defined('BITSENSOR_WORKING_DIR')) {
             /**
@@ -84,6 +87,35 @@ class BitSensor
             define('BITSENSOR_WORKING_DIR', getcwd());
         }
 
+        /**
+         * @global Datapoint $datapoint
+         */
+        global $datapoint;
+        $datapoint = new Datapoint();
+        $this->datapoint = &$datapoint;
+
+        $this->errorHandler = set_error_handler([CodeErrorHandler::class, 'handle']);
+        Log::d("Previous error handler is: " . (is_null($this->errorHandler) ?
+                "not defined" : (is_array($this->errorHandler) ?
+                    implode($this->errorHandler) : $this->errorHandler)));
+
+        $this->exceptionHandler = set_exception_handler([ExceptionHandler::class, 'handle']);
+        Log::d("Previous exception handler is: " . (is_null($this->exceptionHandler) ?
+                "not defined" : (is_array($this->exceptionHandler) ?
+                    implode($this->exceptionHandler) : $this->exceptionHandler)));
+
+        $this->addHandler(new IpHandler());
+        $this->addHandler(new HttpRequestHandler());
+        $this->addHandler(new RequestInputHandler());
+        $this->addHandler(new ModSecurityHandler());
+        $this->addHandler(new InterfaceHandler());
+    }
+
+    /**
+     * @param Config|string $configPath Object with configuration.
+     */
+    public function config($configPath = 'config.json')
+    {
         /**
          * @global Config $config
          */
@@ -97,39 +129,15 @@ class BitSensor
         }
         $this->config = &$config;
 
-        /**
-         * @global Datapoint $datapoint
-         */
-        global $datapoint;
-        $datapoint = new Datapoint();
-        $this->datapoint = &$datapoint;
-
-        $this->errorHandler = set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
-        Log::d("Previous error handler is: " . (is_null($this->errorHandler) ?
-                "not defined" : (is_array($this->errorHandler) ?
-                    implode($this->errorHandler) : $this->errorHandler)));
-
-        $this->exceptionHandler = set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
-        Log::d("Previous exception handler is: " . (is_null($this->exceptionHandler) ?
-                "not defined" : (is_array($this->exceptionHandler) ?
-                    implode($this->exceptionHandler) : $this->exceptionHandler)));
-
-        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $datapoint, $config);
-
-        $this->addHandler(new IpHandler());
-        $this->addHandler(new HttpRequestHandler());
-        $this->addHandler(new RequestInputHandler());
-        $this->addHandler(new ModSecurityHandler());
-        $this->addHandler(new InterfaceHandler());
-
-        $this->runHandlers();
+        // Post request handling
+        register_shutdown_function([AfterRequestHandler::class, 'handle'], $this->datapoint, $config);
 
         if ($this->config->getMode() === Config::MODE_ON) {
             // Check if user is authorized
             try {
                 $authorizationResponse = json_decode(ApiConnector::from($this->config->getUser(), $this->config->getApiKey())
                     ->to($this->config->getUri())
-                    ->with($datapoint)
+                    ->with($this->datapoint)
                     ->post(ApiConnector::ACTION_AUTHORIZE)
                     ->send(), true);
             } catch (ApiException $e) {
@@ -146,6 +154,14 @@ class BitSensor
                 $this->requestBlockAccess(BitSensor::BLOCK_REASON_UNKNOWN);
             }
         }
+
+        // Load plugins
+        if ($this->config->getUopzHook() === Config::UOPZ_HOOK_ON) {
+            PDOHook::instance()->start();
+            MysqliHook::instance()->start();
+        }
+
+        $this->runHandlers();
     }
 
     /**

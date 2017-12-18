@@ -4,6 +4,7 @@ namespace BitSensor\Test\Core;
 
 
 use BitSensor\Core\Config;
+use PHPUnit_Framework_Error_Warning;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,9 +24,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF, $config->getFastcgiFinishRequest());
     }
 
-    /**
-     * @expectedException	 PHPUnit_Framework_Error_Warning
-     */
     public function testJsonConstructor()
     {
         $json = '{' .
@@ -38,7 +36,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             '"ipAddress": "127.0.0.1",' .
             '"logLevel": "none",' .
             '"outputFlushing": "on", ' .
-            '"executeFastCgi": "on"' .
+            '"executeFastCgi": "off",' .
+            '"uopzHook": "off"' .
             '}';
         $config = new Config($json);
 
@@ -51,6 +50,20 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         static::assertEquals('127.0.0.1', $config->getIpAddress());
         static::assertEquals(Config::LOG_LEVEL_NONE, $config->getLogLevel());
         static::assertEquals(Config::OUTPUT_FLUSHING_ON, $config->getOutputFlushing());
-        static::assertEquals(Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON, $config->getFastcgiFinishRequest());
+        static::assertEquals(Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF, $config->getFastcgiFinishRequest());
+        static::assertEquals(Config::UOPZ_HOOK_OFF, $config->getUopzHook());
     }
+
+    /**
+     * @expectedException PHPUnit_Framework_Error_Warning
+     */
+    public function testJsonFastCGIException()
+    {
+        $json = '{' .
+            '"executeFastCgi": "on"' .
+            '}';
+        $config = new Config($json);
+    }
+
+
 }

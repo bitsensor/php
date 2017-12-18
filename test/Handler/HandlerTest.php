@@ -2,28 +2,17 @@
 
 namespace BitSensor\Test\Handler;
 
-use Proto\Datapoint;
+use BitSensor\Test\TestBase;
 
-abstract class HandlerTest extends \PHPUnit_Framework_TestCase
+abstract class HandlerTest extends TestBase
 {
-
-    /**
-     * @var Datapoint
-     */
-    protected $datapoint;
-
-    protected function setUp()
-    {
-        global $datapoint;
-        $datapoint = new Datapoint();
-        $this->datapoint = &$datapoint;
-    }
-
 
     protected function tearDown()
     {
-        global $datapoint;
-        unset($datapoint);
+        restore_error_handler();
+        restore_exception_handler();
+
+        parent::tearDown();
     }
 
     public abstract function testHandle();
