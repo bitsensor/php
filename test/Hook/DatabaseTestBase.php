@@ -2,6 +2,8 @@
 
 namespace BitSensor\Test\Hook;
 
+use BitSensor\Core\BitSensor;
+use BitSensor\Core\Config;
 use PHPUnit_Framework_TestCase;
 use Proto\Datapoint;
 use Proto\Invocation_SQLInvocation;
@@ -12,9 +14,11 @@ use Proto\Invocation_SQLInvocation;
  */
 abstract class DatabaseTestBase extends PHPUnit_Framework_TestCase
 {
+    /** @var BitSensor $bitSensor */
     /** @var Datapoint $datapoint */
     /** @var string $host */
     /** @var string $pass */
+    protected $bitSensor;
     protected $datapoint;
     protected $host;
     protected $pass;
@@ -42,6 +46,13 @@ abstract class DatabaseTestBase extends PHPUnit_Framework_TestCase
 
         $this->prepareDatabase();
 
+        $config = new Config();
+        $config->setUopzHook(Config::UOPZ_HOOK_OFF);
+
+        global $bitSensor;
+        $bitSensor = new BitSensor($config);
+        $this->bitSensor = &$bitSensor;
+
         global $datapoint;
         $datapoint = new Datapoint();
         $this->datapoint = &$datapoint;
@@ -53,8 +64,8 @@ abstract class DatabaseTestBase extends PHPUnit_Framework_TestCase
     {
         $this->getHookInstance()->stop();
 
-        global $datapoint;
-        unset($datapoint);
+        unset($this->datapoint);
+        unset($this->bitSensor);
     }
 
     /** TEST CASES */

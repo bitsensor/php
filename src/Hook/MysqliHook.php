@@ -343,6 +343,10 @@ class MysqliHook extends AbstractHook
                 call_user_func($function);
             }
 
+            $stmt = is_a($args[0], mysqli_stmt::class)
+                ? $args[0]
+                : $this;
+
             // Finds current sqlInvocation for this execution.
             global $datapoint;
             if ($datapoint->getInvocation() == null)
@@ -371,7 +375,7 @@ class MysqliHook extends AbstractHook
             $result = call_user_func_array($function, $args);
 
             // Post handle
-            MysqliHook::instance()->postHandle($result, $sqlInvocation);
+            MysqliHook::instance()->postHandle($result, $sqlInvocation, $stmt);
 
             return $result;
         };
@@ -418,30 +422,39 @@ class MysqliHook extends AbstractHook
      *
      * @param mixed $result
      * @param Invocation_SQLInvocation $sqlInvocation
+     * @param mysqli|mysqli_stmt $m
      */
-    public function postHandle($result, $sqlInvocation)
+    public function postHandle($result, $sqlInvocation, $m = null)
     {
         $sqlInvocation->getEndpoint()['execution_time'] = round(microtime(true) * 1000) - (float)$sqlInvocation->getEndpoint()['start_time'];
 
-        if($mysqli->error) {
-            global $bitSensor;
-            $trace = debug_backtrace(1,2)[1];
-
-            $error = new Error();
-            $error->setCode($mysqli->errno);
-            $error->setDescription($mysqli->error);
-            $error->setType('MySQL');
-            $error->setLocation($trace["file"]);
-            $error->setLine($trace["line"]);
-
-            $bitSensor->addError($error);
-        }
+        $this->checkError($m);
 
         if ($result !== null && $result !== false) {
             $sqlInvocation->getEndpoint()['successful'] = 'true';
 
             if (is_a($result, mysqli_result::class))
                 $sqlInvocation->getEndpoint()['hits'] = $result->num_rows;
+        }
+    }
+
+    /**
+     * @param mysqli|mysqli_stmt $m
+     */
+    public function checkError($m)
+    {
+        if ($m !== null && $m->error) {
+            global $bitSensor;
+            $trace = debug_backtrace(1, 2)[1];
+
+            $error = new Error();
+            $error->setCode($m->errno);
+            $error->setDescription($m->error);
+            $error->setType('MySQL');
+            $error->setLocation($trace["file"]);
+            $error->setLine($trace["line"]);
+
+            $bitSensor->addError($error);
         }
     }
 }
