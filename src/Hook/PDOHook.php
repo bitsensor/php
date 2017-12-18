@@ -23,7 +23,12 @@ class PDOHook extends AbstractHook
 
     private $connection;
     private $username;
-    public $prepareStmts = array();
+
+    /**
+     * A binding map which maps a prepare statement as key to a binding as value.
+     * @var array
+     */
+    public $bindingMap = [];
 
     /**
      * Starts PDO execution hooks.
@@ -78,6 +83,9 @@ class PDOHook extends AbstractHook
                 $sqlInvocation->setPrepareStatement($statement);
                 $sqlInvocations[] = $sqlInvocation;
 
+                // Reset bindingMaps for this $statement if already set
+                PDOHook::instance()->bindingMap[$statement] = [];
+
                 $pdo = $this;
                 PDOHook::instance()->preHandle($pdo, $sqlInvocation);
             });
@@ -86,7 +94,7 @@ class PDOHook extends AbstractHook
         Util::call_ignore_exception('uopz_set_return',
             PDOStatement::class, 'bindParam', function ($parameter, &$variable, ...$args) {
                 /** @var PDOStatement $this */
-                PDOHook::instance()->prepareStmts[$this->queryString][$parameter] = &$variable;
+                PDOHook::instance()->bindingMap[$this->queryString][$parameter] = &$variable;
                 Util::array_unshift_ref($args, $variable);
                 array_unshift($args, $parameter);
 
@@ -97,7 +105,7 @@ class PDOHook extends AbstractHook
         Util::call_ignore_exception('uopz_set_return',
             PDOStatement::class, 'bindValue', function ($parameter, $variable, ...$args) {
                 /** @var PDOStatement $this */
-                PDOHook::instance()->prepareStmts[$this->queryString][$parameter] = $variable;
+                PDOHook::instance()->bindingMap[$this->queryString][$parameter] = $variable;
                 array_unshift($args, $variable);
                 array_unshift($args, $parameter);
 
@@ -209,8 +217,8 @@ class PDOHook extends AbstractHook
         $sqlQuery->setQuery($queryString);
 
         // Adds sub-queries
-        if (array_key_exists($queryString, PDOHook::instance()->prepareStmts)) {
-            foreach (PDOHook::instance()->prepareStmts[$queryString] as $key => &$param) {
+        if (array_key_exists($queryString, PDOHook::instance()->bindingMap)) {
+            foreach (PDOHook::instance()->bindingMap[$queryString] as $key => &$param) {
                 $sqlQuery->getParameter()[$key] = (string)$param;
             }
             $sqlInvocation->getQueries()[] = $sqlQuery;
