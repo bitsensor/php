@@ -79,7 +79,6 @@ class MysqliHook extends AbstractHook
     const BIND_PARAM_FUNCTIONS = [
         [mysqli_stmt::class, 'bind_param'],
         ['mysqli_stmt_bind_param'],
-        ['mysqli_bind_param']
     ];
 
     /**
@@ -98,7 +97,12 @@ class MysqliHook extends AbstractHook
     private $connection;
     private $username;
     private $database;
-    public $prepareStmts = array();
+
+    /**
+     * A binding map which maps a prepare statement as key to a binding as value.
+     * @var array
+     */
+    public $bindingMap = [];
 
     /**
      * Starts Mysqli execution hooks.
@@ -238,21 +242,137 @@ class MysqliHook extends AbstractHook
     private function hookPrepare()
     {
         return function (...$args) {
-            throw new \Error('not implemented');
+            /** @var Datapoint $datapoint */
+
+            if (empty($args))
+                return;
+
+            $mysqli = is_a($args[0], mysqli::class)
+                ? $args[0]
+                : $this;
+            $statement = is_a($args[0], mysqli::class)
+                ? $args[1]
+                : $args[0];
+
+            global $datapoint;
+            if ($datapoint->getInvocation() == null) {
+                $invocation = new Invocation();
+                $datapoint->setInvocation($invocation);
+            }
+
+            $sqlInvocations = $datapoint->getInvocation()->getSQLInvocations();
+            $sqlInvocation = Util::array_find($sqlInvocations,
+                function (Invocation_SQLInvocation $i) use ($statement) {
+                    return $i->getPrepareStatement() == $statement;
+                }
+            );
+
+            // Skip execution if SQLInvocation for this statement is already created
+            if ($sqlInvocation !== null)
+                return;
+
+            $sqlInvocation = new Invocation_SQLInvocation();
+            $sqlInvocation->setPrepareStatement($statement);
+            $sqlInvocations[] = $sqlInvocation;
+
+            // Reset bindingMaps for this $statement if already set
+            PDOHook::instance()->bindingMap[$statement] = [];
+
+            // Pre-handle
+            MysqliHook::instance()->preHandle($mysqli, $sqlInvocation);
         };
     }
 
     private function hookBindParam($function)
     {
-        return function (...$args) {
-            throw new \Error('not implemented');
+        $internalHookBindParam = function ($function, $args, &$variables) {
+            /** @var Datapoint $datapoint */
+            /** @var Invocation_SQLInvocation $sqlInvocation */
+
+            // Finds current sqlInvocation for this execution.
+            global $datapoint;
+            if ($datapoint->getInvocation() == null)
+                return call_user_func_array($function, $args);
+
+            $sqlInvocations = $datapoint->getInvocation()->getSQLInvocations();
+            $sqlInvocation = $sqlInvocations[$sqlInvocations->count() - 1];
+
+            // Skips hooking if none was found
+            if ($sqlInvocation == null || empty($sqlInvocation->getPrepareStatement()))
+                return call_user_func_array($function, $args);
+
+            $queryString = $sqlInvocation->getPrepareStatement();
+
+            // Reset prepareStmts after put all bindings to query.
+            MysqliHook::instance()->bindingMap = [];
+            MysqliHook::instance()->bindingMap[$queryString] = &$variables;
+
+            return call_user_func_array($function, $args);
         };
+
+        // Note: This is a workaround. These two functions can not be merged because the parameters they accepts are different.
+        if (isset($function[1]))
+            return function ($types, &...$variables) use ($function, $internalHookBindParam) {
+                $function = [$this, $function[1]];
+                $args = [$types];
+                $args = array_merge($args, $variables);
+
+                return $internalHookBindParam($function, $args, $variables);
+            };
+        else
+            return function ($stmt, $types, &...$variables) use ($function, $internalHookBindParam) {
+                $function = $function[0];
+                $args = [$stmt, $types];
+                $args = array_merge($args, $variables);
+
+                return $internalHookBindParam($function, $args, $variables);
+            };
     }
 
     private function hookExecute($function)
     {
-        return function (...$args) {
-            throw new \Error('not implemented');
+        return function (...$args) use ($function) {
+            /** @var Datapoint $datapoint */
+            /** @var Invocation_SQLInvocation $sqlInvocation */
+            /** @var mysqli_result $result */
+
+            $function = isset($function[1]) ? [$this, $function[1]] : $function[0];
+
+            if (empty($args)) {
+                call_user_func($function);
+            }
+
+            // Finds current sqlInvocation for this execution.
+            global $datapoint;
+            if ($datapoint->getInvocation() == null)
+                return call_user_func_array($function, $args);
+
+            $sqlInvocations = $datapoint->getInvocation()->getSQLInvocations();
+            $sqlInvocation = $sqlInvocations[$sqlInvocations->count() - 1];
+
+            // Skips hooking if none was found
+            if ($sqlInvocation == null || empty($sqlInvocation->getPrepareStatement()))
+                return call_user_func_array($function, $args);
+
+            $queryString = $sqlInvocation->getPrepareStatement();
+            $sqlQuery = new Invocation_SQLInvocation_Query();
+            $sqlQuery->setQuery($queryString);
+
+            // Adds sub-queries
+            if (array_key_exists($queryString, MysqliHook::instance()->bindingMap)) {
+                foreach (MysqliHook::instance()->bindingMap[$queryString] as $key => &$param) {
+                    $sqlQuery->getParameter()[$key] = (string)$param;
+                }
+                $sqlInvocation->getQueries()[] = $sqlQuery;
+            }
+
+            // Execute
+            $result = call_user_func_array($function, $args);
+
+            // Post handle
+            MysqliHook::instance()->postHandle($result, $sqlInvocation);
+
+            return $result;
         };
     }
 
