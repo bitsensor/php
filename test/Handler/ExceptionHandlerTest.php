@@ -20,13 +20,10 @@ class ExceptionHandlerTest extends HandlerTest
 
         ExceptionHandler::handle($exception);
 
-        /** @var Datapoint $datapoint */
-        global $datapoint;
-
-        self::assertEquals(1, $datapoint->getErrors()->count(), "Datapoint must contain 1 error.");
+        self::assertEquals(1, $this->datapoint->getErrors()->count(), "Datapoint must contain 1 error.");
 
         /** @var Error $err */
-        $err = $datapoint->getErrors()[0];
+        $err = $this->datapoint->getErrors()[0];
 
         self::assertEquals($err->getCode(), $code);
         self::assertEquals($err->getDescription(), $message);

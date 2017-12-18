@@ -22,12 +22,41 @@ The BitSensor PHP plugin.
 ## Setup BitSensor
 
 ### Requirements
-* `php >= 5.3.3`
+* `php >= 5.6.0`
 * `composer`
+* `uopz` [optional]
   
 ### Installation
 
-This project uses Composer to handle dependencies. Use ``php composer.phar install`` to install everything after checking out the source.
+* Install bitsensor/php package using composer:
+
+    ```bash
+    composer require bitsensor/php
+    ```
+    
+* Install from source:
+
+    ```bash
+    php composer.phar install
+    ```
+    
+* To use PDO and MySQLi query tracing, the [uopz](https://github.com/krakjoe/uopz) pecl extension must be installed.
+
+    ```bash
+    # You might have to install `pecl` and php-dev dependencies
+    sudo apt-get install php-pear php-dev
+    
+    pecl install uopz
+    
+    # You might have to add `extension=uopz.so` to your php.ini, if that does not happen automatically
+    echo 'extension=uopz.so' >> /etc/php/7.0/fpm/php.ini
+    
+    # In case of php-fpm, reload the service
+    service php7.0-fpm reload
+    
+    # Check successful installation, the output should be `1`
+    php -r 'echo extension_loaded("uopz");'
+    ```
 
 ## Usage
 BitSensor can be used with Composer or as a standalone Phar.
@@ -55,9 +84,11 @@ $config->setConnectionFail(Config::ACTION_ALLOW);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
 $config->setHostSrc(Config::HOST_SERVER_NAME);
 $config->setLogLevel(Config::LOG_LEVEL_NONE);
+$config->setUopzHook(Config::UOPZ_HOOK_ON);
 
 // Start BitSensor 
-$bitSensor = new BitSensor($config);
+$bitSensor = new BitSensor();
+$bitSensor->config($config);
 ```
 
 ### Phar
@@ -83,9 +114,11 @@ $config->setConnectionFail(Config::ACTION_ALLOW);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
 $config->setHostSrc(Config::HOST_SERVER_NAME);
 $config->setLogLevel(Config::LOG_LEVEL_NONE);
+$config->setUopzHook(Config::UOPZ_HOOK_ON);
 
 // Start BitSensor 
-$bitSensor = new BitSensor($config);
+$bitSensor = new BitSensor();
+$bitSensor->config($config);
 ```
 
 ## Configuration
@@ -104,19 +137,23 @@ You have the following config options at your disposal:
 | ```setHost()```           | host           | host address override                                                                                                                                      | <empty>                                             | Hostname manual override value.                                                                                            |
 | ```setLogLevel()```       | logLevel       | ```Config::LOG_LEVEL_ALL``` ("all"), ```Config::LOG_LEVEL_NONE``` ("none")                                                                                 | ```Config::LOG_LEVEL_ALL``` ("all")                 | The logging level.                                                                                                         |
 | ```setOutputFlushing```   | outputFlushing | ```Config::OUTPUT_FLUSHING_ON``` ("on"), ```Config::OUTPUT_FLUSHING_OFF``` ("off")                                                                         | ```Config::OUTPUT_FLUSHING_OFF``` ("off")           | Output flushing. Turning this on allows the browser to render the page while BitSensor is still working in the background. |
+| ```setUopzHook```         | uopzHook       | ```Config::UOPZ_HOOK_ON``` ("on"), ```Config::UOPZ_HOOK_OFF``` ("off")                                                                                     | ```Config::UOPZ_HOOK_ON``` ("on")                   | Uopz Hooking. Turning this on enables BitSensor to hook into function calls.                                               |
 
 ### Tags
 If you are running many applications, it might be sensible to group them by a tag. You can create a tag using the following snipplet
 ```php
-global $collector;
-$collector->addEndpointContext(new EndpointContext("tag", "cool-applications"));
+global $datapoint;
+$datapoint->putContext("tag", "cool-applications");
 ```
 
 The configuration can be specified in either PHP or JSON. To use JSON instead of PHP use the following code:
 ``index.php``
 ```php
 <?php
-$bitSensor = new BitSensor('/path/to/config.json');
+use BitSensor\Core\BitSensor;
+
+$bitSensor = new BitSensor();
+$bitSensor->config('/path/to/config.json');
 ```
 
 Sample configuration file:
@@ -129,7 +166,8 @@ Sample configuration file:
   "connectionFail": "allow",
   "ipAddressSrc": "remoteAddr",
   "hostSrc": "serverName",
-  "logLevel": "none"
+  "logLevel": "none",
+  "uopzHook": "on"
 }
 ```
 

@@ -35,6 +35,10 @@ class AfterRequestHandler
             flush();
         }
 
+        if ($config->getFastcgiFinishRequest() === Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON) {
+            fastcgi_finish_request();
+        }
+
         try {
             ApiConnector::from($config->getUser(), $config->getApiKey())
                 ->with($datapoint)

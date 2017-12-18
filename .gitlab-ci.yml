@@ -4,36 +4,73 @@ image: miya0001/phpenv:7.1
 .test_template: &test_job
   stage: test
   image: miya0001/phpenv:$PHP_VERSION
-  script:
+  before_script:
     - . build-tools/prepare-env.sh
     - composer config cache-files-dir .composercache
-    - vendor/bin/phpunit --bootstrap vendor/autoload.php --no-configuration test/
+  script:
+    - vendor/bin/phpunit --bootstrap vendor/autoload.php test/
+
+.test_template7: &test_job7
+  <<: *test_job
+  image: php:$PHP_VERSION
+  services:
+    - name: mysql:latest
+      alias: mysql
+  before_script:
+    # Install git, required for composer
+    - apt-get update -yqq
+    - apt-get install git zlib1g-dev -yqq
+
+    # Install dev environment
+    - docker-php-ext-install zip
+    - docker-php-ext-install pdo_mysql
+    - docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+
+    # Install composer
+    - curl -sS https://getcomposer.org/installer | php
+
+    # Install all project dependencies
+    - php composer.phar self-update
+    - php composer.phar install --no-progress
+    - php composer.phar config cache-files-dir .composercache
+    - pecl install uopz && docker-php-ext-enable uopz
 
 cache:
+  key: $CI_COMMIT_REF_NAME
   paths:
-  - .composercache
+    - .composercache
 
 stages:
   - test
   - build
   - deploy
 
-test:5.5:
-  <<: *test_job
-  variables:
-    PHP_VERSION: '5.5'
 test:5.6:
   <<: *test_job
   variables:
     PHP_VERSION: '5.6'
+
 test:7.0:
-  <<: *test_job
+  <<: *test_job7
   variables:
+    MYSQL_ROOT_PASSWORD: "passwd"
+    BITSENSOR_MYSQL_HOST: "mysql"
     PHP_VERSION: '7.0'
+
 test:7.1:
-  <<: *test_job
+  <<: *test_job7
   variables:
+    MYSQL_ROOT_PASSWORD: "passwd"
+    BITSENSOR_MYSQL_HOST: "mysql"
     PHP_VERSION: '7.1'
+
+test:7.2:
+  <<: *test_job7
+  variables:
+    MYSQL_ROOT_PASSWORD: "passwd"
+    BITSENSOR_MYSQL_HOST: "mysql"
+    PHP_VERSION: '7.2'
+
 
 build:
   stage: build
@@ -49,6 +86,7 @@ deploy:packagist:
   stage: deploy
   script:
     - curl -XPOST -H'content-type:application/json' 'https://packagist.org/api/update-package?username='$PACKAGIST_USERNAME'&apiToken='$PACKAGIST_API_KEY -d'{"repository":{"url":"'$PACKAGIST_URL'"}}'
+
 
 pages:
   image: node:8.9.0
