@@ -6,6 +6,7 @@ use mysqli;
 use mysqli_result;
 use mysqli_stmt;
 use Proto\Datapoint;
+use Proto\Error;
 use Proto\Invocation;
 use Proto\Invocation_SQLInvocation;
 use Proto\Invocation_SQLInvocation_Query;
@@ -181,12 +182,12 @@ class MysqliHook extends AbstractHook
             if (is_a($args[0], mysqli::class))
                 array_shift($args);
 
-            $host = $args[0];
-            $port = $args[4];
-            $username = $args[1];
-            $database = $args[3];
+            $host = isset($args[0]) ? $args[0] : '';
+            $port = isset($args[4]) ? $args[4] : -1;
+            $username = isset($args[1]) ? $args[1] : '';
+            $database = isset($args[3]) ? $args[3] : '';
 
-            $connection = 'mysql://' . $host . ($port ? ':' . $port : '') . ($database ? '/' . $database : '');
+            $connection = 'mysql://' . $host . ($port > -1 ? ':' . $port : '') . ($database ? '/' . $database : '');
 
             MysqliHook::instance()->updateConnectionInfo($connection, $username, $database);
         };
@@ -223,7 +224,7 @@ class MysqliHook extends AbstractHook
             $result = call_user_func_array($function, $args);
 
             // Post-handle
-            MysqliHook::instance()->postHandle($result, $sqlInvocation);
+            MysqliHook::instance()->postHandle($result, $sqlInvocation, $mysqli);
 
             // Add datapoint
             global $datapoint;
@@ -421,6 +422,20 @@ class MysqliHook extends AbstractHook
     public function postHandle($result, $sqlInvocation)
     {
         $sqlInvocation->getEndpoint()['execution_time'] = round(microtime(true) * 1000) - (float)$sqlInvocation->getEndpoint()['start_time'];
+
+        if($mysqli->error) {
+            global $bitSensor;
+            $trace = debug_backtrace(1,2)[1];
+
+            $error = new Error();
+            $error->setCode($mysqli->errno);
+            $error->setDescription($mysqli->error);
+            $error->setType('MySQL');
+            $error->setLocation($trace["file"]);
+            $error->setLine($trace["line"]);
+
+            $bitSensor->addError($error);
+        }
 
         if ($result !== null && $result !== false) {
             $sqlInvocation->getEndpoint()['successful'] = 'true';

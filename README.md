@@ -40,13 +40,19 @@ The BitSensor PHP plugin.
     php composer.phar install
     ```
     
-* [Optional] The application contains hooks that are used to trace PDO executions. This feature only works with php 7 and [uopz](https://github.com/krakjoe/uopz) installed.
+* To use PDO and MySQLi query tracing, the [uopz](https://github.com/krakjoe/uopz) pecl extension must be installed.
 
     ```bash
+    # You might have to install `pecl` and php-dev dependencies
+    sudo apt-get install php-pear php-dev
+    
     pecl install uopz
     
     # You might have to add `extension=uopz.so` to your php.ini, if that does not happen automatically
     echo 'extension=uopz.so' >> /etc/php/7.0/fpm/php.ini
+    
+    # In case of php-fpm, reload the service
+    service php7.0-fpm reload
     
     # Check successful installation, the output should be `1`
     php -r 'echo extension_loaded("uopz");'
