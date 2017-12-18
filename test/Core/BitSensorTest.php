@@ -51,7 +51,7 @@ class BitSensorTest extends TestBase
         self::$proofOfInvocation = false;
 
         // Test BitSensor->errorHandler
-        $this->bitSensor = new BitSensor(new Config());
+        $this->bitSensor = new BitSensor();
         self::assertEquals(BitSensorTest::class, $this->bitSensor->errorHandler[0]);
 
         restore_error_handler();
@@ -69,7 +69,7 @@ class BitSensorTest extends TestBase
         self::assertEquals([ExceptionHandler::class, 'handle'], $oldExceptionHandler);
 
         // Test BitSensor->exceptionHandler
-        $this->bitSensor = new BitSensor(new Config());
+        $this->bitSensor = new BitSensor();
         self::assertEquals(BitSensorTest::class, $this->bitSensor->exceptionHandler[0]);
 
         restore_exception_handler();

@@ -46,8 +46,9 @@ abstract class DatabaseTestBase extends TestBase
         $config->setUopzHook(Config::UOPZ_HOOK_OFF);
 
         global $bitSensor;
-        $bitSensor = new BitSensor($config);
+        $bitSensor = new BitSensor();
         $this->bitSensor = &$bitSensor;
+        $this->bitSensor->config($config);
 
         global $datapoint;
         $datapoint = new Datapoint();

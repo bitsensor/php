@@ -4,7 +4,6 @@ namespace BitSensor\Test;
 
 use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
-use BitSensor\Handler\AfterRequestHandler;
 use PHPUnit_Framework_TestCase;
 use Proto\Datapoint;
 
@@ -15,16 +14,26 @@ use Proto\Datapoint;
 abstract class TestBase extends PHPUnit_Framework_TestCase
 {
     /** @var BitSensor $bitSensor */
-    /** @var Datapoint $datapoint */
     protected $bitSensor;
+    /** @var Datapoint $datapoint */
     protected $datapoint;
 
+    /**
+     * @see AfterRequestHandler
+     */
+    public static function setUpBeforeClass()
+    {
+        // Disable apiConnector
+        global $bitsensorNoShutdownHandler;
+        $bitsensorNoShutdownHandler = true;
+    }
 
     protected function setUp()
     {
         global $bitSensor;
-        $bitSensor = new BitSensor(new Config());
+        $bitSensor = new BitSensor();
         $this->bitSensor = &$bitSensor;
+        $this->bitSensor->config(new Config());
 
         global $datapoint;
         $datapoint = new Datapoint();
@@ -35,15 +44,5 @@ abstract class TestBase extends PHPUnit_Framework_TestCase
     {
         unset($this->datapoint);
         unset($this->bitSensor);
-    }
-
-    /**
-     * @see AfterRequestHandler
-     */
-    public static function tearDownAfterClass()
-    {
-        // Disable apiConnector
-        global $bitsensorNoShutdownHandler;
-        $bitsensorNoShutdownHandler = true;
     }
 }

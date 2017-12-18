@@ -19,7 +19,8 @@ $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
 $config->setHostSrc(Config::HOST_SERVER_NAME);
 $config->setLogLevel(Config::LOG_LEVEL_ALL);
 
-$bitSensor = new BitSensor($config);
+$bitSensor = new BitSensor();
+$bitSensor->config($config);
 
 session_start();
 

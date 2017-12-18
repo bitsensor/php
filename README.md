@@ -87,7 +87,8 @@ $config->setLogLevel(Config::LOG_LEVEL_NONE);
 $config->setUopzHook(Config::UOPZ_HOOK_ON);
 
 // Start BitSensor 
-$bitSensor = new BitSensor($config);
+$bitSensor = new BitSensor();
+$bitSensor->config($config);
 ```
 
 ### Phar
@@ -116,7 +117,8 @@ $config->setLogLevel(Config::LOG_LEVEL_NONE);
 $config->setUopzHook(Config::UOPZ_HOOK_ON);
 
 // Start BitSensor 
-$bitSensor = new BitSensor($config);
+$bitSensor = new BitSensor();
+$bitSensor->config($config);
 ```
 
 ## Configuration
@@ -148,7 +150,10 @@ The configuration can be specified in either PHP or JSON. To use JSON instead of
 ``index.php``
 ```php
 <?php
-$bitSensor = new BitSensor('/path/to/config.json');
+use BitSensor\Core\BitSensor;
+
+$bitSensor = new BitSensor();
+$bitSensor->config('/path/to/config.json');
 ```
 
 Sample configuration file:

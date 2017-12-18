@@ -12,14 +12,7 @@ abstract class HandlerTest extends TestBase
         restore_error_handler();
         restore_exception_handler();
 
-        unset($this->datapoint);
-        unset($this->bitSensor);
-    }
-
-    public static function tearDownAfterClass()
-    {
-        global $bitsensorNoShutdownHandler;
-        $bitsensorNoShutdownHandler = true;
+        parent::tearDown();
     }
 
     public abstract function testHandle();

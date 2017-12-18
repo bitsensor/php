@@ -4,6 +4,7 @@ namespace BitSensor\Core;
 
 
 use BitSensor\Exception\ApiException;
+use BitSensor\Handler\AfterRequestHandler;
 use BitSensor\Handler\CodeErrorHandler;
 use BitSensor\Handler\ExceptionHandler;
 use BitSensor\Handler\Handler;
@@ -76,10 +77,8 @@ class BitSensor
      **/
     public $exceptionHandler;
 
-    /**
-     * @param Config|string $configPath Object with configuration.
-     */
-    public function __construct($configPath = 'config.json')
+
+    public function __construct()
     {
         if (!defined('BITSENSOR_WORKING_DIR')) {
             /**
@@ -87,19 +86,6 @@ class BitSensor
              */
             define('BITSENSOR_WORKING_DIR', getcwd());
         }
-
-        /**
-         * @global Config $config
-         */
-        global $config;
-        if ($configPath instanceof Config) {
-            $config = $configPath;
-            Log::d('Loaded from PHP Config');
-        } else {
-            $config = new Config(file_get_contents($configPath));
-            Log::d('Loaded from' . $configPath);
-        }
-        $this->config = &$config;
 
         /**
          * @global Datapoint $datapoint
@@ -118,22 +104,40 @@ class BitSensor
                 "not defined" : (is_array($this->exceptionHandler) ?
                     implode($this->exceptionHandler) : $this->exceptionHandler)));
 
-        register_shutdown_function('BitSensor\Handler\AfterRequestHandler::handle', $datapoint, $config);
-
         $this->addHandler(new IpHandler());
         $this->addHandler(new HttpRequestHandler());
         $this->addHandler(new RequestInputHandler());
         $this->addHandler(new ModSecurityHandler());
         $this->addHandler(new InterfaceHandler());
+    }
 
-        $this->runHandlers();
+    /**
+     * @param Config|string $configPath Object with configuration.
+     */
+    public function config($configPath = 'config.json')
+    {
+        /**
+         * @global Config $config
+         */
+        global $config;
+        if ($configPath instanceof Config) {
+            $config = $configPath;
+            Log::d('Loaded from PHP Config');
+        } else {
+            $config = new Config(file_get_contents($configPath));
+            Log::d('Loaded from' . $configPath);
+        }
+        $this->config = &$config;
+
+        // Post request handling
+        register_shutdown_function([AfterRequestHandler::class, 'handle'], $this->datapoint, $config);
 
         if ($this->config->getMode() === Config::MODE_ON) {
             // Check if user is authorized
             try {
                 $authorizationResponse = json_decode(ApiConnector::from($this->config->getUser(), $this->config->getApiKey())
                     ->to($this->config->getUri())
-                    ->with($datapoint)
+                    ->with($this->datapoint)
                     ->post(ApiConnector::ACTION_AUTHORIZE)
                     ->send(), true);
             } catch (ApiException $e) {
@@ -156,6 +160,8 @@ class BitSensor
             PDOHook::instance()->start();
             MysqliHook::instance()->start();
         }
+
+        $this->runHandlers();
     }
 
     /**
