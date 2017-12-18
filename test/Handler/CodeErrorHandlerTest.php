@@ -30,5 +30,4 @@ class CodeErrorHandlerTest extends HandlerTest
         self::assertEquals($err->getLocation(), $file);
         self::assertEquals($err->getLine(), $line);
     }
-
 }

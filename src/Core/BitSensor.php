@@ -4,6 +4,8 @@ namespace BitSensor\Core;
 
 
 use BitSensor\Exception\ApiException;
+use BitSensor\Handler\CodeErrorHandler;
+use BitSensor\Handler\ExceptionHandler;
 use BitSensor\Handler\Handler;
 use BitSensor\Handler\HttpRequestHandler;
 use BitSensor\Handler\InterfaceHandler;
@@ -106,12 +108,12 @@ class BitSensor
         $datapoint = new Datapoint();
         $this->datapoint = &$datapoint;
 
-        $this->errorHandler = set_error_handler('BitSensor\Handler\CodeErrorHandler::handle');
+        $this->errorHandler = set_error_handler([CodeErrorHandler::class, 'handle']);
         Log::d("Previous error handler is: " . (is_null($this->errorHandler) ?
                 "not defined" : (is_array($this->errorHandler) ?
                     implode($this->errorHandler) : $this->errorHandler)));
 
-        $this->exceptionHandler = set_exception_handler('BitSensor\Handler\ExceptionHandler::handle');
+        $this->exceptionHandler = set_exception_handler([ExceptionHandler::class, 'handle']);
         Log::d("Previous exception handler is: " . (is_null($this->exceptionHandler) ?
                 "not defined" : (is_array($this->exceptionHandler) ?
                     implode($this->exceptionHandler) : $this->exceptionHandler)));

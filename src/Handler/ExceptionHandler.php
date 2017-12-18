@@ -3,7 +3,6 @@
 namespace BitSensor\Handler;
 
 use Exception;
-use Proto\Datapoint;
 use Proto\Error;
 
 /**
@@ -18,8 +17,7 @@ class ExceptionHandler
      */
     public static function handle($exception)
     {
-        global /** @var Datapoint $datapoint */
-        $datapoint;
+        global $bitSensor;
 
         $error = new Error();
         $error->setCode($exception->getCode());
@@ -31,10 +29,9 @@ class ExceptionHandler
         $traces = explode(PHP_EOL, $exception->getTraceAsString());
         $error->setContext($traces);
 
-        $datapoint->getErrors()[] = $error;
+        $bitSensor->addError($error);
 
-        global $bitSensor;
-        if (isset($bitSensor->exceptionHandler))
+        if (isset($bitSensor->exceptionHandler) && stripos($bitSensor->exceptionHandler[0], 'BitSensor'))
             call_user_func($bitSensor->exceptionHandler, $exception);
     }
 }
