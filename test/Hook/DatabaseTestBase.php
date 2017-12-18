@@ -4,7 +4,7 @@ namespace BitSensor\Test\Hook;
 
 use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
-use PHPUnit_Framework_TestCase;
+use BitSensor\Test\TestBase;
 use Proto\Datapoint;
 use Proto\Invocation_SQLInvocation;
 
@@ -12,14 +12,10 @@ use Proto\Invocation_SQLInvocation;
  * Class DatabaseTestBase contains test suite setup and basic test cases.
  * @package BitSensor\Test\Hook
  */
-abstract class DatabaseTestBase extends PHPUnit_Framework_TestCase
+abstract class DatabaseTestBase extends TestBase
 {
-    /** @var BitSensor $bitSensor */
-    /** @var Datapoint $datapoint */
     /** @var string $host */
     /** @var string $pass */
-    protected $bitSensor;
-    protected $datapoint;
     protected $host;
     protected $pass;
 
@@ -64,9 +60,9 @@ abstract class DatabaseTestBase extends PHPUnit_Framework_TestCase
     {
         $this->getHookInstance()->stop();
 
-        unset($this->datapoint);
-        unset($this->bitSensor);
+        parent::tearDown();
     }
+
 
     /** TEST CASES */
 

@@ -3,7 +3,6 @@
 namespace BitSensor\Test\Handler;
 
 use BitSensor\Handler\CodeErrorHandler;
-use Proto\Datapoint;
 use Proto\Error;
 
 class CodeErrorHandlerTest extends HandlerTest
@@ -17,13 +16,10 @@ class CodeErrorHandlerTest extends HandlerTest
 
         CodeErrorHandler::handle($code, $message, $file, $line, NULL);
 
-        /** @var Datapoint $datapoint */
-        global $datapoint;
-
-        self::assertEquals(1, $datapoint->getErrors()->count(), "Datapoint must contain 1 error.");
+        self::assertEquals(1, $this->datapoint->getErrors()->count(), "Datapoint must contain 1 error.");
 
         /** @var Error $err */
-        $err = $datapoint->getErrors()[0];
+        $err = $this->datapoint->getErrors()[0];
 
         self::assertEquals($err->getCode(), $code);
         self::assertEquals($err->getDescription(), $message);

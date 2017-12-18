@@ -2,36 +2,20 @@
 
 namespace BitSensor\Test\Core;
 
-
 use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
 use BitSensor\Handler\CodeErrorHandler;
 use BitSensor\Handler\ExceptionHandler;
+use BitSensor\Test\TestBase;
 use PHPUnit_Util_ErrorHandler;
 use Proto\Datapoint;
 use Proto\Error;
 use Proto\GeneratedBy;
 
-class BitSensorTest extends \PHPUnit_Framework_TestCase
+class BitSensorTest extends TestBase
 {
 
     public static $proofOfInvocation = false;
-
-    /** @var BitSensor $bitSensor */
-    private $bitSensor;
-    /** @var Datapoint $datapoint */
-    private $datapoint;
-
-    protected function setUp()
-    {
-        global $bitSensor;
-        $bitSensor = new BitSensor(new Config());
-        $this->bitSensor = &$bitSensor;
-
-        global $datapoint;
-        $datapoint = new Datapoint();
-        $this->datapoint = &$datapoint;
-    }
 
     protected function tearDown()
     {
@@ -40,12 +24,6 @@ class BitSensorTest extends \PHPUnit_Framework_TestCase
 
         unset($this->datapoint);
         unset($this->bitSensor);
-    }
-
-    public static function tearDownAfterClass()
-    {
-        global $bitsensorNoShutdownHandler;
-        $bitsensorNoShutdownHandler = true;
     }
 
     public function testAddContext()

@@ -2,35 +2,24 @@
 
 namespace BitSensor\Test\Handler;
 
-use BitSensor\Core\BitSensor;
-use BitSensor\Core\Config;
-use Proto\Datapoint;
+use BitSensor\Test\TestBase;
 
-abstract class HandlerTest extends \PHPUnit_Framework_TestCase
+abstract class HandlerTest extends TestBase
 {
-    /** @var Datapoint $datapoint */
-    protected $bitSensor;
-    protected $datapoint;
-
-    protected function setUp()
-    {
-        global $bitSensor;
-        $bitSensor = new BitSensor(new Config());
-        $this->bitSensor = &$bitSensor;
-
-        global $datapoint;
-        $datapoint = new Datapoint();
-        $this->datapoint = &$datapoint;
-    }
-
 
     protected function tearDown()
     {
-        unset($datapoint);
-        unset($bitSensor);
+        restore_error_handler();
+        restore_exception_handler();
 
-        set_error_handler(null);
-        set_exception_handler(null);
+        unset($this->datapoint);
+        unset($this->bitSensor);
+    }
+
+    public static function tearDownAfterClass()
+    {
+        global $bitsensorNoShutdownHandler;
+        $bitsensorNoShutdownHandler = true;
     }
 
     public abstract function testHandle();
