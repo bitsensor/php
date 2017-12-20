@@ -236,8 +236,7 @@ class Config
      *
      * @var string
      */
-    private $uopzHook = self::UOPZ_HOOK_ON;
-
+    private $uopzHook = self::UOPZ_HOOK_OFF;
 
     /**
      * @param $json
