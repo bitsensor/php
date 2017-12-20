@@ -23,12 +23,12 @@ use Proto\GeneratedBy;
 /**
  * Entry point for starting the BitSensor Web Application Security plugin.
  * @package BitSensor\Core
- * @version 0.9.4
+ * @version 0.10.0
  */
 class BitSensor
 {
 
-    const VERSION = '0.9.6';
+    const VERSION = '0.10.0';
 
     /**
      * User tried to tamper with the application.
