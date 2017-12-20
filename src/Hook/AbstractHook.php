@@ -23,16 +23,20 @@ abstract class AbstractHook extends Singleton
     public function start()
     {
         $className = str_replace(__NAMESPACE__ . '\\', '', get_called_class());
+
         if ($this->started) {
             return;
         }
+
         if (!extension_loaded('uopz')) {
-            trigger_error($className . ' not starting because uopz extension is not loaded.',
-                E_USER_ERROR);
+            trigger_error($className . ' not starting because uopz extension is not loaded.', E_USER_ERROR);
+            return;
         }
-        if (version_compare(phpversion('uopz'), self::VERSION_REQUIREMENT) < 0)
-            trigger_error($className . ' not starting with uopz version (' . phpversion('uopz') . ') lower than ' . self::VERSION_REQUIREMENT,
-                E_USER_ERROR);
+
+        if (version_compare(phpversion('uopz'), self::VERSION_REQUIREMENT) < 0) {
+            trigger_error($className . ' not starting with uopz version (' . phpversion('uopz') . ') lower than ' . self::VERSION_REQUIREMENT, E_USER_ERROR);
+            return;
+        }
 
         $this->started = true;
         $this->init();
