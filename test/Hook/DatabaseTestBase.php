@@ -30,7 +30,7 @@ abstract class DatabaseTestBase extends TestBase
     {
         parent::__construct($name, $data, $dataName);
 
-        $this->host = getenv('BITSENSOR_MYSQL_HOST') ?: 'localhost';
+        $this->host = getenv('BITSENSOR_MYSQL_HOST') ?: '127.0.0.1';
         $this->pass = getenv('MYSQL_ROOT_PASSWORD') ?: '';
     }
 
