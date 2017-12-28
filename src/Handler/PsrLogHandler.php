@@ -15,6 +15,7 @@ class PsrLogHandler extends AbstractLogger
         $error->setDescription($message);
 
         global $bitSensor;
-        $bitSensor->addError($error);
+        if(isset($bitSensor))
+            $bitSensor->addError($error);
     }
 }
