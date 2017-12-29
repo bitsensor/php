@@ -139,6 +139,22 @@ You have the following config options at your disposal:
 | ```setOutputFlushing```   | outputFlushing | ```Config::OUTPUT_FLUSHING_ON``` ("on"), ```Config::OUTPUT_FLUSHING_OFF``` ("off")                                                                         | ```Config::OUTPUT_FLUSHING_OFF``` ("off")           | Output flushing. Turning this on allows the browser to render the page while BitSensor is still working in the background. |
 | ```setUopzHook```         | uopzHook       | ```Config::UOPZ_HOOK_ON``` ("on"), ```Config::UOPZ_HOOK_OFF``` ("off")                                                                                     | ```Config::UOPZ_HOOK_ON``` ("on")                   | Uopz Hooking. Turning this on enables BitSensor to hook into function calls.                                               |
 
+## Logging
+
+### Monolog
+```php
+use Monolog\Logger;
+
+use Monolog\Handler\PsrHandler;
+use BitSensor\Handler\PsrLogHandler;
+
+// Your existing logger code
+$log = new Logger('name');
+
+// Add the BitSensor PsrLogHandler
+$log->pushHandler(new PsrHandler(new PsrLogHandler()));
+```
+
 ### Tags
 If you are running many applications, it might be sensible to group them by a tag. You can create a tag using the following snipplet
 ```php

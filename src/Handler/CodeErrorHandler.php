@@ -2,6 +2,7 @@
 
 namespace BitSensor\Handler;
 
+use BitSensor\Core\BitSensor;
 use Proto\Error;
 
 /**
@@ -31,7 +32,7 @@ class CodeErrorHandler
 
         $bitSensor->addError($error);
 
-        if (isset($bitSensor->errorHandler) && stripos($bitSensor->errorHandler[0], 'BitSensor'))
-            call_user_func($bitSensor->errorHandler, $errno, $errstr, $errfile, $errline, $errcontext);
+        if (isset(BitSensor::$errorHandler))
+            call_user_func(BitSensor::$errorHandler, $errno, $errstr, $errfile, $errline, $errcontext);
     }
 }

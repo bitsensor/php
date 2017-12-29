@@ -7,6 +7,9 @@ use Proto\Error;
 
 class CodeErrorHandlerTest extends HandlerTest
 {
+    /**
+     * @expectedException PHPUnit_Framework_Error
+     */
     public function testHandle()
     {
         $message = 'Test Message';
