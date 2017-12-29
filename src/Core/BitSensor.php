@@ -67,7 +67,7 @@ class BitSensor
      *
      * @var mixed
      **/
-    public $errorHandler;
+    public static $errorHandler;
 
 
     /**
@@ -75,7 +75,7 @@ class BitSensor
      *
      * @var callable
      **/
-    public $exceptionHandler;
+    public static $exceptionHandler;
 
 
     public function __construct()
@@ -94,15 +94,19 @@ class BitSensor
         $datapoint = new Datapoint();
         $this->datapoint = &$datapoint;
 
-        $this->errorHandler = set_error_handler([CodeErrorHandler::class, 'handle']);
-        Log::d("Previous error handler is: " . (is_null($this->errorHandler) ?
-                "not defined" : (is_array($this->errorHandler) ?
-                    implode($this->errorHandler) : $this->errorHandler)));
+        if (!isset(self::$errorHandler)) {
+            self::$errorHandler = set_error_handler([CodeErrorHandler::class, 'handle']);
+            Log::d("Previous error handler is: " . (is_null(self::$errorHandler) ?
+                    "not defined" : (is_array(self::$errorHandler) ?
+                        implode(self::$errorHandler) : self::$errorHandler)));
+        }
 
-        $this->exceptionHandler = set_exception_handler([ExceptionHandler::class, 'handle']);
-        Log::d("Previous exception handler is: " . (is_null($this->exceptionHandler) ?
-                "not defined" : (is_array($this->exceptionHandler) ?
-                    implode($this->exceptionHandler) : $this->exceptionHandler)));
+        if (!isset(self::$exceptionHandler)) {
+            self::$exceptionHandler = set_exception_handler([ExceptionHandler::class, 'handle']);
+            Log::d("Previous exception handler is: " . (is_null(self::$exceptionHandler) ?
+                    "not defined" : (is_array(self::$exceptionHandler) ?
+                        implode(self::$exceptionHandler) : self::$exceptionHandler)));
+        }
 
         $this->addHandler(new IpHandler());
         $this->addHandler(new HttpRequestHandler());
@@ -130,7 +134,8 @@ class BitSensor
         $this->config = &$config;
 
         // Post request handling
-        register_shutdown_function([AfterRequestHandler::class, 'handle'], $this->datapoint, $config);
+        if(!$config->skipShutdownHandler())
+            register_shutdown_function([AfterRequestHandler::class, 'handle'], $this);
 
         if ($this->config->getMode() === Config::MODE_ON) {
             // Check if user is authorized
@@ -262,5 +267,13 @@ class BitSensor
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * @return Datapoint
+     */
+    public function getDatapoint()
+    {
+        return $this->datapoint;
     }
 }

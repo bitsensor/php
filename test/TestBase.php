@@ -18,22 +18,16 @@ abstract class TestBase extends PHPUnit_Framework_TestCase
     /** @var Datapoint $datapoint */
     protected $datapoint;
 
-    /**
-     * @see AfterRequestHandler
-     */
-    public static function setUpBeforeClass()
-    {
-        // Disable apiConnector
-        global $bitsensorNoShutdownHandler;
-        $bitsensorNoShutdownHandler = true;
-    }
-
     protected function setUp()
     {
         global $bitSensor;
         $bitSensor = new BitSensor();
         $this->bitSensor = &$bitSensor;
-        $this->bitSensor->config(new Config());
+
+        $config = new Config();
+        //Skip curl request etc.
+        $config->setSkipShutdownHandler(true);
+        $this->bitSensor->config($config);
 
         global $datapoint;
         $datapoint = new Datapoint();

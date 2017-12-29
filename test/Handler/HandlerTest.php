@@ -9,9 +9,6 @@ abstract class HandlerTest extends TestBase
 
     protected function tearDown()
     {
-        restore_error_handler();
-        restore_exception_handler();
-
         parent::tearDown();
     }
 

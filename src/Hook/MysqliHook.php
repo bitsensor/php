@@ -202,7 +202,7 @@ class MysqliHook extends AbstractHook
             $function = isset($function[1]) ? [$this, $function[1]] : $function[0];
 
             if (empty($args)) {
-                call_user_func($function);
+                return call_user_func($function);
             }
 
             $mysqli = is_a($args[0], mysqli::class)
@@ -339,11 +339,7 @@ class MysqliHook extends AbstractHook
 
             $function = isset($function[1]) ? [$this, $function[1]] : $function[0];
 
-            if (empty($args)) {
-                call_user_func($function);
-            }
-
-            $stmt = is_a($args[0], mysqli_stmt::class)
+            $stmt = !empty($args) && is_a($args[0], mysqli_stmt::class)
                 ? $args[0]
                 : $this;
 

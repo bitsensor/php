@@ -212,7 +212,7 @@ class ApiConnector
         $curl_error = curl_error($ch);
 
         if ($curl_errno > 0) {
-            throw new ApiException("Server connection failed! $curl_error Code: $curl_errno", ApiException::CONNECTION_FAILED);
+            throw new ApiException("Server connection to BitSensor endpoint failed! $curl_error Code: $curl_errno", ApiException::CONNECTION_FAILED);
         }
 
         return $result;

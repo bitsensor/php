@@ -238,6 +238,8 @@ class Config
      */
     private $uopzHook = self::UOPZ_HOOK_OFF;
 
+    private $skipShutdownHandler = false;
+
     /**
      * @param $json
      */
@@ -513,5 +515,21 @@ class Config
     public function setUopzHook($uopzHook)
     {
         $this->uopzHook = $uopzHook;
+    }
+
+    /**
+     * @return bool
+     */
+    public function skipShutdownHandler()
+    {
+        return $this->skipShutdownHandler;
+    }
+
+    /**
+     * @param bool $skipShutdownHandler
+     */
+    public function setSkipShutdownHandler($skipShutdownHandler)
+    {
+        $this->skipShutdownHandler = $skipShutdownHandler;
     }
 }

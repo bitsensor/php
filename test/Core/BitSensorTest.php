@@ -19,9 +19,6 @@ class BitSensorTest extends TestBase
 
     protected function tearDown()
     {
-        restore_error_handler();
-        restore_exception_handler();
-
         unset($this->datapoint);
         unset($this->bitSensor);
     }
@@ -39,40 +36,19 @@ class BitSensorTest extends TestBase
         self::assertEmpty($this->datapoint->getErrors());
     }
 
+    /**
+     * @expectedException PHPUnit_Framework_Error_Warning
+     */
     public function testOldErrorHandlerSet()
     {
-        self::assertEquals(PHPUnit_Util_ErrorHandler::class, $this->bitSensor->errorHandler[0]);
+        self::assertEquals(PHPUnit_Util_ErrorHandler::class, BitSensor::$errorHandler[0]);
 
-        $oldErrorHandler = set_error_handler([BitSensorTest::class, 'callback']);
-        self::assertEquals([CodeErrorHandler::class, 'handle'], $oldErrorHandler);
-
-        trigger_error('test');
-        self::assertTrue(self::$proofOfInvocation);
-        self::$proofOfInvocation = false;
-
-        // Test BitSensor->errorHandler
-        $this->bitSensor = new BitSensor();
-        self::assertEquals(BitSensorTest::class, $this->bitSensor->errorHandler[0]);
-
-        restore_error_handler();
-        restore_error_handler();
+        trigger_error('test', E_USER_WARNING);
     }
 
     public static function callback($ex)
     {
         BitSensorTest::$proofOfInvocation = true;
-    }
-
-    public function testOldExceptionHandlerSet()
-    {
-        $oldExceptionHandler = set_exception_handler([BitSensorTest::class, 'callback']);
-        self::assertEquals([ExceptionHandler::class, 'handle'], $oldExceptionHandler);
-
-        // Test BitSensor->exceptionHandler
-        $this->bitSensor = new BitSensor();
-        self::assertEquals(BitSensorTest::class, $this->bitSensor->exceptionHandler[0]);
-
-        restore_exception_handler();
     }
 
     public function testAddEndpointContext()

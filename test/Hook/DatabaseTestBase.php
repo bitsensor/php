@@ -43,11 +43,13 @@ abstract class DatabaseTestBase extends TestBase
         $this->prepareDatabase();
 
         $config = new Config();
+        $config->setSkipShutdownHandler(true);
         $config->setUopzHook(Config::UOPZ_HOOK_OFF);
 
         global $bitSensor;
         $bitSensor = new BitSensor();
         $this->bitSensor = &$bitSensor;
+
         $this->bitSensor->config($config);
 
         global $datapoint;
