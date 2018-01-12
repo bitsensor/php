@@ -65,6 +65,10 @@ BitSensor can be used with Composer or as a standalone Phar.
 Add ``bitsensor/php`` to your ``composer.json``. After running ``php composer.phar install`` all required dependencies will be available to
 you. Refer to Composer's [Documentation](https://getcomposer.org/) for more information.
 
+### Phar
+Upload ``bitsensor.phar`` to your server and create a ``config.json`` file, or define your config in PHP.
+
+## Configuration
 ``index.php:``
 ```php
 <?php
@@ -84,6 +88,9 @@ $config->setConnectionFail(Config::ACTION_ALLOW);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
 $config->setHostSrc(Config::HOST_SERVER_NAME);
 $config->setLogLevel(Config::LOG_LEVEL_NONE);
+// If you are using FastCGI
+$config->setFastcgiFinishRequest(Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON);
+// If you have enabled UOPZ
 $config->setUopzHook(Config::UOPZ_HOOK_ON);
 
 // Start BitSensor 
@@ -91,53 +98,24 @@ $bitSensor = new BitSensor();
 $bitSensor->config($config);
 ```
 
-### Phar
-
-Upload ``bitsensor.phar`` to your server and create a ``config.json`` file, or define your config in PHP.
-
-``index.php:``
-```php
-<?php
-use BitSensor\Core\BitSensor;
-use BitSensor\Core\Config;
-
-// Load BitSensor phar
-require_once '/path/to/bitsensor.phar';
-
-// Create config using PHP.
-$config = new Config();
-$config->setUri('http://user.bitsensor.io:8080');
-$config->setUser('example_user');
-$config->setApiKey('abcdefghijklmnopqrstuvwxyz');
-$config->setMode(Config::MODE_DETECTION);
-$config->setConnectionFail(Config::ACTION_ALLOW);
-$config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
-$config->setHostSrc(Config::HOST_SERVER_NAME);
-$config->setLogLevel(Config::LOG_LEVEL_NONE);
-$config->setUopzHook(Config::UOPZ_HOOK_ON);
-
-// Start BitSensor 
-$bitSensor = new BitSensor();
-$bitSensor->config($config);
-```
-
-## Configuration
+### Documentation
 You have the following config options at your disposal:
 
-| PHP                       | JSON           | Value                                                                                                                                                      | Default                                             | Description                                                                                                                |
-|---------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| ```setUri()```            | uri            | uri                                                                                                                                                        | <empty>                                             | URI to the BitSensor API.                                                                                                  |
-| ```setUser()```           | user           | username                                                                                                                                                   | <empty>                                             | Your BitSensor username.                                                                                                   |
-| ```setApiKey()```         | apiKey         | api key                                                                                                                                                    | <empty>                                             | Your BitSensor API key.                                                                                                    |
-| ```setMode()```           | mode           | ```Config::MODE_ON``` ("on"), ```Config::MODE_DETECTION``` ("detection")                                                                                   | ```Config::MODE_ON``` ("on")                        | Running mode. In detection mode only logging will be done.                                                                 |
-| ```setConnectionFail()``` | connectionFail | ```Config::ACTION_ALLOW``` ("allow"), ```Config::ACTION_BLOCK``` ("block")                                                                                 | ```Config::ACTION_BLOCK``` ("block")                | Action to perform when the connection to the BitSensor servers is lost.                                                    |
-| ```setIpAddressSrc()```   | ipAddressSrc   | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr"), ```Config::IP_ADDRESS_X_FORWARDED_FOR``` ("forwardedFor"), ```Config::IP_ADDRESS_MANUAL``` ("manual") | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr") | Source of the IP address of the user.                                                                                      |
-| ```setIpAddress()```      | ipAddress      | ip override                                                                                                                                                | <empty>                                             | IP address manual override value.                                                                                          |
-| ```setHostSrc()```        | hostSrc        | ```Config::HOST_SERVER_NAME``` ("serverName"), ```Config::HOST_HOST_HEADER``` ("hostHeader"), ```Config::HOST_MANUAL``` ("manual")                         | ```Config::HOST_SERVER_NAME``` ("serverName")       | Source of the hostname.                                                                                                    |
-| ```setHost()```           | host           | host address override                                                                                                                                      | <empty>                                             | Hostname manual override value.                                                                                            |
-| ```setLogLevel()```       | logLevel       | ```Config::LOG_LEVEL_ALL``` ("all"), ```Config::LOG_LEVEL_NONE``` ("none")                                                                                 | ```Config::LOG_LEVEL_ALL``` ("all")                 | The logging level.                                                                                                         |
-| ```setOutputFlushing```   | outputFlushing | ```Config::OUTPUT_FLUSHING_ON``` ("on"), ```Config::OUTPUT_FLUSHING_OFF``` ("off")                                                                         | ```Config::OUTPUT_FLUSHING_OFF``` ("off")           | Output flushing. Turning this on allows the browser to render the page while BitSensor is still working in the background. |
-| ```setUopzHook```         | uopzHook       | ```Config::UOPZ_HOOK_ON``` ("on"), ```Config::UOPZ_HOOK_OFF``` ("off")                                                                                     | ```Config::UOPZ_HOOK_ON``` ("on")                   | Uopz Hooking. Turning this on enables BitSensor to hook into function calls.                                               |
+| PHP                           | JSON           | Value                                                                                                                                                      | Default                                                 | Description                                                                                                                |
+|-------------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| ```setUri()```                | uri            | uri                                                                                                                                                        | <empty>                                                 | URI to the BitSensor API.                                                                                                  |
+| ```setUser()```               | user           | username                                                                                                                                                   | <empty>                                                 | Your BitSensor username.                                                                                                   |
+| ```setApiKey()```             | apiKey         | api key                                                                                                                                                    | <empty>                                                 | Your BitSensor API key.                                                                                                    |
+| ```setMode()```               | mode           | ```Config::MODE_ON``` ("on"), ```Config::MODE_DETECTION``` ("detection")                                                                                   | ```Config::MODE_ON``` ("on")                            | Running mode. In detection mode only logging will be done.                                                                 |
+| ```setConnectionFail()```     | connectionFail | ```Config::ACTION_ALLOW``` ("allow"), ```Config::ACTION_BLOCK``` ("block")                                                                                 | ```Config::ACTION_BLOCK``` ("block")                    | Action to perform when the connection to the BitSensor servers is lost.                                                    |
+| ```setIpAddressSrc()```       | ipAddressSrc   | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr"), ```Config::IP_ADDRESS_X_FORWARDED_FOR``` ("forwardedFor"), ```Config::IP_ADDRESS_MANUAL``` ("manual") | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr")     | Source of the IP address of the user.                                                                                      |
+| ```setIpAddress()```          | ipAddress      | ip override                                                                                                                                                | <empty>                                                 | IP address manual override value.                                                                                          |
+| ```setHostSrc()```            | hostSrc        | ```Config::HOST_SERVER_NAME``` ("serverName"), ```Config::HOST_HOST_HEADER``` ("hostHeader"), ```Config::HOST_MANUAL``` ("manual")                         | ```Config::HOST_SERVER_NAME``` ("serverName")           | Source of the hostname.                                                                                                    |
+| ```setHost()```               | host           | host address override                                                                                                                                      | <empty>                                                 | Hostname manual override value.                                                                                            |
+| ```setLogLevel()```           | logLevel       | ```Config::LOG_LEVEL_ALL``` ("all"), ```Config::LOG_LEVEL_NONE``` ("none")                                                                                 | ```Config::LOG_LEVEL_ALL``` ("all")                     | The logging level.                                                                                                         |
+| ```setOutputFlushing```       | outputFlushing | ```Config::OUTPUT_FLUSHING_ON``` ("on"), ```Config::OUTPUT_FLUSHING_OFF``` ("off")                                                                         | ```Config::OUTPUT_FLUSHING_OFF``` ("off")               | Output flushing. Turning this on allows the browser to render the page while BitSensor is still working in the background. |
+| ```setUopzHook```             | uopzHook       | ```Config::UOPZ_HOOK_ON``` ("on"), ```Config::UOPZ_HOOK_OFF``` ("off")                                                                                     | ```Config::UOPZ_HOOK_ON``` ("on")                       | Uopz Hooking. Turning this on enables BitSensor to hook into function calls.                                               |
+| ```setFastcgiFinishRequest``` | executeFastCgi | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON``` ("on"), ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")                                           | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")| Finish request to your FastCGI webserver, while processing BitSensor in a seperate thread.                                 |
 
 ## Logging
 
