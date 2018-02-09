@@ -69,6 +69,8 @@ you. Refer to Composer's [Documentation](https://getcomposer.org/) for more info
 Upload ``bitsensor.phar`` to your server and create a ``config.json`` file, or define your config in PHP.
 
 ## Configuration
+
+### Code 
 ``index.php:``
 ```php
 <?php
@@ -96,6 +98,31 @@ $config->setUopzHook(Config::UOPZ_HOOK_ON);
 // Start BitSensor 
 $bitSensor = new BitSensor();
 $bitSensor->config($config);
+```
+
+### JSON
+``index.php``
+```php
+<?php
+use BitSensor\Core\BitSensor;
+
+$bitSensor = new BitSensor();
+$bitSensor->config('/path/to/config.json');
+```
+
+Sample configuration file:
+```json
+{
+  "uri": "http://bitsensor.io:8080/",
+  "user": "example_user",
+  "apiKey": "abcdefghijklmnopqrstuvwxyz",
+  "mode": "detection",
+  "connectionFail": "allow",
+  "ipAddressSrc": "remoteAddr",
+  "hostSrc": "serverName",
+  "logLevel": "none",
+  "uopzHook": "on"
+}
 ```
 
 ### Documentation
@@ -137,32 +164,7 @@ $log->pushHandler(new PsrHandler(new PsrLogHandler()));
 If you are running many applications, it might be sensible to group them by a tag. You can create a tag using the following snipplet
 ```php
 global $datapoint;
-$datapoint->putContext("tag", "cool-applications");
-```
-
-The configuration can be specified in either PHP or JSON. To use JSON instead of PHP use the following code:
-``index.php``
-```php
-<?php
-use BitSensor\Core\BitSensor;
-
-$bitSensor = new BitSensor();
-$bitSensor->config('/path/to/config.json');
-```
-
-Sample configuration file:
-```json
-{
-  "uri": "http://bitsensor.io:8080/",
-  "user": "example_user",
-  "apiKey": "abcdefghijklmnopqrstuvwxyz",
-  "mode": "detection",
-  "connectionFail": "allow",
-  "ipAddressSrc": "remoteAddr",
-  "hostSrc": "serverName",
-  "logLevel": "none",
-  "uopzHook": "on"
-}
+$datapoint->putEndpoint("tag", "cool-applications");
 ```
 
 ## Apache
