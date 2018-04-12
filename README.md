@@ -166,8 +166,9 @@ $log->pushHandler(new PsrHandler(new PsrLogHandler()));
 ### Tags
 If you are running many applications, it might be sensible to group them by a tag. You can create a tag using the following snipplet
 ```php
-global $datapoint;
-$datapoint->putEndpoint("tag", "cool-applications");
+<?php
+use \BitSensor\Core\BitSensor;
+BitSensor::putEndpoint("tag", "cool-applications");
 ```
 
 ### WebSocket
