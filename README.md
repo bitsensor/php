@@ -59,14 +59,11 @@ The BitSensor PHP plugin.
     ```
 
 ## Usage
-BitSensor can be used with Composer or as a standalone Phar.
+BitSensor can be used with Composer.
 
 ### Composer
 Add ``bitsensor/php`` to your ``composer.json``. After running ``php composer.phar install`` all required dependencies will be available to
 you. Refer to Composer's [Documentation](https://getcomposer.org/) for more information.
-
-### Phar
-Upload ``bitsensor.phar`` to your server and create a ``config.json`` file, or define your config in PHP.
 
 ## Configuration
 
@@ -85,7 +82,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 $config = new Config();
 ApiConnector::setUser('dev');
 ApiConnector::setApiKey('secret-apikey');
-ApiConnector::setHost('optional-host');
+ApiConnector::setHost('optional-host'); //when not running on bitsensor.io
 $config->setConnector(ApiConnector::class);
 $config->setMode(Config::MODE_DETECTION);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
@@ -129,11 +126,6 @@ Sample configuration file:
 ### Documentation
 You have the following config options at your disposal:
 
-TODO:
-| ```setUri()```                | uri            | uri                                                                                                                                                        | <empty>                                                 | URI to the BitSensor API.                                                                                                  |
-| ```setUser()```               | user           | username                                                                                                                                                   | <empty>                                                 | Your BitSensor username.                                                                                                   |
-| ```setApiKey()```             | apiKey         | api key                                                                                                                                                    | <empty>                                                 | Your BitSensor API key.                                                                                                    |
- 
 | PHP                           | JSON           | Value                                                                                                                                                      | Default                                                 | Description                                                                                                                |
 |-------------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | ```setMode()```               | mode           | ```Config::MODE_ON``` ("on"), ```Config::MODE_DETECTION``` ("detection")                                                                                   | ```Config::MODE_ON``` ("on")                            | Running mode. In detection mode only logging will be done.                                                                 |
@@ -146,10 +138,19 @@ TODO:
 | ```setUopzHook```             | uopzHook       | ```Config::UOPZ_HOOK_ON``` ("on"), ```Config::UOPZ_HOOK_OFF``` ("off")                                                                                     | ```Config::UOPZ_HOOK_ON``` ("on")                       | Uopz Hooking. Turning this on enables BitSensor to hook into function calls.                                               |
 | ```setFastcgiFinishRequest``` | executeFastCgi | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON``` ("on"), ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")                                           | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")| Finish request to your FastCGI webserver, while processing BitSensor in a seperate thread.                                 |
 
+Configuring the Connector for api:
+
+| PHP                           | JSON           | Value                                                                                                                                                      | Default                                                 | Description                                                                                                                |
+| ```setUser()```               | user           | username                                                                                                                                                   | <empty>                                                 | Your BitSensor username.                                                                                                   |
+| ```setApiKey()```             | apikey         | api key                                                                                                                                                    | <empty>                                                 | Your BitSensor API key.                                                                                                    |
+| ```setHost()```               | host           | hostname                                                                                                                                                   | {user}.bitsensor.io                                     | Hostname of the BitSensor endpoint.                                                                                        |
+| ```setPort()```               | port           | port                                                                                                                                                       | 8080                                                    | Port of the BitSensor endpoint.                                                                                            |
+
 ## Logging
 
 ### Monolog
 ```php
+<?php
 use Monolog\Logger;
 
 use Monolog\Handler\PsrHandler;
