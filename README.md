@@ -170,6 +170,16 @@ global $datapoint;
 $datapoint->putEndpoint("tag", "cool-applications");
 ```
 
+### WebSocket
+If you are using websockets, BitSensor needs to know in order to properly detect attacks.
+```php
+<?php
+use \BitSensor\Core\BitSensor;
+use \BitSensor\Core\EndpointConstants;
+
+BitSensor::putEndpoint(EndpointConstants::WEBSOCKET, 'true');
+````
+
 ## Apache
 After sinking BitSensor hooks in your application, you can extend BitSensor's visibility to include Apache events that aren't processed by your application. 
 
