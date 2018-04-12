@@ -71,17 +71,6 @@ test:7.2:
     BITSENSOR_MYSQL_HOST: "mysql"
     PHP_VERSION: '7.2'
 
-
-build:
-  stage: build
-  script:
-    - . build-tools/prepare-env.sh
-    - php build-tools/phar.php
-  artifacts:
-    paths:
-      - target
-    expire_in: 20m
-
 deploy:packagist:
   stage: deploy
   script:
