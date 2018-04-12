@@ -227,7 +227,9 @@ class MysqliHook extends AbstractHook
             // Post-handle
             MysqliHook::instance()->postHandle($result, $sqlInvocation, $mysqli);
 
-            BitSensor::getInvocations()->getSqlInvocations()[] = $sqlInvocation;
+            $sqlInvocations = BitSensor::getInvocations()->getSqlInvocations();
+            $sqlInvocations[] = $sqlInvocation;
+            BitSensor::getInvocations()->setSqlInvocations($sqlInvocations);
 
             return $result;
         };

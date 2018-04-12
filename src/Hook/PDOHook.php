@@ -166,7 +166,9 @@ class PDOHook extends AbstractHook
         // Post-handle
         $this->postHandle($result, $sqlInvocation);
 
-        BitSensor::getInvocations()->getSqlInvocations()[] = $sqlInvocation;
+        $sqlInvocations = BitSensor::getInvocations()->getSqlInvocations();
+        $sqlInvocations[] = $sqlInvocation;
+        BitSensor::getInvocations()->setSqlInvocations($sqlInvocations);
 
         return $result;
     }
