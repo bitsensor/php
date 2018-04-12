@@ -3,6 +3,7 @@
 namespace BitSensor\Test\Handler;
 
 
+use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
 use BitSensor\Core\EndpointConstants;
 use BitSensor\Core\HttpConstants;
@@ -15,10 +16,10 @@ class HttpRequestHandlerTest extends HandlerTest
     public function testHandle()
     {
         $handler = new HttpRequestHandler();
-        $handler->handle($this->datapoint, new Config());
+        $handler->handle(BitSensor::getDatapoint(), new Config());
 
-        $context = $this->datapoint->getContext();
-        $endpoint = $this->datapoint->getEndpoint();
+        $context = BitSensor::getDatapoint()->getContext();
+        $endpoint = BitSensor::getDatapoint()->getEndpoint();
 
         self::assertEquals('false', $context[HttpConstants::NAME . '.' . HttpConstants::HTTPS]);
 

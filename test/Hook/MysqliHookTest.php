@@ -2,6 +2,7 @@
 
 namespace BitSensor\Test\Hook;
 
+use BitSensor\Core\BitSensor;
 use BitSensor\Hook\MysqliHook;
 use mysqli;
 use mysqli_stmt;
@@ -132,7 +133,7 @@ class MysqliHookTest extends DatabaseTestBase
         call_user_func($function, $stmt, $owners);
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
-        $sqlInvocation = $this->datapoint->getInvocation()->getSQLInvocations()[0];
+        $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertEquals($prepare, $sqlInvocation->getPrepareStatement());
         self::assertEquals('true', $sqlInvocation->getEndpoint()['successful']);
@@ -154,7 +155,7 @@ class MysqliHookTest extends DatabaseTestBase
         call_user_func($function, $stmt);
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
-        $sqlInvocation = $this->datapoint->getInvocation()->getSQLInvocations()[0];
+        $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         $stmt->bind_result($name, $owner);
 

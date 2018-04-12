@@ -21,8 +21,6 @@ class CodeErrorHandler
      */
     public static function handle($errno, $errstr, $errfile, $errline, $errcontext)
     {
-        global $bitSensor;
-
         $error = new Error();
         $error->setCode($errno);
         $error->setDescription($errstr);
@@ -30,7 +28,7 @@ class CodeErrorHandler
         $error->setLine($errline);
         $error->setType("Code");
 
-        $bitSensor->addError($error);
+        BitSensor::addError($error);
 
         if (isset(BitSensor::$errorHandler))
             call_user_func(BitSensor::$errorHandler, $errno, $errstr, $errfile, $errline, $errcontext);

@@ -2,8 +2,8 @@
 
 namespace BitSensor\Test\Handler;
 
+use BitSensor\Core\BitSensor;
 use BitSensor\Handler\ExceptionHandler;
-use Proto\Datapoint;
 use Proto\Error;
 
 class ExceptionHandlerTest extends HandlerTest
@@ -20,10 +20,10 @@ class ExceptionHandlerTest extends HandlerTest
 
         ExceptionHandler::handle($exception);
 
-        self::assertEquals(1, $this->datapoint->getErrors()->count(), "Datapoint must contain 1 error.");
+        self::assertEquals(1, BitSensor::getDatapoint()->getErrors()->count(), "Datapoint must contain 1 error.");
 
         /** @var Error $err */
-        $err = $this->datapoint->getErrors()[0];
+        $err = BitSensor::getDatapoint()->getErrors()[0];
 
         self::assertEquals($err->getCode(), $code);
         self::assertEquals($err->getDescription(), $message);

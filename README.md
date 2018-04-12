@@ -76,17 +76,18 @@ Upload ``bitsensor.phar`` to your server and create a ``config.json`` file, or d
 <?php
 use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
+use BitSensor\Connector\ApiConnector;
 
 // Load Composer's autoloader
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Create config using PHP.
 $config = new Config();
-$config->setUri('http://user.bitsensor.io:8080');
-$config->setUser('example_user');
-$config->setApiKey('abcdefghijklmnopqrstuvwxyz');
+ApiConnector::setUser('dev');
+ApiConnector::setApiKey('secret-apikey');
+ApiConnector::setHost('optional-host');
+$config->setConnector(ApiConnector::class);
 $config->setMode(Config::MODE_DETECTION);
-$config->setConnectionFail(Config::ACTION_ALLOW);
 $config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
 $config->setHostSrc(Config::HOST_SERVER_NAME);
 $config->setLogLevel(Config::LOG_LEVEL_NONE);
@@ -96,8 +97,7 @@ $config->setFastcgiFinishRequest(Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON);
 $config->setUopzHook(Config::UOPZ_HOOK_ON);
 
 // Start BitSensor 
-$bitSensor = new BitSensor();
-$bitSensor->config($config);
+BitSensor::configure($config);
 ```
 
 ### JSON
@@ -106,35 +106,37 @@ $bitSensor->config($config);
 <?php
 use BitSensor\Core\BitSensor;
 
-$bitSensor = new BitSensor();
-$bitSensor->config('/path/to/config.json');
+BitSensor::configure('/path/to/config.json');
 ```
 
 Sample configuration file:
 ```json
-{
-  "uri": "http://bitsensor.io:8080/",
-  "user": "example_user",
-  "apiKey": "abcdefghijklmnopqrstuvwxyz",
+{ 
+  "connector": {
+      "type": "api",
+      "user": "dev",
+      "apikey": "php-plugin-test"
+  },
   "mode": "detection",
-  "connectionFail": "allow",
   "ipAddressSrc": "remoteAddr",
   "hostSrc": "serverName",
   "logLevel": "none",
-  "uopzHook": "on"
+  "uopzHook": "on",
+  "executeFastCgi": "off"
 }
 ```
 
 ### Documentation
 You have the following config options at your disposal:
 
-| PHP                           | JSON           | Value                                                                                                                                                      | Default                                                 | Description                                                                                                                |
-|-------------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+TODO:
 | ```setUri()```                | uri            | uri                                                                                                                                                        | <empty>                                                 | URI to the BitSensor API.                                                                                                  |
 | ```setUser()```               | user           | username                                                                                                                                                   | <empty>                                                 | Your BitSensor username.                                                                                                   |
 | ```setApiKey()```             | apiKey         | api key                                                                                                                                                    | <empty>                                                 | Your BitSensor API key.                                                                                                    |
+ 
+| PHP                           | JSON           | Value                                                                                                                                                      | Default                                                 | Description                                                                                                                |
+|-------------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | ```setMode()```               | mode           | ```Config::MODE_ON``` ("on"), ```Config::MODE_DETECTION``` ("detection")                                                                                   | ```Config::MODE_ON``` ("on")                            | Running mode. In detection mode only logging will be done.                                                                 |
-| ```setConnectionFail()```     | connectionFail | ```Config::ACTION_ALLOW``` ("allow"), ```Config::ACTION_BLOCK``` ("block")                                                                                 | ```Config::ACTION_BLOCK``` ("block")                    | Action to perform when the connection to the BitSensor servers is lost.                                                    |
 | ```setIpAddressSrc()```       | ipAddressSrc   | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr"), ```Config::IP_ADDRESS_X_FORWARDED_FOR``` ("forwardedFor"), ```Config::IP_ADDRESS_MANUAL``` ("manual") | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr")     | Source of the IP address of the user.                                                                                      |
 | ```setIpAddress()```          | ipAddress      | ip override                                                                                                                                                | <empty>                                                 | IP address manual override value.                                                                                          |
 | ```setHostSrc()```            | hostSrc        | ```Config::HOST_SERVER_NAME``` ("serverName"), ```Config::HOST_HOST_HEADER``` ("hostHeader"), ```Config::HOST_MANUAL``` ("manual")                         | ```Config::HOST_SERVER_NAME``` ("serverName")           | Source of the hostname.                                                                                                    |

@@ -3,9 +3,7 @@
 namespace BitSensor\Test\Hook;
 
 use BitSensor\Core\BitSensor;
-use BitSensor\Core\Config;
 use BitSensor\Test\TestBase;
-use Proto\Datapoint;
 use Proto\Invocation_SQLInvocation;
 
 /**
@@ -36,26 +34,13 @@ abstract class DatabaseTestBase extends TestBase
 
     protected function setUp()
     {
+        parent::setUp();
+
         if (!extension_loaded('uopz')) {
             self::markTestSkipped('UOPZ plugin not loaded. Skip test.');
         }
 
         $this->prepareDatabase();
-
-        $config = new Config();
-        $config->setSkipShutdownHandler(true);
-        $config->setUopzHook(Config::UOPZ_HOOK_OFF);
-
-        global $bitSensor;
-        $bitSensor = new BitSensor();
-        $this->bitSensor = &$bitSensor;
-
-        $this->bitSensor->config($config);
-
-        global $datapoint;
-        $datapoint = new Datapoint();
-        $this->datapoint = &$datapoint;
-
         $this->getHookInstance()->start();
     }
 
@@ -79,7 +64,7 @@ abstract class DatabaseTestBase extends TestBase
         call_user_func($queryFunc, $query);
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
-        $sqlInvocation = $this->datapoint->getInvocation()->getSQLInvocations()[0];
+        $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertContains($this->host, $sqlInvocation->getEndpoint()['url']);
         self::assertEquals('root', $sqlInvocation->getEndpoint()['user']);
@@ -96,7 +81,7 @@ abstract class DatabaseTestBase extends TestBase
         call_user_func($queryFunc, $query);
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
-        $sqlInvocation = $this->datapoint->getInvocation()->getSQLInvocations()[0];
+        $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertEquals($query, $sqlInvocation->getQueries()[0]->getQuery());
 
@@ -116,7 +101,7 @@ abstract class DatabaseTestBase extends TestBase
         call_user_func($queryFunc, $query);
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
-        $sqlInvocation = $this->datapoint->getInvocation()->getSQLInvocations()[0];
+        $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertEquals($query, $sqlInvocation->getQueries()[0]->getQuery());
         self::assertEquals('false', $sqlInvocation->getEndpoint()['successful']);

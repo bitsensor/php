@@ -2,6 +2,7 @@
 
 namespace BitSensor\Handler;
 
+use BitSensor\Core\BitSensor;
 use Exception;
 use Proto\Error;
 
@@ -17,8 +18,6 @@ class ExceptionHandler
      */
     public static function handle($exception)
     {
-        global $bitSensor;
-
         $error = new Error();
         $error->setCode($exception->getCode());
         $error->setDescription($exception->getMessage());
@@ -29,9 +28,9 @@ class ExceptionHandler
         $traces = explode(PHP_EOL, $exception->getTraceAsString());
         $error->setContext($traces);
 
-        $bitSensor->addError($error);
+        BitSensor::addError($error);
 
-        if (isset($bitSensor->exceptionHandler) && stripos($bitSensor->exceptionHandler[0], 'BitSensor'))
-            call_user_func($bitSensor->exceptionHandler, $exception);
+        if (isset(BitSensor::$exceptionHandler) && stripos(BitSensor::$exceptionHandler[0], 'BitSensor'))
+            call_user_func(BitSensor::$exceptionHandler, $exception);
     }
 }

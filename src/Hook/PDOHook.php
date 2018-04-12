@@ -2,10 +2,10 @@
 
 namespace BitSensor\Hook;
 
+use BitSensor\Core\BitSensor;
 use PDO;
 use PDOStatement;
 use Proto\Datapoint;
-use Proto\Invocation;
 use Proto\Invocation_SQLInvocation;
 use Proto\Invocation_SQLInvocation_Query;
 
@@ -59,16 +59,9 @@ class PDOHook extends AbstractHook
         /** Hook PDO::prepare */
         Util::call_ignore_exception('uopz_set_hook',
             PDO::class, self::PREPARE, function ($statement) {
-                /** @var Datapoint $datapoint */
                 /** @var PDO $pdo */
 
-                global $datapoint;
-                if ($datapoint->getInvocation() == null) {
-                    $invocation = new Invocation();
-                    $datapoint->setInvocation($invocation);
-                }
-
-                $sqlInvocations = $datapoint->getInvocation()->getSQLInvocations();
+                $sqlInvocations = BitSensor::getInvocations()->getSQLInvocations();
                 $sqlInvocation = Util::array_find($sqlInvocations,
                     function (Invocation_SQLInvocation $i) use ($statement) {
                         return $i->getPrepareStatement() == $statement;
@@ -173,15 +166,7 @@ class PDOHook extends AbstractHook
         // Post-handle
         $this->postHandle($result, $sqlInvocation);
 
-        // Add datapoint
-        global $datapoint;
-        if ($datapoint->getInvocation() == null) {
-            $invocation = new Invocation();
-            $datapoint->setInvocation($invocation);
-        }
-
-        $invocation = $datapoint->getInvocation();
-        $invocation->getSqlInvocations()[] = $sqlInvocation;
+        BitSensor::getInvocations()->getSqlInvocations()[] = $sqlInvocation;
 
         return $result;
     }
@@ -202,8 +187,7 @@ class PDOHook extends AbstractHook
         $queryString = $stmt->queryString;
 
         // Finds current sqlInvocation for this execution.
-        global $datapoint;
-        $sqlInvocation = Util::array_find($datapoint->getInvocation()->getSQLInvocations(),
+        $sqlInvocation = Util::array_find(BitSensor::getInvocations()->getSQLInvocations(),
             function (Invocation_SQLInvocation $i) use ($queryString) {
                 return $i->getPrepareStatement() == $queryString;
             }

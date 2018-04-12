@@ -3,6 +3,7 @@
 namespace BitSensor\Test\Handler;
 
 
+use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
 use BitSensor\Core\SessionContext;
 use BitSensor\Handler\RequestInputHandler;
@@ -64,10 +65,10 @@ class RequestInputHandlerTest extends HandlerTest
     public function testHandle()
     {
         $handler = new RequestInputHandler();
-        $handler->handle($this->datapoint, new Config());
+        $handler->handle(BitSensor::getDatapoint(), new Config());
 
-        $context = $this->datapoint->getContext();
-        $input = $this->datapoint->getInput();
+        $context = BitSensor::getDatapoint()->getContext();
+        $input = BitSensor::getDatapoint()->getInput();
 
         static::assertEquals('test', $context['php.' . SessionContext::NAME . '.' . SessionContext::SESSION_ID]);
 

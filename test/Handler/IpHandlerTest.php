@@ -3,9 +3,8 @@
 namespace BitSensor\Test\Handler;
 
 
+use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
-use BitSensor\Core\Context;
-use BitSensor\Core\IpContext;
 use BitSensor\Handler\IpHandler;
 
 class IpHandlerTest extends HandlerTest
@@ -32,9 +31,9 @@ class IpHandlerTest extends HandlerTest
     public function testHandle()
     {
         $handler = new IpHandler();
-        $handler->handle($this->datapoint, new Config());
+        $handler->handle(BitSensor::getDatapoint(), new Config());
 
-        $context = $this->datapoint->getContext();
+        $context = BitSensor::getDatapoint()->getContext();
         self::assertEquals('127.0.0.1', $context['ip']);
     }
 
@@ -44,9 +43,9 @@ class IpHandlerTest extends HandlerTest
         $config->setIpAddressSrc(Config::IP_ADDRESS_X_FORWARDED_FOR);
 
         $handler = new IpHandler();
-        $handler->handle($this->datapoint, $config);
+        $handler->handle(BitSensor::getDatapoint(), $config);
 
-        $context = $this->datapoint->getContext();
+        $context = BitSensor::getDatapoint()->getContext();
         self::assertEquals('127.0.0.2', $context['ip']);
     }
 
@@ -57,9 +56,9 @@ class IpHandlerTest extends HandlerTest
         $config->setIpAddress('127.0.0.3');
 
         $handler = new IpHandler();
-        $handler->handle($this->datapoint, $config);
+        $handler->handle(BitSensor::getDatapoint(), $config);
 
-        $context = $this->datapoint->getContext();
+        $context = BitSensor::getDatapoint()->getContext();
         self::assertEquals('127.0.0.3', $context['ip']);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace BitSensor\Hook;
 
+use BitSensor\Core\BitSensor;
 use mysqli;
 use mysqli_result;
 use mysqli_stmt;
@@ -226,15 +227,7 @@ class MysqliHook extends AbstractHook
             // Post-handle
             MysqliHook::instance()->postHandle($result, $sqlInvocation, $mysqli);
 
-            // Add datapoint
-            global $datapoint;
-            if ($datapoint->getInvocation() == null) {
-                $invocation = new Invocation();
-                $datapoint->setInvocation($invocation);
-            }
-
-            $invocation = $datapoint->getInvocation();
-            $invocation->getSqlInvocations()[] = $sqlInvocation;
+            BitSensor::getInvocations()->getSqlInvocations()[] = $sqlInvocation;
 
             return $result;
         };
@@ -255,13 +248,12 @@ class MysqliHook extends AbstractHook
                 ? $args[1]
                 : $args[0];
 
-            global $datapoint;
-            if ($datapoint->getInvocation() == null) {
+            if (BitSensor::getInvocations() == null) {
                 $invocation = new Invocation();
                 $datapoint->setInvocation($invocation);
             }
 
-            $sqlInvocations = $datapoint->getInvocation()->getSQLInvocations();
+            $sqlInvocations = BitSensor::getInvocations()->getSQLInvocations();
             $sqlInvocation = Util::array_find($sqlInvocations,
                 function (Invocation_SQLInvocation $i) use ($statement) {
                     return $i->getPrepareStatement() == $statement;
@@ -291,11 +283,10 @@ class MysqliHook extends AbstractHook
             /** @var Invocation_SQLInvocation $sqlInvocation */
 
             // Finds current sqlInvocation for this execution.
-            global $datapoint;
-            if ($datapoint->getInvocation() == null)
+            if (BitSensor::getInvocations() == null)
                 return call_user_func_array($function, $args);
 
-            $sqlInvocations = $datapoint->getInvocation()->getSQLInvocations();
+            $sqlInvocations = BitSensor::getInvocations()->getSQLInvocations();
             $sqlInvocation = $sqlInvocations[$sqlInvocations->count() - 1];
 
             // Skips hooking if none was found
@@ -344,11 +335,10 @@ class MysqliHook extends AbstractHook
                 : $this;
 
             // Finds current sqlInvocation for this execution.
-            global $datapoint;
-            if ($datapoint->getInvocation() == null)
+            if (BitSensor::getInvocations() == null)
                 return call_user_func_array($function, $args);
 
-            $sqlInvocations = $datapoint->getInvocation()->getSQLInvocations();
+            $sqlInvocations = BitSensor::getInvocations()->getSQLInvocations();
             $sqlInvocation = $sqlInvocations[$sqlInvocations->count() - 1];
 
             // Skips hooking if none was found
@@ -440,7 +430,6 @@ class MysqliHook extends AbstractHook
     public function checkError($m)
     {
         if ($m !== null && $m->error) {
-            global $bitSensor;
             $trace = debug_backtrace(1, 2)[1];
 
             $error = new Error();
@@ -450,7 +439,7 @@ class MysqliHook extends AbstractHook
             $error->setLocation($trace["file"]);
             $error->setLine($trace["line"]);
 
-            $bitSensor->addError($error);
+            BitSensor::addError($error);
         }
     }
 }

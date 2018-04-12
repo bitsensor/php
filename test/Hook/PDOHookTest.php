@@ -2,6 +2,7 @@
 
 namespace BitSensor\Test\Hook;
 
+use BitSensor\Core\BitSensor;
 use BitSensor\Hook\PDOHook;
 use PDO;
 use Proto\Invocation_SQLInvocation;
@@ -78,7 +79,7 @@ class PDOHookTest extends DatabaseTestBase
         $stmt->execute();
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
-        $sqlInvocation = $this->datapoint->getInvocation()->getSQLInvocations()[0];
+        $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertEquals($prepare, $sqlInvocation->getPrepareStatement());
         self::assertEquals('true', $sqlInvocation->getEndpoint()['successful']);
@@ -103,7 +104,7 @@ class PDOHookTest extends DatabaseTestBase
         $stmt->execute();
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
-        $sqlInvocation = $this->datapoint->getInvocation()->getSQLInvocations()[0];
+        $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertEquals($prepare, $sqlInvocation->getPrepareStatement());
         self::assertEquals('true', $sqlInvocation->getEndpoint()['successful']);
@@ -123,7 +124,7 @@ class PDOHookTest extends DatabaseTestBase
         $stmt->execute();
 
         /** @var Invocation_SQLInvocation $sqlInvocation */
-        $sqlInvocation = $this->datapoint->getInvocation()->getSQLInvocations()[0];
+        $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         $result = $stmt->fetchAll();
 

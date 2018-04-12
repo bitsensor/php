@@ -3,12 +3,8 @@
 namespace BitSensor\Test\Core;
 
 use BitSensor\Core\BitSensor;
-use BitSensor\Core\Config;
-use BitSensor\Handler\CodeErrorHandler;
-use BitSensor\Handler\ExceptionHandler;
 use BitSensor\Test\TestBase;
 use PHPUnit_Util_ErrorHandler;
-use Proto\Datapoint;
 use Proto\Error;
 use Proto\GeneratedBy;
 
@@ -17,23 +13,17 @@ class BitSensorTest extends TestBase
 
     public static $proofOfInvocation = false;
 
-    protected function tearDown()
-    {
-        unset($this->datapoint);
-        unset($this->bitSensor);
-    }
-
     public function testAddContext()
     {
         $ip = '127.0.0.1';
 
-        $this->bitSensor->putContext('ip', $ip);
+        BitSensor::putContext('ip', $ip);
 
-        $context = $this->datapoint->getContext();
+        $context = BitSensor::getDatapoint()->getContext();
 
         self::assertEquals($ip, $context['ip']);
-        self::assertEmpty($this->datapoint->getInput());
-        self::assertEmpty($this->datapoint->getErrors());
+        self::assertEmpty(BitSensor::getDatapoint()->getInput());
+        self::assertEmpty(BitSensor::getDatapoint()->getErrors());
     }
 
     /**
@@ -55,12 +45,10 @@ class BitSensorTest extends TestBase
     {
         $ip = '127.0.0.1';
 
-        $this->bitSensor->putEndpoint('ip', $ip);
-        $endpoint = $this->datapoint->getEndpoint();
+        BitSensor::putEndpoint('ip', $ip);
+        $endpoint = BitSensor::getDatapoint()->getEndpoint();
 
         self::assertEquals($ip, $endpoint['ip']);
-        self::assertEmpty($this->datapoint->getContext());
-        self::assertEmpty($this->datapoint->getErrors());
     }
 
     public function testAddError()
@@ -74,25 +62,21 @@ class BitSensorTest extends TestBase
         $error->setDescription($message);
         $error->setType($type);
 
-        $this->bitSensor->addError($error);
-        $errors = $this->datapoint->getErrors();
+        BitSensor::addError($error);
+        $errors = BitSensor::getDatapoint()->getErrors();
 
         self::assertEquals($error, $errors[0]);
         self::assertEquals(GeneratedBy::PLUGIN, $errors[0]->getGeneratedby());
-        self::assertEmpty($this->datapoint->getInput());
-        self::assertEmpty($this->datapoint->getContext());
     }
 
     public function testAddInput()
     {
         $ip = '127.0.0.1';
 
-        $this->bitSensor->putInput('ip', $ip);
-        $input = $this->datapoint->getInput();
+        BitSensor::putInput('ip', $ip);
+        $input = BitSensor::getDatapoint()->getInput();
 
         self::assertEquals($ip, $input['ip']);
-        self::assertEmpty($this->datapoint->getContext());
-        self::assertEmpty($this->datapoint->getErrors());
     }
 
 }

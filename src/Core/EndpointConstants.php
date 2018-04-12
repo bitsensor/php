@@ -68,5 +68,9 @@ class EndpointConstants extends Constants
      * Is CLI.
      */
     const CLI = 'cli';
+    /**
+     * Is WebSocket, makes CSRF detection more specific.
+     */
+    const WEBSOCKET = 'websocket';
 
 }

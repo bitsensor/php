@@ -43,20 +43,6 @@ class Config
      */
     const MODE_ON = 'on';
     /**
-     * Action to perform when the connection to the BitSensor servers is lost.
-     *
-     * <i>Defaults to {@link BitSensor\Core\Config::ACTION_BLOCK Config::ACTION_BLOCK}.</i>
-     */
-    const CONNECTION_FAIL = 'connectionFail';
-    /**
-     * Allow the user to connect.
-     */
-    const ACTION_ALLOW = 'allow';
-    /**
-     * Block the user.
-     */
-    const ACTION_BLOCK = 'block';
-    /**
      * Source of the IP address of the user.
      *
      * <i>Defaults to {@link Config::IP_ADDRESS_REMOTE_ADDR}.</i>
@@ -151,6 +137,10 @@ class Config
      */
     const UOPZ_HOOK = 'uopzHook';
     /**
+     * Connector configuration
+     */
+    const CONNECTOR = 'connector';
+    /**
      * Use uopz hook.
      */
     const UOPZ_HOOK_ON = 'on';
@@ -158,37 +148,12 @@ class Config
      * Do not use uopz hook.
      */
     const UOPZ_HOOK_OFF = 'off';
-
-    /**
-     * The BitSensor server to connect to.
-     *
-     * @var string
-     */
-    private $uri;
-    /**
-     * Your BitSensor username.
-     *
-     * @var string
-     */
-    private $user;
-    /**
-     * Your BitSensor API key.
-     *
-     * @var string
-     */
-    private $apiKey;
     /**
      * Running mode.
      *
      * @var string
      */
     private $mode = self::MODE_DETECTION;
-    /**
-     * Action to perform when the connection to the BitSensor servers is lost.
-     *
-     * @var string
-     */
-    private $connectionFail = self::ACTION_ALLOW;
     /**
      * Source of the IP address of the user.
      *
@@ -238,6 +203,18 @@ class Config
      */
     private $uopzHook = self::UOPZ_HOOK_OFF;
 
+    /**
+     * When set to string, this specifies the connector name.
+     * This can be short for connectors in the {@link \BitSensor\Connector} namespace,
+     * or fully qualified when in a different namespace.
+     *
+     * When set to string[], this contains an assoc string[] with configuration, where the
+     * 'type' key specifies the connector name.
+     *
+     * @var string|string[] Connector configuration.
+     */
+    private $connector;
+
     private $skipShutdownHandler = false;
 
     /**
@@ -248,24 +225,8 @@ class Config
         if ($json !== null) {
             $config = json_decode($json, true);
 
-            if (array_key_exists(self::URI, $config)) {
-                $this->setUri($config[self::URI]);
-            }
-
-            if (array_key_exists(self::USER, $config)) {
-                $this->setUser($config[self::USER]);
-            }
-
-            if (array_key_exists(self::API_KEY, $config)) {
-                $this->setApiKey($config[self::API_KEY]);
-            }
-
             if (array_key_exists(self::MODE, $config)) {
                 $this->setMode($config[self::MODE]);
-            }
-
-            if (array_key_exists(self::CONNECTION_FAIL, $config)) {
-                $this->setConnectionFail($config[self::CONNECTION_FAIL]);
             }
 
             if (array_key_exists(self::IP_ADDRESS_SRC, $config)) {
@@ -299,56 +260,13 @@ class Config
             if (array_key_exists(self::UOPZ_HOOK, $config)) {
                 $this->setUopzHook($config[self::UOPZ_HOOK]);
             }
+
+            if (array_key_exists(self::CONNECTOR, $config)) {
+                $this->setConnector($config[self::CONNECTOR]);
+            }
         }
     }
 
-    /**
-     * @return string The BitSensor server to connect to.
-     */
-    public function getUri()
-    {
-        return $this->uri;
-    }
-
-    /**
-     * @param string $uri The BitSensor server to connect to.
-     */
-    public function setUri($uri)
-    {
-        $this->uri = $uri;
-    }
-
-    /**
-     * @return string Your BitSensor username.
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param string $user Your BitSensor username.
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-    }
-
-    /**
-     * @return string Your BitSensor API key.
-     */
-    public function getApiKey()
-    {
-        return $this->apiKey;
-    }
-
-    /**
-     * @param string $apiKey Your BitSensor API key.
-     */
-    public function setApiKey($apiKey)
-    {
-        $this->apiKey = $apiKey;
-    }
 
     /**
      * @return string Running mode.
@@ -364,22 +282,6 @@ class Config
     public function setMode($mode)
     {
         $this->mode = $mode;
-    }
-
-    /**
-     * @return string Action to perform when the connection to the BitSensor servers is lost.
-     */
-    public function getConnectionFail()
-    {
-        return $this->connectionFail;
-    }
-
-    /**
-     * @param string $connectionFail Action to perform when the connection to the BitSensor servers is lost.
-     */
-    public function setConnectionFail($connectionFail)
-    {
-        $this->connectionFail = $connectionFail;
     }
 
     /**
@@ -423,7 +325,7 @@ class Config
     }
 
     /**
-     * @param string $ipAddressSrc Source of the server host.
+     * @param string $hostSrc Source of the server host.
      */
     public function setHostSrc($hostSrc)
     {
@@ -439,7 +341,7 @@ class Config
     }
 
     /**
-     * @param string $ipAddress Manual host.
+     * @param string $host Manual host.
      */
     public function setHost($host)
     {
@@ -531,5 +433,36 @@ class Config
     public function setSkipShutdownHandler($skipShutdownHandler)
     {
         $this->skipShutdownHandler = $skipShutdownHandler;
+    }
+
+    /**
+     * When set to string, this specifies the connector name.
+     * This can be short for connectors in the {@link \BitSensor\Connector} namespace,
+     * or fully qualified when in a different namespace.
+     *
+     * When set to string[], this contains an assoc string[] with configuration, where the
+     * 'type' key specifies the connector name.
+     *
+     * @var string|string[] Connector configuration.
+     * @return string|string[]
+     */
+    public function getConnector()
+    {
+        return $this->connector;
+    }
+
+    /**
+     * When set to string, this specifies the connector name.
+     * This can be short for connectors in the {@link \BitSensor\Connector} namespace,
+     * or fully qualified when in a different namespace.
+     *
+     * When set to string[], this contains an assoc string[] with configuration, where the
+     * 'type' key specifies the connector name.
+     *
+     * @var string|string[] Connector configuration.
+     */
+    public function setConnector($connector)
+    {
+        $this->connector = $connector;
     }
 }

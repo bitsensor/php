@@ -2,11 +2,12 @@
 
 namespace BitSensor\Handler;
 
+use BitSensor\Core\BitSensor;
 use BitSensor\Test\TestBase;
 use Monolog\Handler\PsrHandler;
+use Monolog\Logger;
 use Proto\Error;
 use Psr\Log\LogLevel;
-use Monolog\Logger;
 
 
 class PsrLogHandlerTest extends TestBase
@@ -18,7 +19,7 @@ class PsrLogHandlerTest extends TestBase
         $handler->log(LogLevel::NOTICE, 'message of level notice');
 
         /** @var Error $err */
-        $err = $this->datapoint->getErrors()[0];
+        $err = BitSensor::getDatapoint()->getErrors()[0];
 
         self::assertEquals(LogLevel::NOTICE, $err->getType());
         self::assertEquals($err->getDescription(), 'message of level notice');
@@ -30,7 +31,7 @@ class PsrLogHandlerTest extends TestBase
         $handler->warning('message of level warning');
 
         /** @var Error $err */
-        $err = $this->datapoint->getErrors()[0];
+        $err = BitSensor::getDatapoint()->getErrors()[0];
 
         self::assertEquals(LogLevel::WARNING, $err->getType());
         self::assertEquals($err->getDescription(), 'message of level warning');
@@ -45,7 +46,7 @@ class PsrLogHandlerTest extends TestBase
         $log->warn("monolog has been added");
 
         /** @var Error $err */
-        $err = $this->datapoint->getErrors()[0];
+        $err = BitSensor::getDatapoint()->getErrors()[0];
 
         self::assertEquals(LogLevel::WARNING, $err->getType());
         self::assertEquals($err->getDescription(), 'monolog has been added');

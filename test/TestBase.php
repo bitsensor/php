@@ -5,7 +5,6 @@ namespace BitSensor\Test;
 use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
 use PHPUnit_Framework_TestCase;
-use Proto\Datapoint;
 
 /**
  * Class DatabaseTestBase contains test suite setup and basic test cases.
@@ -13,30 +12,28 @@ use Proto\Datapoint;
  */
 abstract class TestBase extends PHPUnit_Framework_TestCase
 {
-    /** @var BitSensor $bitSensor */
-    protected $bitSensor;
-    /** @var Datapoint $datapoint */
-    protected $datapoint;
-
     protected function setUp()
     {
-        global $bitSensor;
-        $bitSensor = new BitSensor();
-        $this->bitSensor = &$bitSensor;
+        BitSensor::init();
 
-        $config = new Config();
-        //Skip curl request etc.
-        $config->setSkipShutdownHandler(true);
-        $this->bitSensor->config($config);
+        $config = $this->buildDefaultConfig();
 
-        global $datapoint;
-        $datapoint = new Datapoint();
-        $this->datapoint = &$datapoint;
+        BitSensor::configure($config);
     }
 
     protected function tearDown()
     {
-        unset($this->datapoint);
-        unset($this->bitSensor);
+
+    }
+
+    /**
+     * @return Config
+     */
+    protected function buildDefaultConfig()
+    {
+        $config = new Config();
+        $config->setSkipShutdownHandler(true);
+        $config->setConnector('noop');
+        return $config;
     }
 }
