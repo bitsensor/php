@@ -123,7 +123,7 @@ Sample configuration file:
 }
 ```
 
-### Documentation
+## Documentation
 You have the following config options at your disposal:
 
 | PHP                           | JSON           | Value                                                                                                                                                      | Default                                                 | Description                                                                                                                |
@@ -138,9 +138,10 @@ You have the following config options at your disposal:
 | ```setUopzHook```             | uopzHook       | ```Config::UOPZ_HOOK_ON``` ("on"), ```Config::UOPZ_HOOK_OFF``` ("off")                                                                                     | ```Config::UOPZ_HOOK_ON``` ("on")                       | Uopz Hooking. Turning this on enables BitSensor to hook into function calls.                                               |
 | ```setFastcgiFinishRequest``` | executeFastCgi | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON``` ("on"), ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")                                           | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")| Finish request to your FastCGI webserver, while processing BitSensor in a seperate thread.                                 |
 
-Configuring the Connector for api:
+### Connector for Api:
 
 | PHP                           | JSON           | Value                                                                                                                                                      | Default                                                 | Description                                                                                                                |
+|-------------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | ```setUser()```               | user           | username                                                                                                                                                   | <empty>                                                 | Your BitSensor username.                                                                                                   |
 | ```setApiKey()```             | apikey         | api key                                                                                                                                                    | <empty>                                                 | Your BitSensor API key.                                                                                                    |
 | ```setHost()```               | host           | hostname                                                                                                                                                   | {user}.bitsensor.io                                     | Hostname of the BitSensor endpoint.                                                                                        |
