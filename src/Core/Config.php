@@ -11,24 +11,6 @@ class Config
 {
 
     /**
-     * The BitSensor server to connect to.
-     *
-     * <i>Required</i>
-     */
-    const URI = 'uri';
-    /**
-     * Your BitSensor username.
-     *
-     * <i>Required</i>
-     */
-    const USER = 'user';
-    /**
-     * Your BitSensor API key.
-     *
-     * <i>Required</i>
-     */
-    const API_KEY = 'apiKey';
-    /**
      * Running mode.
      *
      * <i>Defaults to {@link BitSensor\Core\Config::MODE_ON Config::MODE_ON}.</i>
