@@ -3,8 +3,6 @@
 namespace BitSensor\Handler;
 
 
-use BitSensor\Core\Collector;
-use BitSensor\Core\Config;
 use BitSensor\Core\FileContext;
 use BitSensor\Core\InputContext;
 use BitSensor\Core\SessionContext;
@@ -14,14 +12,13 @@ use Proto\Datapoint;
  * Collects information about the HTTP request data.
  * @package BitSensor\Handler
  */
-class RequestInputHandler implements Handler
+class RequestInputHandler extends AbstractHandler
 {
 
     /**
      * @param Datapoint $datapoint
-     * @param Config $config
      */
-    public function handle(Datapoint $datapoint, Config $config)
+    public function doHandle(Datapoint $datapoint)
     {
         $post = array();
         foreach ($_POST as $k => $v) {
@@ -98,5 +95,4 @@ class RequestInputHandler implements Handler
             }
         }
     }
-
 }

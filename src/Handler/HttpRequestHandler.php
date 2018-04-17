@@ -13,14 +13,40 @@ use Proto\Datapoint;
  * Collects information about the HTTP request.
  * @package BitSensor\Handler
  */
-class HttpRequestHandler implements Handler
+class HttpRequestHandler extends AbstractHandler
 {
+
+    public static $hostSrc = Config::HOST_SERVER_NAME;
+    public static $host;
+
+    /**
+     * @param mixed $host
+     */
+    public static function setHost($host)
+    {
+        self::$host = $host;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getHostSrc()
+    {
+        return self::$hostSrc;
+    }
+
+    /**
+     * @param string $hostSrc
+     */
+    public static function setHostSrc($hostSrc)
+    {
+        self::$hostSrc = $hostSrc;
+    }
 
     /**
      * @param Datapoint $datapoint
-     * @param Config $config
      */
-    public function handle(Datapoint $datapoint, Config $config)
+    public function doHandle(Datapoint $datapoint)
     {
         $context = array(
             HttpConstants::SERVER_PROTOCOL => isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : null,
@@ -75,7 +101,7 @@ class HttpRequestHandler implements Handler
 
         $host = null;
 
-        switch ($config->getHostSrc()) {
+        switch (self::getHostSrc()) {
             case Config::HOST_SERVER_NAME:
                 $host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : null;
                 break;
@@ -83,7 +109,7 @@ class HttpRequestHandler implements Handler
                 $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
                 break;
             case Config::HOST_MANUAL:
-                $host = $config->getHost();
+                $host = self::$host;
                 break;
         }
 
@@ -102,4 +128,15 @@ class HttpRequestHandler implements Handler
         }
     }
 
+    /**
+     * Configure the Handler. Automatically called in the constructor.
+     *
+     * @param Config $config
+     * @return mixed
+     */
+    public function configure(Config $config)
+    {
+        self::setHostSrc($config->getHostSrc());
+        self::setHost($config->getHost());
+    }
 }

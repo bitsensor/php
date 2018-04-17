@@ -3,7 +3,6 @@
 namespace BitSensor\Handler;
 
 
-use BitSensor\Core\Config;
 use BitSensor\Core\ModSecurityContext;
 use Proto\Datapoint;
 
@@ -12,14 +11,13 @@ use Proto\Datapoint;
  * @package BitSensor\Handler
  * @see https://www.modsecurity.org/
  */
-class ModSecurityHandler implements Handler
+class ModSecurityHandler extends AbstractHandler
 {
 
     /**
      * @param Datapoint $datapoint
-     * @param Config $config
      */
-    public function handle(Datapoint $datapoint, Config $config)
+    public function doHandle(Datapoint $datapoint)
     {
         $modSecurity = array(
             ModSecurityContext::WAF_EVENTS => isset($_SERVER['HTTP_X_WAF_EVENTS']) ? $_SERVER['HTTP_X_WAF_EVENTS'] : null,
@@ -32,5 +30,4 @@ class ModSecurityHandler implements Handler
             }
         }
     }
-
 }

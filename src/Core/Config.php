@@ -197,6 +197,13 @@ class Config
      */
     private $connector;
 
+    /**
+     * Blocking configuration
+     *
+     * @var string|string[] Blocking configuration.
+     */
+    private $blocking;
+
     private $skipShutdownHandler = false;
 
     /**
@@ -245,6 +252,10 @@ class Config
 
             if (array_key_exists(self::CONNECTOR, $config)) {
                 $this->setConnector($config[self::CONNECTOR]);
+            }
+
+            if (array_key_exists('blocking', $config)) {
+                $this->blocking = $config['blocking'];
             }
         }
     }
@@ -446,5 +457,21 @@ class Config
     public function setConnector($connector)
     {
         $this->connector = $connector;
+    }
+
+    /**
+     * @return string|string[]
+     */
+    public function getBlocking()
+    {
+        return $this->blocking;
+    }
+
+    /**
+     * @param string|string[] $blocking
+     */
+    public function setBlocking($blocking)
+    {
+        $this->blocking = $blocking;
     }
 }

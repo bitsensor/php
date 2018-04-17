@@ -2,6 +2,7 @@
 
 namespace BitSensor\Core;
 
+use BitSensor\Blocking\Blocking;
 use BitSensor\Connector\Connector;
 use BitSensor\Handler\AfterRequestHandler;
 use BitSensor\Handler\CodeErrorHandler;
@@ -49,11 +50,16 @@ class BitSensor
     private static $connector;
 
     /**
+     * @var Blocking $blocking
+     */
+    private static $blocking;
+
+    /**
      * Handlers that should run on each request
      *
      * @var Handler[]
      */
-    private static $handlers;
+    private static $handlers = [];
 
     /**
      * ErrorHandler method set by the application to be called
@@ -101,14 +107,6 @@ class BitSensor
                     "not defined" : (is_array(self::$exceptionHandler) ?
                         implode(self::$exceptionHandler) : self::$exceptionHandler)));
         }
-
-        self::$handlers = [];
-        self::addHandler(new PluginHandler());
-        self::addHandler(new IpHandler());
-        self::addHandler(new HttpRequestHandler());
-        self::addHandler(new RequestInputHandler());
-        self::addHandler(new ModSecurityHandler());
-        self::addHandler(new InterfaceHandler());
     }
 
     /**
@@ -135,9 +133,21 @@ class BitSensor
             MysqliHook::instance()->start();
         }
 
+        self::$handlers = [];
+        self::addHandler(PluginHandler::class);
+        self::addHandler(IpHandler::class);
+        self::addHandler(HttpRequestHandler::class);
+        self::addHandler(RequestInputHandler::class);
+        self::addHandler(ModSecurityHandler::class);
+        self::addHandler(InterfaceHandler::class);
+
         self::createConnector($config->getConnector());
 
+        self::createBlocking($config);
+
         self::runHandlers();
+
+        self::getBlocking()->handle(self::$datapoint);
     }
 
     /**
@@ -198,11 +208,15 @@ class BitSensor
     /**
      * Adds a new {@link Handler} that should run to collect data about the current request.
      *
-     * @param Handler $handler
+     * @param String|Handler $handler
+     * @return mixed
      */
-    private static function addHandler(Handler $handler)
+    public static function addHandler($handler)
     {
-        self::$handlers[] = $handler;
+        if (is_string($handler))
+            return self::$handlers[] = new $handler(self::$config);
+
+        return self::$handlers[] = $handler;
     }
 
     /**
@@ -214,7 +228,7 @@ class BitSensor
             return;
 
         foreach (self::$handlers as $handler) {
-            $handler->handle(self::$datapoint, self::$config);
+            $handler->handle(self::$datapoint);
         }
     }
 
@@ -240,7 +254,9 @@ class BitSensor
     }
 
     /**
-     * @param string[]|string $connectorConfiguration Can be of type string with name, or of type string[] with configuration
+     * @param string[]|string $connectorConfiguration Can be of type string with name,
+     * or of type string[] with configuration. In the latter case, uses [type] to create
+     * Connector object.
      */
     private static function createConnector($connectorConfiguration)
     {
@@ -260,10 +276,10 @@ class BitSensor
         }
 
         if (strpos($type, '\\')) {
-            self::$connector = new $type($passConfiguration ? $connectorConfiguration : null);
+            self::setConnector(new $type($passConfiguration ? $connectorConfiguration : null));
         } else {
             $bitSensorType = '\\BitSensor\\Connector\\' . ucfirst($type) . "Connector";
-            self::$connector = new $bitSensorType ($passConfiguration ? $connectorConfiguration : null);
+            self::setConnector(new $bitSensorType ($passConfiguration ? $connectorConfiguration : null));
         }
     }
 
@@ -284,6 +300,39 @@ class BitSensor
     public static function finish()
     {
         return self::$connector->close(self::$datapoint);
+    }
+
+    /**
+     * @param Config $config
+     */
+    protected static function createBlocking(Config $config)
+    {
+        Blocking::configure($config->getBlocking());
+        self::setBlocking(new Blocking());
+    }
+
+    /**
+     * @return Blocking
+     */
+    private static function getBlocking()
+    {
+        return self::$blocking;
+    }
+
+    /**
+     * @param Blocking $blocking
+     */
+    public static function setBlocking($blocking)
+    {
+        self::$blocking = $blocking;
+    }
+
+    /**
+     * @param Connector $connector
+     */
+    public static function setConnector($connector)
+    {
+        self::$connector = $connector;
     }
 
 }

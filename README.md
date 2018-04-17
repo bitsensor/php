@@ -74,20 +74,23 @@ you. Refer to Composer's [Documentation](https://getcomposer.org/) for more info
 use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
 use BitSensor\Connector\ApiConnector;
+use BitSensor\Blocking\Blocking;
+use BitSensor\Blocking\Action\BlockingpageAction;
+use BitSensor\Handler\IpHandler;
 
 // Load Composer's autoloader
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Create config using PHP.
-$config = new Config();
 ApiConnector::setUser('dev');
 ApiConnector::setApiKey('secret-apikey');
-ApiConnector::setHost('optional-host'); //when not running on bitsensor.io
-$config->setConnector(ApiConnector::class);
-$config->setMode(Config::MODE_DETECTION);
-$config->setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
-$config->setHostSrc(Config::HOST_SERVER_NAME);
-$config->setLogLevel(Config::LOG_LEVEL_NONE);
+// ApiConnector::setHost('optional-host'); when not running on bitsensor.io
+BlockingpageAction::setUser('dev');
+// BlockingpageAction::setHost('optional-host'); //when not running on bitsensor.io
+Blocking::setAction(BlockingpageAction::class);
+BitSensor::setConnector(new ApiConnector());
+IpHandler::setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
+$config = new Config();
 // If you are using FastCGI
 $config->setFastcgiFinishRequest(Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON);
 // If you have enabled UOPZ
@@ -110,9 +113,15 @@ Sample configuration file:
 ```json
 { 
   "connector": {
-      "type": "api",
-      "user": "dev",
-      "apikey": "php-plugin-test"
+    "type": "api",
+    "user": "dev",
+    "apikey": "php-plugin-test"
+  },
+  "blocking": {
+    "action" :{ 
+      "type": "blockingpage",
+      "user": "dev"
+    }
   },
   "mode": "detection",
   "ipAddressSrc": "remoteAddr",
@@ -138,14 +147,24 @@ You have the following config options at your disposal:
 | ```setUopzHook```             | uopzHook       | ```Config::UOPZ_HOOK_ON``` ("on"), ```Config::UOPZ_HOOK_OFF``` ("off")                                                                                     | ```Config::UOPZ_HOOK_ON``` ("on")                       | Uopz Hooking. Turning this on enables BitSensor to hook into function calls.                                               |
 | ```setFastcgiFinishRequest``` | executeFastCgi | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON``` ("on"), ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")                                           | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")| Finish request to your FastCGI webserver, while processing BitSensor in a seperate thread.                                 |
 
-### Connector for Api:
+### Connector Types
 
+#### Api
 | PHP                           | JSON           | Value                                                                                                                                                      | Default                                                 | Description                                                                                                                |
 |-------------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | ```setUser()```               | user           | username                                                                                                                                                   | <empty>                                                 | Your BitSensor username.                                                                                                   |
 | ```setApiKey()```             | apikey         | api key                                                                                                                                                    | <empty>                                                 | Your BitSensor API key.                                                                                                    |
 | ```setHost()```               | host           | hostname                                                                                                                                                   | {user}.bitsensor.io                                     | Hostname of the BitSensor endpoint.                                                                                        |
 | ```setPort()```               | port           | port                                                                                                                                                       | 8080                                                    | Port of the BitSensor endpoint.                                                                                            |
+
+
+### Blocking Actions
+#### Blockingpage
+| PHP                           | JSON           | Value                                                                                                                                                      | Default                                                 | Description                                                                                                                |
+|-------------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| ```setUser()```               | user           | username                                                                                                                                                   | <empty>                                                 | Your BitSensor username.                                                                                                   |
+| ```setHost()```               | host           | hostname                                                                                                                                                   | {user}.bitsensor.io                                     | Hostname of the BitSensor endpoint.                                                                                        |
+| ```setPort()```               | port           | port                                                                                                                                                       | 2080                                                    | Port of the BitSensor endpoint.                                                                                            |
 
 ## Logging
 

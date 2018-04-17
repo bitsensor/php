@@ -9,18 +9,42 @@ use Proto\Datapoint;
  * Collects the IP address.
  * @package BitSensor\Handler
  */
-class IpHandler implements Handler
+class IpHandler extends AbstractHandler
 {
+    private static $ipAddressSrc = Config::IP_ADDRESS_REMOTE_ADDR;
+    private static $ip;
+
+    public function configure(Config $config)
+    {
+        parent::configure($config);
+        self::setIpAddressSrc($config->getIpAddressSrc());
+        self::setIp($config->getIpAddress());
+    }
+
+    /**
+     * @param mixed $ipAddressSrc
+     */
+    public static function setIpAddressSrc($ipAddressSrc)
+    {
+        self::$ipAddressSrc = $ipAddressSrc;
+    }
+
+    /**
+     * @param mixed $ip
+     */
+    public static function setIp($ip)
+    {
+        self::$ip = $ip;
+    }
 
     /**
      * @param Datapoint $datapoint
-     * @param Config $config
      */
-    public function handle(Datapoint $datapoint, Config $config)
+    public function doHandle(Datapoint $datapoint)
     {
         $ip = null;
 
-        switch ($config->getIpAddressSrc()) {
+        switch (self::$ipAddressSrc) {
             case Config::IP_ADDRESS_REMOTE_ADDR:
                 if(isset($_SERVER['REMOTE_ADDR'])) {
                     $ip = $_SERVER['REMOTE_ADDR'];
@@ -35,7 +59,7 @@ class IpHandler implements Handler
 
                 break;
             case Config::IP_ADDRESS_MANUAL:
-                $ip = $config->getIpAddress();
+                $ip = self::$ip;
                 break;
         }
 
@@ -43,4 +67,5 @@ class IpHandler implements Handler
             $datapoint->getContext()['ip'] = $ip;
         }
     }
+
 }

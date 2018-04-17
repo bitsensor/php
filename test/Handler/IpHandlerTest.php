@@ -39,11 +39,9 @@ class IpHandlerTest extends HandlerTest
 
     public function testHandleForwarded()
     {
-        $config = new Config();
-        $config->setIpAddressSrc(Config::IP_ADDRESS_X_FORWARDED_FOR);
-
         $handler = new IpHandler();
-        $handler->handle(BitSensor::getDatapoint(), $config);
+        IpHandler::setIpAddressSrc(Config::IP_ADDRESS_X_FORWARDED_FOR);
+        $handler->handle(BitSensor::getDatapoint());
 
         $context = BitSensor::getDatapoint()->getContext();
         self::assertEquals('127.0.0.2', $context['ip']);
@@ -51,12 +49,11 @@ class IpHandlerTest extends HandlerTest
 
     public function testHandleManual()
     {
-        $config = new Config();
-        $config->setIpAddressSrc(Config::IP_ADDRESS_MANUAL);
-        $config->setIpAddress('127.0.0.3');
 
         $handler = new IpHandler();
-        $handler->handle(BitSensor::getDatapoint(), $config);
+        IpHandler::setIpAddressSrc(Config::IP_ADDRESS_MANUAL);
+        IpHandler::setIp('127.0.0.3');
+        $handler->handle(BitSensor::getDatapoint());
 
         $context = BitSensor::getDatapoint()->getContext();
         self::assertEquals('127.0.0.3', $context['ip']);

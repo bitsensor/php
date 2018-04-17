@@ -14,9 +14,14 @@ interface Handler
 
     /**
      * @param Datapoint $datapoint
-     * @param Config $config
      * @return void
      */
-    public function handle(Datapoint $datapoint, Config $config);
+    public function handle(Datapoint $datapoint);
+
+    /**
+     * Handler constructor.
+     * @param Config $config
+     */
+    public function __construct(Config $config = null);
 
 }

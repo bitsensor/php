@@ -4,7 +4,6 @@ namespace BitSensor\Handler;
 
 
 use BitSensor\Core\BitSensor;
-use BitSensor\Core\Config;
 use BitSensor\Core\MetaContext;
 use Proto\Datapoint;
 
@@ -12,15 +11,14 @@ use Proto\Datapoint;
  * Class PluginHandler adds plugin meta context
  * @package BitSensor\Handler
  */
-class PluginHandler implements Handler
+class PluginHandler extends AbstractHandler
 {
 
     /**
      * @param Datapoint $datapoint
-     * @param Config $config
      * @return void
      */
-    public function handle(Datapoint $datapoint, Config $config)
+    public function doHandle(Datapoint $datapoint)
     {
         $meta = array(
             MetaContext::PROVIDER => MetaContext::PROVIDER_PHP,
@@ -31,4 +29,5 @@ class PluginHandler implements Handler
             $datapoint->getMeta()[$k] = $v;
         }
     }
+
 }

@@ -2,6 +2,7 @@
 
 namespace BitSensor\Test;
 
+use BitSensor\Blocking\Blocking;
 use BitSensor\Core\BitSensor;
 use BitSensor\Core\Config;
 use PHPUnit_Framework_TestCase;
@@ -34,6 +35,7 @@ abstract class TestBase extends PHPUnit_Framework_TestCase
         $config = new Config();
         $config->setSkipShutdownHandler(true);
         $config->setConnector('noop');
+        Blocking::setEnabled(false);
         return $config;
     }
 }

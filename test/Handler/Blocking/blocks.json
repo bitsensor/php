@@ -1,0 +1,36 @@
+{
+  "blocks": [
+    {
+      "_id": "AWJsa-K8OgCnroTMO6dT",
+      "blocked": true,
+      "description": "Demo Block",
+      "blockedDatapoints": [
+        {
+          "context": {
+            "http.userAgent": "Mozilla",
+            "ip": "172.17.0.1"
+          }
+        },
+        {
+          "context": {
+            "http.userAgent": "Chrome",
+            "ip": "172.17.0.2"
+          }
+        }
+      ]
+    },
+    {
+      "_id": "AWJsa-K8OgCnroTMO6dU",
+      "blocked": true,
+      "description": "Demo Block",
+      "blockedDatapoints": [
+        {
+          "context": {
+            "http.userAgent": "Chrome",
+            "ip": "172.17.0.3"
+          }
+        }
+      ]
+    }
+  ]
+}
