@@ -121,7 +121,7 @@ class Blocking
         self::getAction()->block($datapoint, $id);
 
         error_log("User blocked by BitSensor for block with id $id", E_USER_ERROR);
-        throw new Exception("Request blocked by BitSensor as it matches blocking id $id");
+        throw new Exception("User blocked by BitSensor for block with id $id");
     }
 
     /**

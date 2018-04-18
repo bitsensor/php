@@ -22,7 +22,7 @@ class BlockingTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \Exception
      * @expectedExceptionMessage User blocked by BitSensor for block with id AWJsa-K8OgCnroTMO6dT
      */
     function testBlockingHandlerActionIsTest()
@@ -32,7 +32,7 @@ class BlockingTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \Exception
      * @expectedExceptionMessage User blocked by BitSensor for block with id AWJsa-K8OgCnroTMO6dT
      */
     function testForDatapointThatShouldBeBlocked()
@@ -46,7 +46,7 @@ class BlockingTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \Exception
      * @expectedExceptionMessage User blocked by BitSensor for block with id AWJsa-K8OgCnroTMO6dT
      */
     function testForDatapointForAdditionalFieldThatShouldStillBeBlocked()
@@ -61,7 +61,7 @@ class BlockingTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \Exception
      * @expectedExceptionMessage User blocked by BitSensor for block with id AWJsa-K8OgCnroTMO6dT
      */
     function testForDatapointInBlockedDatapointsArrayThatShouldBeBlocked()
@@ -75,7 +75,7 @@ class BlockingTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \Exception
      * @expectedExceptionMessage User blocked by BitSensor for block with id AWJsa-K8OgCnroTMO6dU
      */
     function testForDatapointInBlocksArrayThatShouldBeBlocked()
@@ -121,7 +121,7 @@ class BlockingTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \Exception
      * @expectedExceptionMessage User blocked by BitSensor for block with id AWJsa-K8OgCnroTMO6dT
      */
     function testDatapointContainsEndpointBlockedFields()
