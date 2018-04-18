@@ -3,8 +3,10 @@
 namespace BitSensor\Blocking;
 
 
+use BitSensor\Blocking\Action\BlockingAction;
 use BitSensor\Core\Blocking\BlockingDatapoint;
 use BitSensor\Core\Blocks;
+use Exception;
 use Proto\Datapoint;
 
 class Blocking
@@ -101,6 +103,7 @@ class Blocking
     /**
      * @param Datapoint $datapoint
      * @return boolean|string blockingId
+     * @throws Exception to halt script execution
      */
     public function handle(Datapoint $datapoint)
     {
@@ -116,6 +119,9 @@ class Blocking
             return false;
 
         self::getAction()->block($datapoint, $id);
+
+        error_log("User blocked by BitSensor for block with id $id", E_USER_ERROR);
+        throw new Exception("Request blocked by BitSensor as it matches blocking id $id");
     }
 
     /**

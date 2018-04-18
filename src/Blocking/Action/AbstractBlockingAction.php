@@ -14,8 +14,6 @@ abstract class AbstractBlockingAction implements BlockingAction
         $datapoint->getEndpoint()['blocking.id'] = $id;
 
         $this->doBlock($datapoint);
-
-        trigger_error("User blocked by BitSensor for block with id $id", E_USER_ERROR);
     }
 
     /**
