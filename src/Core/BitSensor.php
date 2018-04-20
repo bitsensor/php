@@ -29,7 +29,7 @@ use Proto\Invocation;
 class BitSensor
 {
 
-    const VERSION = '0.11.0';
+    const VERSION = '1.0.0-RC1';
 
     /**
      * Reference to the global Datapoint instance.
@@ -38,42 +38,59 @@ class BitSensor
      */
     private static $datapoint;
     /**
-     * Reference to the global Configuration.
-     *
-     * @var Config
-     */
-    private static $config;
-
-    /**
      * @var Connector to remote endpoint
      */
     private static $connector;
-
     /**
      * @var Blocking $blocking
      */
     private static $blocking;
-
     /**
      * Handlers that should run on each request
      *
      * @var Handler[]
      */
     private static $handlers = [];
-
     /**
      * ErrorHandler method set by the application to be called
      *
      * @var mixed
      **/
     public static $errorHandler;
-
     /**
      * ExceptionHandler method set by the application to be called
      *
      * @var callable
      **/
     public static $exceptionHandler;
+    /**
+     * Enable processing after request is finished, in general this
+     * is used to signal the {@see Connector} to send the {@see Datapoint}
+     *
+     * @var boolean
+     */
+    private static $enbaleShutdownHandler = true;
+    /**
+     * Uopz Hooking. Turning this on enables BitSensor to hook into function calls.
+     */
+    private static $enbaleUopzHook = false;
+    /**
+     * Running mode. Default is {@see MODE_DETECTION}.
+     *
+     * @var string
+     */
+    private static $mode = self::MODE_DETECTION;
+    /**
+     * Only do detection but don't block attackers.
+     */
+    const MODE_DETECTION = 'detection';
+    /**
+     * Log level.
+     *
+     * @var string
+     */
+    public static $logLevel = E_ERROR;
+    private static $config;
 
     /**
      * BitSensor is static.
@@ -85,6 +102,10 @@ class BitSensor
     static function init()
     {
         self::initializeDatapoint();
+
+        self::$handlers = [];
+
+        self::setBlocking(new Blocking());
 
         if (!defined('BITSENSOR_WORKING_DIR')) {
             /**
@@ -110,30 +131,41 @@ class BitSensor
     }
 
     /**
-     * @param Config|string $configPath Object with configuration.
+     * @param string|string[] $configOrPath Object with configuration.
      */
-    public static function configure($configPath = 'config.json')
+    public static function configure($configOrPath = 'config.json')
     {
-        if ($configPath instanceof Config) {
-            $config = $configPath;
-            Log::d('Loaded from PHP Config');
+        if (is_array($configOrPath)) {
+            $config = $configOrPath;
         } else {
-            $config = new Config(file_get_contents($configPath));
-            Log::d('Loaded from' . $configPath);
+            $config = json_decode(file_get_contents($configOrPath), true);
+            Log::d('BitSensor loaded configuration from location ' . $configOrPath);
         }
+
         self::$config = $config;
 
-        // Post request handling
-        if (!$config->skipShutdownHandler())
-            register_shutdown_function([AfterRequestHandler::class, 'handle']);
+        if (array_key_exists('uopzHook', $config))
+            self::setEnbaleUopzHook($config['uopzHook'] == 'on' ? true : false);
 
-        // Load plugins
-        if (self::$config->getUopzHook() === Config::UOPZ_HOOK_ON) {
-            PDOHook::instance()->start();
-            MysqliHook::instance()->start();
-        }
+        if (array_key_exists('mode', $config))
+            self::setMode($config['mode']);
 
-        self::$handlers = [];
+        if (array_key_exists('logLevel', $config))
+            self::setLogLevel($config['logLevel']);
+
+        if (array_key_exists('connector', $config))
+            self::createConnector($config['connector']);
+
+        if (array_key_exists('blocking', $config))
+            self::createBlocking($config['blocking']);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public static function run()
+    {
+        //Add handlers
         self::addHandler(PluginHandler::class);
         self::addHandler(IpHandler::class);
         self::addHandler(HttpRequestHandler::class);
@@ -141,13 +173,103 @@ class BitSensor
         self::addHandler(ModSecurityHandler::class);
         self::addHandler(InterfaceHandler::class);
 
-        self::createConnector($config->getConnector());
+        // Post request handling
+        if (self::$enbaleShutdownHandler)
+            register_shutdown_function([AfterRequestHandler::class, 'handle']);
 
-        self::createBlocking($config);
+        // Load plugins
+        if (self::$enbaleUopzHook) {
+            PDOHook::instance()->start();
+            MysqliHook::instance()->start();
+        }
 
         self::runHandlers();
-
         self::getBlocking()->handle(self::$datapoint);
+    }
+
+    /**
+     * When the data collection phase is completed, send to remote
+     *
+     * @return mixed
+     * @throws \BitSensor\Exception\ApiException
+     */
+    public static function finish()
+    {
+        if (!isset(self::$connector))
+            return trigger_error("BitSensor is configured without connector. Connector configuration should be specified",
+                E_USER_WARNING);
+
+        return self::$connector->close(self::$datapoint);
+    }
+
+    /**
+     * Run all registered Handlers to collect data about the current request.
+     */
+    private static function runHandlers()
+    {
+        if (empty(self::$handlers))
+            return;
+
+        foreach (self::$handlers as $handler) {
+            $handler->handle(self::$datapoint);
+        }
+    }
+
+    private static function initializeDatapoint()
+    {
+        $datapoint = new Datapoint();
+        $invocation = new Invocation();
+        $datapoint->setInvocation($invocation);
+        self::$datapoint = $datapoint;
+    }
+
+    /**
+     * @param string[]|string $connectorConfiguration Can be of type string with name,
+     * or of type string[] with configuration. In the latter case, uses [type] to create
+     * Connector object.
+     */
+    public static function createConnector($connectorConfiguration)
+    {
+        if (empty($connectorConfiguration))
+            return;
+
+        /** If configuration is set using an assoc string[] array, pass it along */
+        if (is_string($connectorConfiguration)) {
+            $type = $connectorConfiguration;
+            $passConfiguration = false;
+        } else {
+            $type = $connectorConfiguration['type'];
+            $passConfiguration = true;
+        }
+
+        if (strpos($type, '\\')) {
+            self::setConnector(new $type($passConfiguration ? $connectorConfiguration : null));
+        } else {
+            $bitSensorType = '\\BitSensor\\Connector\\' . ucfirst($type) . "Connector";
+            self::setConnector(new $bitSensorType ($passConfiguration ? $connectorConfiguration : null));
+        }
+    }
+
+    /**
+     * @param string[] $blockingConfiguration
+     */
+    public static function createBlocking($blockingConfiguration)
+    {
+        Blocking::configure($blockingConfiguration);
+    }
+
+    /**
+     * Adds a new {@link Handler} that should run to collect data about the current request.
+     *
+     * @param String|Handler $handler
+     * @return mixed
+     */
+    public static function addHandler($handler)
+    {
+        if (is_string($handler))
+            return self::$handlers[] = new $handler(self::$config);
+
+        return self::$handlers[] = $handler;
     }
 
     /**
@@ -160,6 +282,7 @@ class BitSensor
     {
         self::$datapoint->getContext()[$key] = $value;
     }
+
 
     /**
      * Adds a new entry to the endpoint map.
@@ -195,6 +318,14 @@ class BitSensor
     }
 
     /**
+     * @return Datapoint
+     */
+    public static function getDatapoint()
+    {
+        return self::$datapoint;
+    }
+
+    /**
      * The Invocation object acts as a namespace for specialized invocation objects.
      * These can be added by user-defined Handlers.
      *
@@ -206,109 +337,11 @@ class BitSensor
     }
 
     /**
-     * Adds a new {@link Handler} that should run to collect data about the current request.
-     *
-     * @param String|Handler $handler
-     * @return mixed
-     */
-    public static function addHandler($handler)
-    {
-        if (is_string($handler))
-            return self::$handlers[] = new $handler(self::$config);
-
-        return self::$handlers[] = $handler;
-    }
-
-    /**
-     * Run all registered Handlers to collect data about the current request.
-     */
-    private static function runHandlers()
-    {
-        if (empty(self::$handlers))
-            return;
-
-        foreach (self::$handlers as $handler) {
-            $handler->handle(self::$datapoint);
-        }
-    }
-
-    public static function getConfig()
-    {
-        return self::$config;
-    }
-
-    /**
-     * @return Datapoint
-     */
-    public static function getDatapoint()
-    {
-        return self::$datapoint;
-    }
-
-    /**
      * @return Connector
      */
     public static function getConnector()
     {
         return self::$connector;
-    }
-
-    /**
-     * @param string[]|string $connectorConfiguration Can be of type string with name,
-     * or of type string[] with configuration. In the latter case, uses [type] to create
-     * Connector object.
-     */
-    private static function createConnector($connectorConfiguration)
-    {
-        if (empty($connectorConfiguration)) {
-            trigger_error("BitSensor is configured without connector. Connector configuration should be specified",
-                E_USER_WARNING);
-            return;
-        }
-
-        /** If configuration is set using an assoc string[] array, pass it along */
-        if (is_string($connectorConfiguration)) {
-            $type = $connectorConfiguration;
-            $passConfiguration = false;
-        } else {
-            $type = $connectorConfiguration['type'];
-            $passConfiguration = true;
-        }
-
-        if (strpos($type, '\\')) {
-            self::setConnector(new $type($passConfiguration ? $connectorConfiguration : null));
-        } else {
-            $bitSensorType = '\\BitSensor\\Connector\\' . ucfirst($type) . "Connector";
-            self::setConnector(new $bitSensorType ($passConfiguration ? $connectorConfiguration : null));
-        }
-    }
-
-    private static function initializeDatapoint()
-    {
-        $datapoint = new Datapoint();
-        $invocation = new Invocation();
-        $datapoint->setInvocation($invocation);
-        self::$datapoint = $datapoint;
-    }
-
-    /**
-     * When the data collection phase is completed, send to remote
-     *
-     * @return mixed
-     * @throws \BitSensor\Exception\ApiException
-     */
-    public static function finish()
-    {
-        return self::$connector->close(self::$datapoint);
-    }
-
-    /**
-     * @param Config $config
-     */
-    protected static function createBlocking(Config $config)
-    {
-        Blocking::configure($config->getBlocking());
-        self::setBlocking(new Blocking());
     }
 
     /**
@@ -333,6 +366,54 @@ class BitSensor
     public static function setConnector($connector)
     {
         self::$connector = $connector;
+    }
+
+    /**
+     * @param bool $enbaleShutdownHandler
+     */
+    public static function setEnbaleShutdownHandler($enbaleShutdownHandler)
+    {
+        self::$enbaleShutdownHandler = $enbaleShutdownHandler;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getMode()
+    {
+        return self::$mode;
+    }
+
+    /**
+     * @param string $mode
+     */
+    public static function setMode($mode)
+    {
+        self::$mode = $mode;
+    }
+
+    /**
+     * @param mixed $enbaleUopzHook
+     */
+    public static function setEnbaleUopzHook($enbaleUopzHook)
+    {
+        self::$enbaleUopzHook = $enbaleUopzHook;
+    }
+
+    /**
+     * @param string $logLevel
+     */
+    public static function setLogLevel(string $logLevel)
+    {
+        self::$logLevel = $logLevel;
+    }
+
+    /**
+     * @return string Log level.
+     */
+    public static function getLogLevel()
+    {
+        return self::$logLevel;
     }
 
 }

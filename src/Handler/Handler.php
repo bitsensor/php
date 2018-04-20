@@ -2,7 +2,6 @@
 
 namespace BitSensor\Handler;
 
-use BitSensor\Core\Config;
 use Proto\Datapoint;
 
 /**
@@ -20,8 +19,8 @@ interface Handler
 
     /**
      * Handler constructor.
-     * @param Config $config
+     * @param string[] $config
      */
-    public function __construct(Config $config = null);
+    public function __construct($config = null);
 
 }

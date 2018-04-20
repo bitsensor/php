@@ -14,11 +14,9 @@ class TestConnectorTest extends TestBase
      */
     public function testSanity()
     {
-        $config = parent::buildDefaultConfig();
-        $config->setConnector('test');
-        BitSensor::configure($config);
-
+        BitSensor::createConnector('test');
         BitSensor::finish();
+
         static::assertNotEmpty(TestConnector::$datapoint, "Datapoint should not be empty");
     }
 }

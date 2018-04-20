@@ -2,6 +2,7 @@
 
 namespace BitSensor\Util;
 
+use BitSensor\Core\BitSensor;
 
 /**
  * Helper class for logging stuff.
@@ -23,7 +24,7 @@ class Log
     public static function d($msg)
     {
         global $debug;
-        if ($debug === true) {
+        if ($debug === true || BitSensor::$logLevel >= E_USER_NOTICE) {
             echo $msg;
         }
     }

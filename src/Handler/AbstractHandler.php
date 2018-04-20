@@ -2,8 +2,6 @@
 
 namespace BitSensor\Handler;
 
-
-use BitSensor\Core\Config;
 use Proto\Datapoint;
 
 abstract class AbstractHandler implements Handler
@@ -29,19 +27,19 @@ abstract class AbstractHandler implements Handler
     /**
      * Configure the Handler. Automatically called in the constructor.
      *
-     * @param Config $config
+     * @param string[] $config
      * @return mixed
      */
-    public function configure(Config $config)
+    public function configure($config)
     {
         return; // To be extended
     }
 
     /**
      * Handler constructor.
-     * @param Config $config
+     * @param string[] $config
      */
-    public function __construct(Config $config = null)
+    public function __construct($config = null)
     {
         if (!empty($config))
             $this->configure($config);

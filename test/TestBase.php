@@ -4,7 +4,6 @@ namespace BitSensor\Test;
 
 use BitSensor\Blocking\Blocking;
 use BitSensor\Core\BitSensor;
-use BitSensor\Core\Config;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -16,26 +15,8 @@ abstract class TestBase extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         BitSensor::init();
-
-        $config = $this->buildDefaultConfig();
-
-        BitSensor::configure($config);
-    }
-
-    protected function tearDown()
-    {
-
-    }
-
-    /**
-     * @return Config
-     */
-    protected function buildDefaultConfig()
-    {
-        $config = new Config();
-        $config->setSkipShutdownHandler(true);
-        $config->setConnector('noop');
+        BitSensor::setEnbaleShutdownHandler(false);
+        BitSensor::createConnector('noop');
         Blocking::setEnabled(false);
-        return $config;
     }
 }

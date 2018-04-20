@@ -3,7 +3,6 @@
 namespace BitSensor\Handler;
 
 use BitSensor\Core\AuthenticationConstants;
-use BitSensor\Core\Config;
 use BitSensor\Core\EndpointConstants;
 use BitSensor\Core\HttpConstants;
 use BitSensor\Util\ServerInfo;
@@ -16,31 +15,56 @@ use Proto\Datapoint;
 class HttpRequestHandler extends AbstractHandler
 {
 
-    public static $hostSrc = Config::HOST_SERVER_NAME;
+    /**
+     * Source of the host address of the server.
+     *
+     * One of
+     *  - {@see HOST_SERVER_NAME}
+     *  - {@see HOST_HOST_HEADER}
+     *  - {@see HOST_MANUAL}
+     *
+     * Defaults to {@link HOST_SERVER_NAME}.
+     */
+    const HOST_SRC = 'hostSrc';
+    /**
+     * Set host according to <code>$_SERVER['SERVER_NAME']</code>.
+     */
+    const HOST_SERVER_NAME = 'serverName';
+    /**
+     * Set IP address according to the <code>host</code> HTTP header.
+     */
+    const HOST_HOST_HEADER = 'hostHeader';
+    /**
+     * Set host header manually.
+     */
+    const HOST_MANUAL = 'manual';
+
+    /**
+     * Manual host header.
+     *
+     * <i>Optional. Only required when {@link HOST_SRC} is set to {@link HOST_MANUAL}.</i>
+     */
+    const HOST = 'host';
+
+
+    public static $hostSrc = self::HOST_SERVER_NAME;
     public static $host;
 
     /**
-     * @param mixed $host
+     * Configure the Handler. Automatically called in the constructor.
+     *
+     * @param string[] $config
+     * @return mixed
      */
-    public static function setHost($host)
+    public function configure($config)
     {
-        self::$host = $host;
-    }
+        parent::configure($config);
 
-    /**
-     * @return string
-     */
-    public static function getHostSrc()
-    {
-        return self::$hostSrc;
-    }
+        if (array_key_exists(self::HOST_SRC, $config))
+            self::$hostSrc = $config[self::HOST_SRC];
 
-    /**
-     * @param string $hostSrc
-     */
-    public static function setHostSrc($hostSrc)
-    {
-        self::$hostSrc = $hostSrc;
+        if (array_key_exists(self::HOST, $config))
+            self::$host = $config[self::HOST];
     }
 
     /**
@@ -101,14 +125,14 @@ class HttpRequestHandler extends AbstractHandler
 
         $host = null;
 
-        switch (self::getHostSrc()) {
-            case Config::HOST_SERVER_NAME:
+        switch (self::$hostSrc) {
+            case self::HOST_SERVER_NAME:
                 $host = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : null;
                 break;
-            case Config::HOST_HOST_HEADER:
+            case self::HOST_HOST_HEADER:
                 $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
                 break;
-            case Config::HOST_MANUAL:
+            case self::HOST_MANUAL:
                 $host = self::$host;
                 break;
         }
@@ -126,17 +150,5 @@ class HttpRequestHandler extends AbstractHandler
                 $datapoint->getEndpoint()[$k] = $v;
             }
         }
-    }
-
-    /**
-     * Configure the Handler. Automatically called in the constructor.
-     *
-     * @param Config $config
-     * @return mixed
-     */
-    public function configure(Config $config)
-    {
-        self::setHostSrc($config->getHostSrc());
-        self::setHost($config->getHost());
     }
 }

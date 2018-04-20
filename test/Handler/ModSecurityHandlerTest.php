@@ -4,7 +4,6 @@ namespace BitSensor\Test\Handler;
 
 
 use BitSensor\Core\BitSensor;
-use BitSensor\Core\Config;
 use BitSensor\Core\ModSecurityContext;
 use BitSensor\Handler\ModSecurityHandler;
 
@@ -32,7 +31,7 @@ class ModSecurityHandlerTest extends HandlerTest
     public function testHandle()
     {
         $handler = new ModSecurityHandler();
-        $handler->handle(BitSensor::getDatapoint(), new Config());
+        $handler->handle(BitSensor::getDatapoint());
 
         $context = BitSensor::getDatapoint()->getContext();
         static::assertEquals('foo', $context[ModSecurityContext::NAME . '.' . ModSecurityContext::WAF_EVENTS]);
