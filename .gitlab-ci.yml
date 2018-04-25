@@ -14,7 +14,7 @@ image: miya0001/phpenv:7.1
   <<: *test_job
   image: php:$PHP_VERSION
   services:
-    - name: mysql:5.1
+    - name: mysql:5.7
       alias: mysql
   before_script:
     # Install git, required for composer
