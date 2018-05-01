@@ -24,46 +24,12 @@ The BitSensor PHP plugin.
 ### Requirements
 * `php >= 5.6.0`
 * `composer`
-* `uopz` [optional]
+* `uopz` [optional, for query tracing]
   
 ### Installation
-
-* Install bitsensor/php package using composer:
-
-    ```bash
-    composer require bitsensor/php
-    ```
-    
-* Install from source:
-
-    ```bash
-    php composer.phar install
-    ```
-    
-* To use PDO and MySQLi query tracing, the [uopz](https://github.com/krakjoe/uopz) pecl extension must be installed.
-
-    ```bash
-    # You might have to install `pecl` and php-dev dependencies
-    sudo apt-get install php-pear php-dev
-    
-    pecl install uopz
-    
-    # You might have to add `extension=uopz.so` to your php.ini, if that does not happen automatically
-    echo 'extension=uopz.so' >> /etc/php/7.0/fpm/php.ini
-    
-    # In case of php-fpm, reload the service
-    service php7.0-fpm reload
-    
-    # Check successful installation, the output should be `1`
-    php -r 'echo extension_loaded("uopz");'
-    ```
-
-## Usage
-BitSensor can be used with Composer.
-
-### Composer
-Add ``bitsensor/php`` to your ``composer.json``. After running ``php composer.phar install`` all required dependencies will be available to
-you. Refer to Composer's [Documentation](https://getcomposer.org/) for more information.
+```bash
+composer require bitsensor/php
+```
 
 ## Configuration
 
@@ -77,6 +43,7 @@ use BitSensor\Connector\ApiConnector;
 use BitSensor\Blocking\Blocking;
 use BitSensor\Blocking\Action\BlockingpageAction;
 use BitSensor\Handler\IpHandler;
+use BitSensor\Handler\AfterRequestHandler;
 
 // Load Composer's autoloader
 require_once __DIR__ . '/vendor/autoload.php';
@@ -89,12 +56,9 @@ BlockingpageAction::setUser('dev');
 // BlockingpageAction::setHost('optional-host'); //when not running on bitsensor.io
 Blocking::setAction(BlockingpageAction::class);
 BitSensor::setConnector(new ApiConnector());
-IpHandler::setIpAddressSrc(Config::IP_ADDRESS_REMOTE_ADDR);
-$config = new Config();
-// If you are using FastCGI
-$config->setFastcgiFinishRequest(Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON);
-// If you have enabled UOPZ
-$config->setUopzHook(Config::UOPZ_HOOK_ON);
+IpHandler::setIpAddressSrc(IpHandler::IP_ADDRESS_REMOTE_ADDR);
+AfterRequestHandler::setExecuteFastcgiFinishRequest(true); // If you are using FastCGI
+BitSensor::setEnbaleUopzHook(true); // If you have enabled UOPZ
 
 // Start BitSensor 
 BitSensor::configure($config);
@@ -165,6 +129,26 @@ You have the following config options at your disposal:
 | ```setUser()```               | user           | username                                                                                                                                                   | <empty>                                                 | Your BitSensor username.                                                                                                   |
 | ```setHost()```               | host           | hostname                                                                                                                                                   | {user}.bitsensor.io                                     | Hostname of the BitSensor endpoint.                                                                                        |
 | ```setPort()```               | port           | port                                                                                                                                                       | 2080                                                    | Port of the BitSensor endpoint.                                                                                            |
+
+## Query tracing
+    
+To use PDO and MySQLi query tracing, the [uopz](https://github.com/krakjoe/uopz) pecl extension must be installed.
+
+```bash
+# You might have to install `pecl` and php-dev dependencies
+sudo apt-get install php-pear php-dev
+
+pecl install uopz
+
+# You might have to add `extension=uopz.so` to your php.ini, if that does not happen automatically
+echo 'extension=uopz.so' >> /etc/php/7.0/fpm/php.ini
+
+# In case of php-fpm, reload the service
+service php7.0-fpm reload
+
+# Check successful installation, the output should be `1`
+php -r 'echo extension_loaded("uopz");'
+```
 
 ## Logging
 
@@ -261,7 +245,7 @@ SetEnv ERROR_DOCUMENT_505 /path/to/error/document.html
 ```
 
 
-## Testing
+## Debugging
 Assuming default target location, a simple test run can be executed using ``curl localhost/php/test/index.php``. This should return "Accepted", the raw JSON datapoint and the encrypted datapoint.  
 To test successful connection using your API key and endpoint, change the configuration in the ``test/index.php`` file and login to your BitSensor dashboard.
 
