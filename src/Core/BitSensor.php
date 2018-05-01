@@ -403,7 +403,7 @@ class BitSensor
     /**
      * @param string $logLevel
      */
-    public static function setLogLevel(string $logLevel)
+    public static function setLogLevel($logLevel)
     {
         self::$logLevel = $logLevel;
     }
