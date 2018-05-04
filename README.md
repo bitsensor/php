@@ -61,7 +61,7 @@ AfterRequestHandler::setExecuteFastcgiFinishRequest(true); // If you are using F
 BitSensor::setEnbaleUopzHook(true); // If you have enabled UOPZ
 
 // Start BitSensor 
-BitSensor::configure($config);
+BitSensor::run();
 ```
 
 ### JSON
