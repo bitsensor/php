@@ -46,7 +46,7 @@ class Blocking
             self::setFilePath($config['filePath']);
 
         if (array_key_exists('action', $config))
-            self::setAction($config['action']);
+            self::setAction($config[' ']);
     }
 
     /**
@@ -61,6 +61,9 @@ class Blocking
      */
     public static function setAction($action)
     {
+        if (is_object($action))
+            self::$action = $action;
+
         if (empty($action)) {
             trigger_error("BitSensor is configured without blocking action. Connector configuration should be specified.",
                 E_USER_WARNING);
