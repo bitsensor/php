@@ -15,7 +15,7 @@ class TestConnectorTest extends TestBase
     public function testSanity()
     {
         BitSensor::createConnector('test');
-        BitSensor::finish();
+        BitSensor::getConnector()->close(BitSensor::getDatapoint());
 
         static::assertNotEmpty(TestConnector::$datapoint, "Datapoint should not be empty");
     }
