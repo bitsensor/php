@@ -46,7 +46,7 @@ class Blocking
             self::setFilePath($config['filePath']);
 
         if (array_key_exists('action', $config))
-            self::setAction($config[' ']);
+            self::setAction($config['action']);
     }
 
     /**
