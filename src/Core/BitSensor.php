@@ -64,6 +64,12 @@ class BitSensor
      **/
     public static $exceptionHandler;
     /**
+     * To be called on request finish if {@see setEnbaleShutdownHandler} is true
+     *
+     * @var AfterRequestHandler to be called on request finish
+     */
+    private static $afterRequestHandler;
+    /**
      * Enable processing after request is finished, in general this
      * is used to signal the {@see Connector} to send the {@see Datapoint}
      *
@@ -104,6 +110,7 @@ class BitSensor
         self::initializeDatapoint();
 
         self::$handlers = [];
+        self::$afterRequestHandler = new AfterRequestHandler();
 
         self::setBlocking(new Blocking());
 
@@ -153,6 +160,8 @@ class BitSensor
         if (array_key_exists('logLevel', $config))
             self::setLogLevel($config['logLevel']);
 
+        self::$afterRequestHandler->configure($config);
+
         if (array_key_exists('connector', $config))
             self::createConnector($config['connector']);
 
@@ -175,7 +184,7 @@ class BitSensor
 
         // Post request handling
         if (self::$enbaleShutdownHandler)
-            register_shutdown_function([AfterRequestHandler::class, 'handle']);
+            register_shutdown_function([self::$afterRequestHandler, 'handle'], self::$datapoint);
 
         // Load plugins
         if (self::$enbaleUopzHook) {
@@ -185,21 +194,6 @@ class BitSensor
 
         self::runHandlers();
         self::getBlocking()->handle(self::$datapoint);
-    }
-
-    /**
-     * When the data collection phase is completed, send to remote
-     *
-     * @return mixed
-     * @throws \BitSensor\Exception\ApiException
-     */
-    public static function finish()
-    {
-        if (!isset(self::$connector))
-            return trigger_error("BitSensor is configured without connector. Connector configuration should be specified",
-                E_USER_WARNING);
-
-        return self::$connector->close(self::$datapoint);
     }
 
     /**

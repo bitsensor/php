@@ -21,6 +21,11 @@ class BlockingTest extends PHPUnit_Framework_TestCase
         ]);
     }
 
+    function testBlockingConfiguration()
+    {
+        Blocking::setAction(new TestAction());
+    }
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage User blocked by BitSensor for block with id AWJsa-K8OgCnroTMO6dT

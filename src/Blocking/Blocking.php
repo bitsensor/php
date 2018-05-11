@@ -67,6 +67,11 @@ class Blocking
             return;
         }
 
+        if (is_object($action)) {
+            self::$action = $action;
+            return;
+        }
+
         /** If configuration is set using an assoc string[] array, pass it along */
         if (is_string($action)) {
             $type = $action;

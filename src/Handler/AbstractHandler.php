@@ -32,7 +32,7 @@ abstract class AbstractHandler implements Handler
      */
     public function configure($config)
     {
-        return; // To be extended
+        return; //TODO: To be extended with enable bool
     }
 
     /**

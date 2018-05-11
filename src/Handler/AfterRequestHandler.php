@@ -83,7 +83,13 @@ class AfterRequestHandler extends AbstractHandler
         }
 
         try {
-            BitSensor::finish();
+            $connector = BitSensor::getConnector();
+
+            if (!isset($connector))
+                return trigger_error("BitSensor is configured without connector. Connector configuration should be specified",
+                    E_USER_WARNING);
+
+            return $connector->close($datapoint);
         } catch (ApiException $e) {
             trigger_error($e->getMessage(), E_USER_WARNING);
         }
