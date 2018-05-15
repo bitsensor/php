@@ -10,6 +10,7 @@ use BitSensor\Core\BitSensor;
  */
 class Log
 {
+    private static $enabled = false; 
 
     /**
      * Prints a messages if <code>$debug</code> is in the global scope.
@@ -23,10 +24,19 @@ class Log
      */
     public static function d($msg)
     {
-        global $debug;
-        if ($debug === true || BitSensor::$logLevel >= E_USER_NOTICE) {
+        if (self::isEnabled()) {
             echo $msg;
         }
+    }
+
+    /**
+     * Returns wether logging is enabled, to be called before expensive logging calls.
+     *
+     * @return boolean
+     */
+    public static function isEnabled(){
+        global $debug;
+        return $debug === true || self::$enabled || BitSensor::$logLevel >= E_USER_NOTICE;
     }
 
 }

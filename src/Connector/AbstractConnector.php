@@ -27,10 +27,12 @@ abstract class AbstractConnector implements Connector
 
     protected function logDebug($datapoint)
     {
-        Log::d('<pre>' .
-            json_encode($datapoint,
-                defined("JSON_PRETTY_PRINT") ? JSON_PRETTY_PRINT : 0) .
-            '</pre>');
+        if(Log::isEnabled()) {
+            Log::d('<pre>' . 
+                json_encode(json_decode($datapoint),
+                    defined("JSON_PRETTY_PRINT") ? JSON_PRETTY_PRINT : 0) .
+                '</pre>');
+        }
     }
 
     /**
