@@ -5,7 +5,7 @@ namespace BitSensor\Connector;
 
 use Proto\Datapoint;
 
-class LogConnector extends AbstractConnector
+class ErrorlogConnector extends AbstractConnector
 {
 
     /**
