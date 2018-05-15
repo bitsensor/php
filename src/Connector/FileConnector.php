@@ -16,7 +16,7 @@ class FileConnector extends AbstractConnector
      */
     protected function send(Datapoint $datapoint)
     {
-        return file_put_contents(self::$filename, $datapoint->serializeToJsonString() . '\n', FILE_APPEND | LOCK_EX);
+        return file_put_contents(self::$filename, $datapoint->serializeToJsonString() . "\n", FILE_APPEND | LOCK_EX);
     }
 
     /**
