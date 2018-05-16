@@ -9,24 +9,14 @@
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/EnableBitSensor.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=EnableBitSensor)
 
-The BitSensor PHP plugin.
+[BitSensor website](https://bitsensor.io/) - [Documentation](https://plugins.bitsensor.io/php) - [Gitlab repo](https://git.bitsensor.io/plugins/php)
 
-[BitSensor](https://bitsensor.io/)
-
-[Documentation](https://plugins.bitsensor.io/php)
-
-[Gitlab repo](https://git.bitsensor.io/plugins/php)
-
-
-
-## Setup BitSensor
-
-### Requirements
+## Requirements
 * `php >= 5.6.0`
 * `composer`
 * `uopz` [optional, for query tracing]
   
-### Installation
+## Installation
 ```bash
 composer require bitsensor/php
 ```
@@ -34,7 +24,6 @@ composer require bitsensor/php
 ## Configuration
 
 ### Code 
-``index.php:``
 ```php
 <?php
 use BitSensor\Core\BitSensor;
@@ -55,7 +44,7 @@ ApiConnector::setApiKey('secret-apikey');
 BlockingpageAction::setUser('dev');
 // BlockingpageAction::setHost('optional-host'); //when not running on bitsensor.io
 Blocking::setAction(BlockingpageAction::class);
-BitSensor::setConnector(new ApiConnector());
+BitSensor::setConnector(ApiConnector::class);
 IpHandler::setIpAddressSrc(IpHandler::IP_ADDRESS_REMOTE_ADDR);
 AfterRequestHandler::setExecuteFastcgiFinishRequest(true); // If you are using FastCGI
 BitSensor::setEnbaleUopzHook(true); // If you have enabled UOPZ
@@ -183,7 +172,7 @@ use \BitSensor\Core\BitSensor;
 use \BitSensor\Core\EndpointConstants;
 
 BitSensor::putEndpoint(EndpointConstants::WEBSOCKET, 'true');
-````
+```
 
 ## Apache
 After sinking BitSensor hooks in your application, you can extend BitSensor's visibility to include Apache events that aren't processed by your application. 
@@ -246,17 +235,13 @@ SetEnv ERROR_DOCUMENT_505 /path/to/error/document.html
 
 
 ## Debugging
-Assuming default target location, a simple test run can be executed using ``curl localhost/php/test/index.php``. This should return "Accepted", the raw JSON datapoint and the encrypted datapoint.  
-To test successful connection using your API key and endpoint, change the configuration in the ``test/index.php`` file and login to your BitSensor dashboard.
-
 For more extensive debugging in your codebase, we provide the following hooks:
 
 Debug logging can be printed using ``BitSensor\Util\Log::d($msg)``,
-this will only be printed when running in debug mode, activated by setting ``$debug`` to true in the global scope like this:
+this will only be printed when running in debug mode, activated by setting:
 
 ```php
-global $debug;
-$debug = true;
+\BitSensor\Util\Log::setEnabled(true);
 ```
 
 This should be done in a test script and not in the actual source.

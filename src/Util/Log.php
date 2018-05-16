@@ -30,6 +30,15 @@ class Log
     }
 
     /**
+     * Set logging state
+     *
+     * @param bool $enabled
+     */
+    public function setEnabled($enabled){
+        self::$enabled = $enabled;
+    }
+
+    /**
      * Returns wether logging is enabled, to be called before expensive logging calls.
      *
      * @return boolean
