@@ -34,7 +34,7 @@ class Log
      *
      * @param bool $enabled
      */
-    public function setEnabled($enabled){
+    public static function setEnabled($enabled){
         self::$enabled = $enabled;
     }
 
