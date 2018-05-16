@@ -113,7 +113,7 @@ You have the following config options at your disposal:
 #### File
 | PHP                 | JSON     | Value            | Default                               | Description  |
 |---------------------|----------|------------------|---------------------------------------|--------------|
-| ```setFilename()``` | filename | File to write to | /var/log/bitsensor-datapoints-php.log | Logfile that is appendd to. Make sure that the Apache or Nginx user can write to this file. Set this using `chown www-data /var/log/bitsensor-datapoints-php.log; chmod 200 /var/log/bitsensor-datapoints-php.log` |
+| ```setFilename()``` | filename | File to write to | /var/log/bitsensor-datapoints-php.log | Logfile that is appendd to. Make sure that the Apache or Nginx user can write to this file. Set this using `touch /var/log/bitsensor-datapoints-php.log; chown www-data /var/log/bitsensor-datapoints-php.log; chmod 200 /var/log/bitsensor-datapoints-php.log` |
 
 
 ### Blocking Actions
