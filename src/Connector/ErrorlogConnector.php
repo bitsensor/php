@@ -9,7 +9,7 @@ class ErrorlogConnector extends AbstractConnector
 {
 
     /**
-     * Place to implement sending data to remote
+     * Log event to php error log
      * @param Datapoint $datapoint
      * @return mixed
      */
