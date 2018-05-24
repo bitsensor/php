@@ -129,7 +129,9 @@ class ApiConnector extends AbstractConnector implements Connector
         $curl_error = curl_error($request);
 
         if ($curl_errno > 0) {
-            throw new ApiException("Server connection to BitSensor endpoint failed! $curl_error Code: $curl_errno", ApiException::CONNECTION_FAILED);
+            $message = "Server connection to BitSensor endpoint failed! $curl_error Code: $curl_errno";
+            Log::d($message);
+            throw new ApiException($message, ApiException::CONNECTION_FAILED);
         }
 
         return $result;
@@ -181,7 +183,9 @@ class ApiConnector extends AbstractConnector implements Connector
      */
     private function createCurlRequest($content)
     {
-        $request = curl_init('http://' . self::$host . ':' . self::$port . '/log');
+        $uri = 'http://' . self::$host . ':' . self::$port . '/log';
+        Log::d($uri);
+        $request = curl_init($uri);
         curl_setopt_array($request, array(
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => $content,
