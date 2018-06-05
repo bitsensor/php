@@ -3,26 +3,26 @@
 namespace BitSensor\Core;
 
 
-use BitSensor\Core\Blocking\BlockDatapoint;
+use BitSensor\Core\Blocking\BlockingDatapoint;
 
-class Block
+class Blocks
 {
     /**
      * Blocking identifier
      *
      * @var string
      */
-    public $id;
+    public $_id;
 
     /**
      * True if block is enabled
      *
      * @var bool
      */
-    public $active;
+    public $blocked;
 
     /**
-     * Description of the block
+     * Description of the blocking
      *
      * @var string
      */
@@ -31,8 +31,8 @@ class Block
     /**
      * Array of datapoints of which one should match
      *
-     * @var BlockDatapoint[]
+     * @var BlockingDatapoint[]
      */
-    public $datapoints;
+    public $blockedDatapoints;
 
 }

@@ -30,9 +30,9 @@ image: miya0001/phpenv:7.1
     - curl -sS https://getcomposer.org/installer | php
 
     # Install all project dependencies
-    - php composer.phar config cache-files-dir .composercache
     - php composer.phar self-update
     - php composer.phar install --no-progress
+    - php composer.phar config cache-files-dir .composercache
     - pecl install uopz && docker-php-ext-enable uopz
 
 cache:
