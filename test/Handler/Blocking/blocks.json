@@ -1,10 +1,10 @@
 {
   "blocks": [
     {
-      "_id": "AWJsa-K8OgCnroTMO6dT",
-      "blocked": true,
+      "id": "AWJsa-K8OgCnroTMO6dT",
+      "active": true,
       "description": "Demo Block",
-      "blockedDatapoints": [
+      "datapoints": [
         {
           "context": {
             "http.userAgent": "Mozilla",
@@ -20,10 +20,10 @@
       ]
     },
     {
-      "_id": "AWJsa-K8OgCnroTMO6dU",
-      "blocked": true,
+      "id": "AWJsa-K8OgCnroTMO6dU",
+      "active": true,
       "description": "Demo Block",
-      "blockedDatapoints": [
+      "datapoints": [
         {
           "context": {
             "http.userAgent": "Chrome",
