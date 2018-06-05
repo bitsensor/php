@@ -8,7 +8,7 @@ image: miya0001/phpenv:7.1
     - . build-tools/prepare-env.sh
     - composer config cache-files-dir .composercache
   script:
-    - vendor/bin/phpunit --bootstrap vendor/autoload.php test/
+    - vendor/bin/phpunit --coverage-text --colors=never --bootstrap vendor/autoload.php test/
 
 .test_template7: &test_job7
   <<: *test_job
