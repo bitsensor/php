@@ -4,8 +4,8 @@ namespace BitSensor\Blocking;
 
 
 use BitSensor\Blocking\Action\BlockingAction;
-use BitSensor\Core\Blocking\BlockingDatapoint;
-use BitSensor\Core\Blocks;
+use BitSensor\Core\Blocking\BlockDatapoint;
+use BitSensor\Core\Block;
 use Exception;
 use Proto\Datapoint;
 
@@ -131,20 +131,20 @@ class Blocking
 
     /**
      * @param Datapoint $datapoint
-     * @param Blocks[] $blocks
+     * @param Block[] $blocks
      * @return bool|string
      */
     protected function isBlocked(Datapoint $datapoint, $blocks)
     {
         foreach ($blocks as $block) {
-            if ($block->blocked != true)
+            if ($block->active != true)
                 continue;
 
-            foreach ($block->blockedDatapoints as $blockedDatapoint) {
+            foreach ($block->datapoints as $blockedDatapoint) {
                 if (self::datapointContextMatches($blockedDatapoint, $datapoint) &&
                     self::datapointEndpointMatches($blockedDatapoint, $datapoint) &&
                     self::datapointMetaMatches($blockedDatapoint, $datapoint))
-                    return $block->_id;
+                    return $block->id;
             }
         }
 
@@ -152,7 +152,7 @@ class Blocking
     }
 
     /**
-     * @param BlockingDatapoint $blockedDatapoint just a type hint for object fields
+     * @param BlockDatapoint $blockedDatapoint just a type hint for object fields
      * @param $datapoint
      * @return bool
      */
@@ -169,7 +169,7 @@ class Blocking
     }
 
     /**
-     * @param BlockingDatapoint $blockedDatapoint just a type hint for object fields
+     * @param BlockDatapoint $blockedDatapoint just a type hint for object fields
      * @param $datapoint
      * @return bool
      */
@@ -186,7 +186,7 @@ class Blocking
     }
 
     /**
-     * @param BlockingDatapoint $blockedDatapoint just a type hint for object fields
+     * @param BlockDatapoint $blockedDatapoint just a type hint for object fields
      * @param $datapoint
      * @return bool
      */

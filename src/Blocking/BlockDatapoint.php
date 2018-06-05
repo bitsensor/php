@@ -3,7 +3,7 @@
 namespace BitSensor\Core\Blocking;
 
 
-class BlockingDatapoint
+class BlockDatapoint
 {
     /**
      * Assoc array of string Key, string Value
