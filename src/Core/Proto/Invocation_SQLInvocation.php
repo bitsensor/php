@@ -4,42 +4,42 @@
 
 namespace Proto;
 
+use Google\Protobuf\Internal\GPBType;
+use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * <pre>
  * SQL Invocation
- * </pre>
  *
- * Protobuf type <code>proto.Invocation.SQLInvocation</code>
+ * Generated from protobuf message <code>proto.Invocation.SQLInvocation</code>
  */
 class Invocation_SQLInvocation extends \Google\Protobuf\Internal\Message
 {
     /**
-     * <code>repeated .proto.Invocation.SQLInvocation.Query queries = 1;</code>
+     * Generated from protobuf field <code>repeated .proto.Invocation.SQLInvocation.Query queries = 1;</code>
      */
     private $queries;
     /**
-     * <code>map&lt;string, string&gt; endpoint = 2;</code>
+     * Generated from protobuf field <code>map<string, string> endpoint = 2;</code>
      */
     private $endpoint;
     /**
-     * <code>string prepare_statement = 3;</code>
+     * Generated from protobuf field <code>string prepare_statement = 3;</code>
      */
     private $prepare_statement = '';
     /**
-     * <code>string prepare_call = 4;</code>
+     * Generated from protobuf field <code>string prepare_call = 4;</code>
      */
     private $prepare_call = '';
 
-    public function __construct()
-    {
+    public function __construct() {
         \GPBMetadata\Invocation::initOnce();
         parent::__construct();
     }
 
     /**
-     * <code>repeated .proto.Invocation.SQLInvocation.Query queries = 1;</code>
+     * Generated from protobuf field <code>repeated .proto.Invocation.SQLInvocation.Query queries = 1;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getQueries()
     {
@@ -47,16 +47,21 @@ class Invocation_SQLInvocation extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>repeated .proto.Invocation.SQLInvocation.Query queries = 1;</code>
+     * Generated from protobuf field <code>repeated .proto.Invocation.SQLInvocation.Query queries = 1;</code>
+     * @param \Proto\Invocation_SQLInvocation_Query[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
      */
-    public function setQueries(&$var)
+    public function setQueries($var)
     {
-        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\Invocation_SQLInvocation_Query::class);
-        $this->queries = $var;
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\Invocation_SQLInvocation_Query::class);
+        $this->queries = $arr;
+
+        return $this;
     }
 
     /**
-     * <code>map&lt;string, string&gt; endpoint = 2;</code>
+     * Generated from protobuf field <code>map<string, string> endpoint = 2;</code>
+     * @return \Google\Protobuf\Internal\MapField
      */
     public function getEndpoint()
     {
@@ -64,15 +69,21 @@ class Invocation_SQLInvocation extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>map&lt;string, string&gt; endpoint = 2;</code>
+     * Generated from protobuf field <code>map<string, string> endpoint = 2;</code>
+     * @param array|\Google\Protobuf\Internal\MapField $var
+     * @return $this
      */
-    public function setEndpoint(&$var)
+    public function setEndpoint($var)
     {
-        $this->endpoint = $var;
+        $arr = GPBUtil::checkMapField($var, \Google\Protobuf\Internal\GPBType::STRING, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->endpoint = $arr;
+
+        return $this;
     }
 
     /**
-     * <code>string prepare_statement = 3;</code>
+     * Generated from protobuf field <code>string prepare_statement = 3;</code>
+     * @return string
      */
     public function getPrepareStatement()
     {
@@ -80,16 +91,21 @@ class Invocation_SQLInvocation extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>string prepare_statement = 3;</code>
+     * Generated from protobuf field <code>string prepare_statement = 3;</code>
+     * @param string $var
+     * @return $this
      */
     public function setPrepareStatement($var)
     {
         GPBUtil::checkString($var, True);
         $this->prepare_statement = $var;
+
+        return $this;
     }
 
     /**
-     * <code>string prepare_call = 4;</code>
+     * Generated from protobuf field <code>string prepare_call = 4;</code>
+     * @return string
      */
     public function getPrepareCall()
     {
@@ -97,12 +113,16 @@ class Invocation_SQLInvocation extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>string prepare_call = 4;</code>
+     * Generated from protobuf field <code>string prepare_call = 4;</code>
+     * @param string $var
+     * @return $this
      */
     public function setPrepareCall($var)
     {
         GPBUtil::checkString($var, True);
         $this->prepare_call = $var;
+
+        return $this;
     }
 
 }

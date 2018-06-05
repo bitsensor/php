@@ -4,26 +4,28 @@
 
 namespace Proto;
 
+use Google\Protobuf\Internal\GPBType;
+use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Protobuf type <code>proto.Reply</code>
+ * Generated from protobuf message <code>proto.Reply</code>
  */
 class Reply extends \Google\Protobuf\Internal\Message
 {
     /**
-     * <code>string message = 1;</code>
+     * Generated from protobuf field <code>string message = 1;</code>
      */
     private $message = '';
 
-    public function __construct()
-    {
+    public function __construct() {
         \GPBMetadata\Datapoint::initOnce();
         parent::__construct();
     }
 
     /**
-     * <code>string message = 1;</code>
+     * Generated from protobuf field <code>string message = 1;</code>
+     * @return string
      */
     public function getMessage()
     {
@@ -31,12 +33,16 @@ class Reply extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>string message = 1;</code>
+     * Generated from protobuf field <code>string message = 1;</code>
+     * @param string $var
+     * @return $this
      */
     public function setMessage($var)
     {
         GPBUtil::checkString($var, True);
         $this->message = $var;
+
+        return $this;
     }
 
 }
