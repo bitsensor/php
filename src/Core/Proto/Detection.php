@@ -4,96 +4,94 @@
 
 namespace Proto;
 
-use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Generated from protobuf message <code>proto.Detection</code>
+ * Protobuf type <code>proto.Detection</code>
  */
 class Detection extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>string ids = 1;</code>
+     * <code>string ids = 1;</code>
      */
     private $ids = '';
     /**
-     * Generated from protobuf field <code>string name = 2;</code>
+     * <code>string name = 2;</code>
      */
     private $name = '';
     /**
-     * Generated from protobuf field <code>string description = 3;</code>
+     * <code>string description = 3;</code>
      */
     private $description = '';
     /**
-     * Generated from protobuf field <code>repeated string type = 4;</code>
+     * <code>repeated string type = 4;</code>
      */
     private $type;
     /**
-     * Generated from protobuf field <code>float severity = 5;</code>
+     * <code>float severity = 5;</code>
      */
     private $severity = 0.0;
     /**
-     * Generated from protobuf field <code>float certainty = 6;</code>
+     * <code>float certainty = 6;</code>
      */
     private $certainty = 0.0;
     /**
-     * Generated from protobuf field <code>bool successful = 7;</code>
+     * <code>bool successful = 7;</code>
      */
     private $successful = false;
     /**
-     * Generated from protobuf field <code>bool relevant = 8;</code>
+     * <code>bool relevant = 8;</code>
      */
     private $relevant = false;
     /**
-     * Generated from protobuf field <code>.proto.Detection.Reason reason = 9;</code>
+     * <code>.proto.Detection.Reason reason = 9;</code>
      */
     private $reason = 0;
     /**
-     * Generated from protobuf field <code>.proto.GeneratedBy generatedby = 10;</code>
+     * <code>.proto.GeneratedBy generatedby = 10;</code>
      */
     private $generatedby = 0;
     /**
-     * Generated from protobuf field <code>bool attack = 11;</code>
+     * <code>bool attack = 11;</code>
      */
     private $attack = false;
     /**
-     * Generated from protobuf field <code>repeated string input = 12;</code>
+     * <code>repeated string input = 12;</code>
      */
     private $input;
     /**
-     * Generated from protobuf field <code>repeated string errors = 13;</code>
+     * <code>repeated string errors = 13;</code>
      */
     private $errors;
     /**
-     * Generated from protobuf field <code>int64 hash = 14;</code>
+     * <code>int64 hash = 14;</code>
      */
     private $hash = 0;
     /**
-     * Generated from protobuf field <code>int64 ruleHash = 15;</code>
+     * <code>int64 ruleHash = 15;</code>
      */
     private $ruleHash = 0;
     /**
-     * Generated from protobuf field <code>string onKey = 16;</code>
+     * <code>string onKey = 16;</code>
      */
     private $onKey = '';
     /**
-     * Generated from protobuf field <code>string byInput = 17;</code>
+     * <code>string byInput = 17;</code>
      */
     private $byInput = '';
     /**
-     * Generated from protobuf field <code>repeated string tags = 18;</code>
+     * <code>repeated string tags = 18;</code>
      */
     private $tags;
 
-    public function __construct() {
+    public function __construct()
+    {
         \GPBMetadata\Detection::initOnce();
         parent::__construct();
     }
 
     /**
-     * Generated from protobuf field <code>string ids = 1;</code>
-     * @return string
+     * <code>string ids = 1;</code>
      */
     public function getIds()
     {
@@ -101,21 +99,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string ids = 1;</code>
-     * @param string $var
-     * @return $this
+     * <code>string ids = 1;</code>
      */
     public function setIds($var)
     {
         GPBUtil::checkString($var, True);
         $this->ids = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string name = 2;</code>
-     * @return string
+     * <code>string name = 2;</code>
      */
     public function getName()
     {
@@ -123,21 +116,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string name = 2;</code>
-     * @param string $var
-     * @return $this
+     * <code>string name = 2;</code>
      */
     public function setName($var)
     {
         GPBUtil::checkString($var, True);
         $this->name = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string description = 3;</code>
-     * @return string
+     * <code>string description = 3;</code>
      */
     public function getDescription()
     {
@@ -145,21 +133,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string description = 3;</code>
-     * @param string $var
-     * @return $this
+     * <code>string description = 3;</code>
      */
     public function setDescription($var)
     {
         GPBUtil::checkString($var, True);
         $this->description = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>repeated string type = 4;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * <code>repeated string type = 4;</code>
      */
     public function getType()
     {
@@ -167,21 +150,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated string type = 4;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
-     * @return $this
+     * <code>repeated string type = 4;</code>
      */
-    public function setType($var)
+    public function setType(&$var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->type = $arr;
-
-        return $this;
+        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->type = $var;
     }
 
     /**
-     * Generated from protobuf field <code>float severity = 5;</code>
-     * @return float
+     * <code>float severity = 5;</code>
      */
     public function getSeverity()
     {
@@ -189,21 +167,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>float severity = 5;</code>
-     * @param float $var
-     * @return $this
+     * <code>float severity = 5;</code>
      */
     public function setSeverity($var)
     {
         GPBUtil::checkFloat($var);
         $this->severity = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>float certainty = 6;</code>
-     * @return float
+     * <code>float certainty = 6;</code>
      */
     public function getCertainty()
     {
@@ -211,21 +184,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>float certainty = 6;</code>
-     * @param float $var
-     * @return $this
+     * <code>float certainty = 6;</code>
      */
     public function setCertainty($var)
     {
         GPBUtil::checkFloat($var);
         $this->certainty = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>bool successful = 7;</code>
-     * @return bool
+     * <code>bool successful = 7;</code>
      */
     public function getSuccessful()
     {
@@ -233,21 +201,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>bool successful = 7;</code>
-     * @param bool $var
-     * @return $this
+     * <code>bool successful = 7;</code>
      */
     public function setSuccessful($var)
     {
         GPBUtil::checkBool($var);
         $this->successful = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>bool relevant = 8;</code>
-     * @return bool
+     * <code>bool relevant = 8;</code>
      */
     public function getRelevant()
     {
@@ -255,21 +218,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>bool relevant = 8;</code>
-     * @param bool $var
-     * @return $this
+     * <code>bool relevant = 8;</code>
      */
     public function setRelevant($var)
     {
         GPBUtil::checkBool($var);
         $this->relevant = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.proto.Detection.Reason reason = 9;</code>
-     * @return int
+     * <code>.proto.Detection.Reason reason = 9;</code>
      */
     public function getReason()
     {
@@ -277,21 +235,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.proto.Detection.Reason reason = 9;</code>
-     * @param int $var
-     * @return $this
+     * <code>.proto.Detection.Reason reason = 9;</code>
      */
     public function setReason($var)
     {
         GPBUtil::checkEnum($var, \Proto\Detection_Reason::class);
         $this->reason = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.proto.GeneratedBy generatedby = 10;</code>
-     * @return int
+     * <code>.proto.GeneratedBy generatedby = 10;</code>
      */
     public function getGeneratedby()
     {
@@ -299,21 +252,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.proto.GeneratedBy generatedby = 10;</code>
-     * @param int $var
-     * @return $this
+     * <code>.proto.GeneratedBy generatedby = 10;</code>
      */
     public function setGeneratedby($var)
     {
         GPBUtil::checkEnum($var, \Proto\GeneratedBy::class);
         $this->generatedby = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>bool attack = 11;</code>
-     * @return bool
+     * <code>bool attack = 11;</code>
      */
     public function getAttack()
     {
@@ -321,21 +269,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>bool attack = 11;</code>
-     * @param bool $var
-     * @return $this
+     * <code>bool attack = 11;</code>
      */
     public function setAttack($var)
     {
         GPBUtil::checkBool($var);
         $this->attack = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>repeated string input = 12;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * <code>repeated string input = 12;</code>
      */
     public function getInput()
     {
@@ -343,21 +286,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated string input = 12;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
-     * @return $this
+     * <code>repeated string input = 12;</code>
      */
-    public function setInput($var)
+    public function setInput(&$var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->input = $arr;
-
-        return $this;
+        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->input = $var;
     }
 
     /**
-     * Generated from protobuf field <code>repeated string errors = 13;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * <code>repeated string errors = 13;</code>
      */
     public function getErrors()
     {
@@ -365,21 +303,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated string errors = 13;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
-     * @return $this
+     * <code>repeated string errors = 13;</code>
      */
-    public function setErrors($var)
+    public function setErrors(&$var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->errors = $arr;
-
-        return $this;
+        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->errors = $var;
     }
 
     /**
-     * Generated from protobuf field <code>int64 hash = 14;</code>
-     * @return int|string
+     * <code>int64 hash = 14;</code>
      */
     public function getHash()
     {
@@ -387,21 +320,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int64 hash = 14;</code>
-     * @param int|string $var
-     * @return $this
+     * <code>int64 hash = 14;</code>
      */
     public function setHash($var)
     {
         GPBUtil::checkInt64($var);
         $this->hash = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>int64 ruleHash = 15;</code>
-     * @return int|string
+     * <code>int64 ruleHash = 15;</code>
      */
     public function getRuleHash()
     {
@@ -409,21 +337,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int64 ruleHash = 15;</code>
-     * @param int|string $var
-     * @return $this
+     * <code>int64 ruleHash = 15;</code>
      */
     public function setRuleHash($var)
     {
         GPBUtil::checkInt64($var);
         $this->ruleHash = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string onKey = 16;</code>
-     * @return string
+     * <code>string onKey = 16;</code>
      */
     public function getOnKey()
     {
@@ -431,21 +354,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string onKey = 16;</code>
-     * @param string $var
-     * @return $this
+     * <code>string onKey = 16;</code>
      */
     public function setOnKey($var)
     {
         GPBUtil::checkString($var, True);
         $this->onKey = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string byInput = 17;</code>
-     * @return string
+     * <code>string byInput = 17;</code>
      */
     public function getByInput()
     {
@@ -453,21 +371,16 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string byInput = 17;</code>
-     * @param string $var
-     * @return $this
+     * <code>string byInput = 17;</code>
      */
     public function setByInput($var)
     {
         GPBUtil::checkString($var, True);
         $this->byInput = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>repeated string tags = 18;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * <code>repeated string tags = 18;</code>
      */
     public function getTags()
     {
@@ -475,16 +388,12 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated string tags = 18;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
-     * @return $this
+     * <code>repeated string tags = 18;</code>
      */
-    public function setTags($var)
+    public function setTags(&$var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->tags = $arr;
-
-        return $this;
+        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->tags = $var;
     }
 
 }

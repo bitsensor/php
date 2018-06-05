@@ -4,36 +4,30 @@
 
 namespace Proto;
 
-use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Generated from protobuf message <code>proto.Invocation.SQLInvocation.Query</code>
+ * Protobuf type <code>proto.Invocation.SQLInvocation.Query</code>
  */
 class Invocation_SQLInvocation_Query extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>string query = 1;</code>
+     * <code>string query = 1;</code>
      */
     private $query = '';
     /**
-     * Generated from protobuf field <code>repeated string tables = 3;</code>
-     */
-    private $tables;
-    /**
-     * Generated from protobuf field <code>map<string, string> parameter = 2;</code>
+     * <code>map&lt;string, string&gt; parameter = 2;</code>
      */
     private $parameter;
 
-    public function __construct() {
+    public function __construct()
+    {
         \GPBMetadata\Invocation::initOnce();
         parent::__construct();
     }
 
     /**
-     * Generated from protobuf field <code>string query = 1;</code>
-     * @return string
+     * <code>string query = 1;</code>
      */
     public function getQuery()
     {
@@ -41,43 +35,16 @@ class Invocation_SQLInvocation_Query extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string query = 1;</code>
-     * @param string $var
-     * @return $this
+     * <code>string query = 1;</code>
      */
     public function setQuery($var)
     {
         GPBUtil::checkString($var, True);
         $this->query = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>repeated string tables = 3;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
-     */
-    public function getTables()
-    {
-        return $this->tables;
-    }
-
-    /**
-     * Generated from protobuf field <code>repeated string tables = 3;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
-     * @return $this
-     */
-    public function setTables($var)
-    {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->tables = $arr;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>map<string, string> parameter = 2;</code>
-     * @return \Google\Protobuf\Internal\MapField
+     * <code>map&lt;string, string&gt; parameter = 2;</code>
      */
     public function getParameter()
     {
@@ -85,16 +52,11 @@ class Invocation_SQLInvocation_Query extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>map<string, string> parameter = 2;</code>
-     * @param array|\Google\Protobuf\Internal\MapField $var
-     * @return $this
+     * <code>map&lt;string, string&gt; parameter = 2;</code>
      */
-    public function setParameter($var)
+    public function setParameter(&$var)
     {
-        $arr = GPBUtil::checkMapField($var, \Google\Protobuf\Internal\GPBType::STRING, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->parameter = $arr;
-
-        return $this;
+        $this->parameter = $var;
     }
 
 }

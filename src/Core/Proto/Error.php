@@ -4,56 +4,54 @@
 
 namespace Proto;
 
-use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Generated from protobuf message <code>proto.Error</code>
+ * Protobuf type <code>proto.Error</code>
  */
 class Error extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>int32 code = 1;</code>
+     * <code>int32 code = 1;</code>
      */
     private $code = 0;
     /**
-     * Generated from protobuf field <code>string description = 2;</code>
+     * <code>string description = 2;</code>
      */
     private $description = '';
     /**
-     * Generated from protobuf field <code>string location = 3;</code>
+     * <code>string location = 3;</code>
      */
     private $location = '';
     /**
-     * Generated from protobuf field <code>int32 line = 4;</code>
+     * <code>int32 line = 4;</code>
      */
     private $line = 0;
     /**
-     * Generated from protobuf field <code>string type = 5;</code>
+     * <code>string type = 5;</code>
      */
     private $type = '';
     /**
-     * Generated from protobuf field <code>.proto.GeneratedBy generatedby = 6;</code>
+     * <code>.proto.GeneratedBy generatedby = 6;</code>
      */
     private $generatedby = 0;
     /**
-     * Generated from protobuf field <code>int64 hash = 7;</code>
+     * <code>int64 hash = 7;</code>
      */
     private $hash = 0;
     /**
-     * Generated from protobuf field <code>repeated string context = 8;</code>
+     * <code>repeated string context = 8;</code>
      */
     private $context;
 
-    public function __construct() {
+    public function __construct()
+    {
         \GPBMetadata\Error::initOnce();
         parent::__construct();
     }
 
     /**
-     * Generated from protobuf field <code>int32 code = 1;</code>
-     * @return int
+     * <code>int32 code = 1;</code>
      */
     public function getCode()
     {
@@ -61,21 +59,16 @@ class Error extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int32 code = 1;</code>
-     * @param int $var
-     * @return $this
+     * <code>int32 code = 1;</code>
      */
     public function setCode($var)
     {
         GPBUtil::checkInt32($var);
         $this->code = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string description = 2;</code>
-     * @return string
+     * <code>string description = 2;</code>
      */
     public function getDescription()
     {
@@ -83,21 +76,16 @@ class Error extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string description = 2;</code>
-     * @param string $var
-     * @return $this
+     * <code>string description = 2;</code>
      */
     public function setDescription($var)
     {
         GPBUtil::checkString($var, True);
         $this->description = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string location = 3;</code>
-     * @return string
+     * <code>string location = 3;</code>
      */
     public function getLocation()
     {
@@ -105,21 +93,16 @@ class Error extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string location = 3;</code>
-     * @param string $var
-     * @return $this
+     * <code>string location = 3;</code>
      */
     public function setLocation($var)
     {
         GPBUtil::checkString($var, True);
         $this->location = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>int32 line = 4;</code>
-     * @return int
+     * <code>int32 line = 4;</code>
      */
     public function getLine()
     {
@@ -127,21 +110,16 @@ class Error extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int32 line = 4;</code>
-     * @param int $var
-     * @return $this
+     * <code>int32 line = 4;</code>
      */
     public function setLine($var)
     {
         GPBUtil::checkInt32($var);
         $this->line = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string type = 5;</code>
-     * @return string
+     * <code>string type = 5;</code>
      */
     public function getType()
     {
@@ -149,21 +127,16 @@ class Error extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string type = 5;</code>
-     * @param string $var
-     * @return $this
+     * <code>string type = 5;</code>
      */
     public function setType($var)
     {
         GPBUtil::checkString($var, True);
         $this->type = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.proto.GeneratedBy generatedby = 6;</code>
-     * @return int
+     * <code>.proto.GeneratedBy generatedby = 6;</code>
      */
     public function getGeneratedby()
     {
@@ -171,21 +144,16 @@ class Error extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.proto.GeneratedBy generatedby = 6;</code>
-     * @param int $var
-     * @return $this
+     * <code>.proto.GeneratedBy generatedby = 6;</code>
      */
     public function setGeneratedby($var)
     {
         GPBUtil::checkEnum($var, \Proto\GeneratedBy::class);
         $this->generatedby = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>int64 hash = 7;</code>
-     * @return int|string
+     * <code>int64 hash = 7;</code>
      */
     public function getHash()
     {
@@ -193,21 +161,16 @@ class Error extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int64 hash = 7;</code>
-     * @param int|string $var
-     * @return $this
+     * <code>int64 hash = 7;</code>
      */
     public function setHash($var)
     {
         GPBUtil::checkInt64($var);
         $this->hash = $var;
-
-        return $this;
     }
 
     /**
-     * Generated from protobuf field <code>repeated string context = 8;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * <code>repeated string context = 8;</code>
      */
     public function getContext()
     {
@@ -215,16 +178,12 @@ class Error extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated string context = 8;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
-     * @return $this
+     * <code>repeated string context = 8;</code>
      */
-    public function setContext($var)
+    public function setContext(&$var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->context = $arr;
-
-        return $this;
+        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->context = $var;
     }
 
 }

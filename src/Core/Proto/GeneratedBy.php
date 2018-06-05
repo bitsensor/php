@@ -5,21 +5,17 @@
 namespace Proto;
 
 /**
- * Protobuf enum <code>Proto\GeneratedBy</code>
+ * Protobuf enum <code>proto.GeneratedBy</code>
  */
 class GeneratedBy
 {
     /**
-     * Generated from protobuf enum <code>BITBRAIN = 0;</code>
+     * <code>BITBRAIN = 0;</code>
      */
     const BITBRAIN = 0;
     /**
-     * Generated from protobuf enum <code>PLUGIN = 1;</code>
+     * <code>PLUGIN = 1;</code>
      */
     const PLUGIN = 1;
-    /**
-     * Generated from protobuf enum <code>MODSECURITY = 2;</code>
-     */
-    const MODSECURITY = 2;
 }
 

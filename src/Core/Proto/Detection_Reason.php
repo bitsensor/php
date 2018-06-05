@@ -5,20 +5,20 @@
 namespace Proto;
 
 /**
- * Protobuf enum <code>Proto\Detection\Reason</code>
+ * Protobuf enum <code>proto.Detection.Reason</code>
  */
 class Detection_Reason
 {
     /**
-     * Generated from protobuf enum <code>KNOWN_ATTACK = 0;</code>
+     * <code>KNOWN_ATTACK = 0;</code>
      */
     const KNOWN_ATTACK = 0;
     /**
-     * Generated from protobuf enum <code>BEHAVIOUR = 1;</code>
+     * <code>BEHAVIOUR = 1;</code>
      */
     const BEHAVIOUR = 1;
     /**
-     * Generated from protobuf enum <code>KNOWN_TOOL = 2;</code>
+     * <code>KNOWN_TOOL = 2;</code>
      */
     const KNOWN_TOOL = 2;
 }
