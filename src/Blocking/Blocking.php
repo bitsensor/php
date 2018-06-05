@@ -4,10 +4,9 @@ namespace BitSensor\Blocking;
 
 
 use BitSensor\Blocking\Action\BlockingAction;
-use BitSensor\Core\Blocking\BlockDatapoint;
-use BitSensor\Core\Block;
 use Exception;
 use Proto\Datapoint;
+use Proto\Block;
 
 class Blocking
 {
@@ -115,7 +114,7 @@ class Blocking
         if (!self::isEnabled())
             return true;
 
-        /** @var Blocks[] $blocks */
+        /** @var Block[] $blocks */
         $blocks = json_decode(file_get_contents(self::$filePath, true))->blocks;
 
         $id = $this->isBlocked($datapoint, $blocks);
@@ -137,14 +136,14 @@ class Blocking
     protected function isBlocked(Datapoint $datapoint, $blocks)
     {
         foreach ($blocks as $block) {
-            if ($block->active != true)
+            if ($block->getActive() != true)
                 continue;
 
-            foreach ($block->datapoints as $blockedDatapoint) {
+            foreach ($block->getDatapoints() as $blockedDatapoint) {
                 if (self::datapointContextMatches($blockedDatapoint, $datapoint) &&
                     self::datapointEndpointMatches($blockedDatapoint, $datapoint) &&
                     self::datapointMetaMatches($blockedDatapoint, $datapoint))
-                    return $block->id;
+                    return $block->getId();
             }
         }
 
