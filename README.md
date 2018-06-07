@@ -43,8 +43,8 @@ ApiConnector::setApiKey('secret-apikey');
 // ApiConnector::setHost('optional-host'); when not running on bitsensor.io
 BlockingpageAction::setUser('dev');
 // BlockingpageAction::setHost('optional-host'); //when not running on bitsensor.io
-Blocking::setAction(BlockingpageAction::class);
-BitSensor::setConnector(ApiConnector::class);
+Blocking::setAction(new BlockingpageAction());
+BitSensor::setConnector(new ApiConnector());
 IpHandler::setIpAddressSrc(IpHandler::IP_ADDRESS_REMOTE_ADDR);
 AfterRequestHandler::setExecuteFastcgiFinishRequest(true); // If you are using FastCGI
 BitSensor::setEnbaleUopzHook(true); // If you have enabled UOPZ
