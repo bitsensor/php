@@ -193,7 +193,10 @@ class BitSensor
         }
 
         self::runHandlers();
-        self::getBlocking()->handle(self::$datapoint);
+
+        if (isset(self::$blocking)) {
+            self::getBlocking()->handle(self::$datapoint);
+        }
     }
 
     /**
