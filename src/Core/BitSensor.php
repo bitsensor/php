@@ -152,7 +152,7 @@ class BitSensor
         self::$config = $config;
 
         if (array_key_exists('uopzHook', $config))
-            self::setEnbaleUopzHook($config['uopzHook'] == 'on' ? true : false);
+            self::setEnableUopzHook($config['uopzHook'] == 'on' ? true : false);
 
         if (array_key_exists('mode', $config))
             self::setMode($config['mode']);
@@ -392,7 +392,7 @@ class BitSensor
     /**
      * @param mixed $enbaleUopzHook
      */
-    public static function setEnbaleUopzHook($enbaleUopzHook)
+    public static function setEnableUopzHook($enbaleUopzHook)
     {
         self::$enbaleUopzHook = $enbaleUopzHook;
     }
