@@ -78,7 +78,7 @@ Sample configuration file:
       "user": "dev"
     }
   },
-  "mode": "detection",
+  "mode": "ids",
   "ipAddressSrc": "remoteAddr",
   "hostSrc": "serverName",
   "logLevel": "none",
