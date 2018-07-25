@@ -22,7 +22,8 @@ class PluginHandler extends AbstractHandler
     {
         $meta = array(
             MetaContext::PROVIDER => MetaContext::PROVIDER_PHP,
-            MetaContext::PROVIDER_VERSION => BitSensor::VERSION
+            MetaContext::PROVIDER_VERSION => BitSensor::VERSION,
+            MetaContext::MODE => BitSensor::getMode()
         );
 
         foreach ($meta as $k => $v) {

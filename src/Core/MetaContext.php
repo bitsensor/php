@@ -12,7 +12,6 @@ class MetaContext extends Constants
      * Key for metadata.
      */
     const NAME = 'meta';
-
     /**
      * Indicates whether the data is encrypted.
      */
@@ -41,6 +40,10 @@ class MetaContext extends Constants
      * The version of the provider.
      */
     const PROVIDER_VERSION = 'version';
+    /**
+     * The running mode of BitSensor pipeline
+     */
+    const MODE = 'mode';
 
     const PROVIDER_PHP = 'bitsensor-php';
     const PROVIDER_APACHE = 'apache-log';

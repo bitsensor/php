@@ -1,17 +1,19 @@
-<a id="about"></a>
 ![logo](https://dl2.pushbulletusercontent.com/3WwxLx0wKhfLB4sMWZ2QjLqFzwT5nwWD/Logo_BitSensorSmall_Light.png)
 
 # BitSensor PHP Plugin
 
-[![Latest Stable Version](https://poser.pugx.org/bitsensor/php/v/stable)](https://packagist.org/packages/bitsensor/php)[![Total Downloads](https://poser.pugx.org/bitsensor/php/downloads)](https://packagist.org/packages/bitsensor/php)[![License](https://poser.pugx.org/bitsensor/php/license)](https://packagist.org/packages/bitsensor/php)[![composer.lock](https://poser.pugx.org/bitsensor/php/composerlock)](https://packagist.org/packages/bitsensor/php)
+The BitSensor PHP plugin.
 
-[![pipeline status](https://git.bitsensor.io/plugins/php/badges/master/pipeline.svg)](https://git.bitsensor.io/plugins/nodejs/commits/master)
+[BitSensor](https://bitsensor.io/)
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/EnableBitSensor.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=EnableBitSensor)
+[Documentation](https://plugins.bitsensor.io/php)
 
-[BitSensor website](https://bitsensor.io/) - [Documentation](https://plugins.bitsensor.io/php) - [Gitlab repo](https://git.bitsensor.io/plugins/php)
+[Gitlab repo](https://git.bitsensor.io/plugins/php)
 
-## Requirements
+
+## Setup BitSensor
+
+### Requirements
 * `php >= 5.6.0`
 * `composer`
 * `uopz` [optional, for query tracing]
@@ -76,7 +78,7 @@ Sample configuration file:
       "user": "dev"
     }
   },
-  "mode": "detection",
+  "mode": "ids",
   "ipAddressSrc": "remoteAddr",
   "hostSrc": "serverName",
   "logLevel": "none",
@@ -90,7 +92,7 @@ You have the following config options at your disposal:
 
 | PHP                           | JSON           | Value                                                                                                                                                      | Default                                                 | Description                                                                                                                |
 |-------------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| ```setMode()```               | mode           | ```Config::MODE_ON``` ("on"), ```Config::MODE_DETECTION``` ("detection")                                                                                   | ```Config::MODE_ON``` ("on")                            | Running mode. In detection mode only logging will be done.                                                                 |
+| ```setMode()```               | mode           | ```BitSensor::MODE_IDS``` ("ids"), ```BitSensor::MODE_MONITORING``` ("monitoring"), ```BitSensor::MODE_OFF``` ("off")                                      | ```BitSensor::MODE_IDS``` ("ids")                       | BitSensor pipeline running mode. Default "ids" mode includes process pipeline, false positive detection, auto-blocking. "monitoring" mode excludes auto-blocking while in "off" mode, only logging will be done                                                                    |
 | ```setIpAddressSrc()```       | ipAddressSrc   | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr"), ```Config::IP_ADDRESS_X_FORWARDED_FOR``` ("forwardedFor"), ```Config::IP_ADDRESS_MANUAL``` ("manual") | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr")     | Source of the IP address of the user.                                                                                      |
 | ```setIpAddress()```          | ipAddress      | ip override                                                                                                                                                | <empty>                                                 | IP address manual override value.                                                                                          |
 | ```setHostSrc()```            | hostSrc        | ```Config::HOST_SERVER_NAME``` ("serverName"), ```Config::HOST_HOST_HEADER``` ("hostHeader"), ```Config::HOST_MANUAL``` ("manual")                         | ```Config::HOST_SERVER_NAME``` ("serverName")           | Source of the hostname.                                                                                                    |
