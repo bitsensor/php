@@ -29,7 +29,7 @@ use Proto\Invocation;
 class BitSensor
 {
 
-    const VERSION = '1.0.0-RC1';
+    const VERSION = '1.0.0';
 
     /**
      * Reference to the global Datapoint instance.
