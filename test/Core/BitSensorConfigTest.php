@@ -23,7 +23,7 @@ class BitSensorConfigTest extends \PHPUnit_Framework_TestCase
         ]);
 
         static::assertEquals(TestConnector::class, get_class(BitSensor::getConnector()));
-        static::assertEquals(BitSensor::MODE_DETECTION, BitSensor::getMode());
+        static::assertEquals(BitSensor::MODE_IDS, BitSensor::getMode());
         static::assertEquals('none', BitSensor::getLogLevel());
         static::assertEquals(TestAction::class, get_class(Blocking::getAction()));
     }

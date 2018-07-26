@@ -45,7 +45,7 @@ class EndpointConstants extends Constants
     /**
      * Absolute path to the executed script.
      */
-    const SCRIPT_FILENAME = 'location';
+    const SCRIPT_FILENAME = 'file';
     /**
      * Request time with microseconds.
      *

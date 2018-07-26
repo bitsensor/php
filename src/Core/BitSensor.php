@@ -81,15 +81,23 @@ class BitSensor
      */
     private static $enbaleUopzHook = false;
     /**
-     * Running mode. Default is {@see MODE_DETECTION}.
+     * Running mode of BitSensor pipeline. Default is {@see MODE_IDS}.
      *
      * @var string
      */
-    private static $mode = self::MODE_DETECTION;
+    private static $mode = self::MODE_IDS;
     /**
-     * Only do detection but don't block attackers.
+     * Process pipeline, false positive detection, auto-blocking
      */
-    const MODE_DETECTION = 'detection';
+    const MODE_IDS = 'ids';
+    /**
+     * Process pipeline, false positive detection
+     */
+    const MODE_MONITORING = 'monitoring';
+    /**
+     * Only log raw input datapoints.
+     */
+    const MODE_OFF = 'off';
     /**
      * Log level.
      *
@@ -152,7 +160,7 @@ class BitSensor
         self::$config = $config;
 
         if (array_key_exists('uopzHook', $config))
-            self::setEnbaleUopzHook($config['uopzHook'] == 'on' ? true : false);
+            self::setEnableUopzHook($config['uopzHook'] == 'on' ? true : false);
 
         if (array_key_exists('mode', $config))
             self::setMode($config['mode']);
@@ -392,7 +400,7 @@ class BitSensor
     /**
      * @param mixed $enbaleUopzHook
      */
-    public static function setEnbaleUopzHook($enbaleUopzHook)
+    public static function setEnableUopzHook($enbaleUopzHook)
     {
         self::$enbaleUopzHook = $enbaleUopzHook;
     }

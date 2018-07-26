@@ -49,7 +49,7 @@ Blocking::setAction(new BlockingpageAction());
 BitSensor::setConnector(new ApiConnector());
 IpHandler::setIpAddressSrc(IpHandler::IP_ADDRESS_REMOTE_ADDR);
 AfterRequestHandler::setExecuteFastcgiFinishRequest(true); // If you are using FastCGI
-BitSensor::setEnbaleUopzHook(true); // If you have enabled UOPZ
+BitSensor::setEnableUopzHook(true); // If you have enabled UOPZ
 
 // Start BitSensor 
 BitSensor::run();
@@ -78,7 +78,7 @@ Sample configuration file:
       "user": "dev"
     }
   },
-  "mode": "detection",
+  "mode": "ids",
   "ipAddressSrc": "remoteAddr",
   "hostSrc": "serverName",
   "logLevel": "none",
@@ -92,7 +92,7 @@ You have the following config options at your disposal:
 
 | PHP                           | JSON           | Value                                                                                                                                                      | Default                                                 | Description                                                                                                                |
 |-------------------------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| ```setMode()```               | mode           | ```Config::MODE_ON``` ("on"), ```Config::MODE_DETECTION``` ("detection")                                                                                   | ```Config::MODE_ON``` ("on")                            | Running mode. In detection mode only logging will be done.                                                                 |
+| ```setMode()```               | mode           | ```BitSensor::MODE_IDS``` ("ids"), ```BitSensor::MODE_MONITORING``` ("monitoring"), ```BitSensor::MODE_OFF``` ("off")                                      | ```BitSensor::MODE_IDS``` ("ids")                       | BitSensor pipeline running mode. Default "ids" mode includes process pipeline, false positive detection, auto-blocking. "monitoring" mode excludes auto-blocking while in "off" mode, only logging will be done                                                                    |
 | ```setIpAddressSrc()```       | ipAddressSrc   | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr"), ```Config::IP_ADDRESS_X_FORWARDED_FOR``` ("forwardedFor"), ```Config::IP_ADDRESS_MANUAL``` ("manual") | ```Config::IP_ADDRESS_REMOTE_ADDR``` ("remoteAddr")     | Source of the IP address of the user.                                                                                      |
 | ```setIpAddress()```          | ipAddress      | ip override                                                                                                                                                | <empty>                                                 | IP address manual override value.                                                                                          |
 | ```setHostSrc()```            | hostSrc        | ```Config::HOST_SERVER_NAME``` ("serverName"), ```Config::HOST_HOST_HEADER``` ("hostHeader"), ```Config::HOST_MANUAL``` ("manual")                         | ```Config::HOST_SERVER_NAME``` ("serverName")           | Source of the hostname.                                                                                                    |
@@ -100,7 +100,7 @@ You have the following config options at your disposal:
 | ```setLogLevel()```           | logLevel       | ```Config::LOG_LEVEL_ALL``` ("all"), ```Config::LOG_LEVEL_NONE``` ("none")                                                                                 | ```Config::LOG_LEVEL_ALL``` ("all")                     | The logging level.                                                                                                         |
 | ```setOutputFlushing```       | outputFlushing | ```Config::OUTPUT_FLUSHING_ON``` ("on"), ```Config::OUTPUT_FLUSHING_OFF``` ("off")                                                                         | ```Config::OUTPUT_FLUSHING_OFF``` ("off")               | Output flushing. Turning this on allows the browser to render the page while BitSensor is still working in the background. |
 | ```setUopzHook```             | uopzHook       | ```Config::UOPZ_HOOK_ON``` ("on"), ```Config::UOPZ_HOOK_OFF``` ("off")                                                                                     | ```Config::UOPZ_HOOK_ON``` ("on")                       | Uopz Hooking. Turning this on enables BitSensor to hook into function calls.                                               |
-| ```setFastcgiFinishRequest``` | executeFastCgi | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON``` ("on"), ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")                                           | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")| Finish request to your FastCGI webserver, while processing BitSensor in a seperate thread.                                 |
+| ```setFastcgiFinishRequest``` | executeFastCgi | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_ON``` ("on"), ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")                                           | ```Config::EXECUTE_FASTCGI_FINISH_REQUEST_OFF``` ("off")| Finish request to your FastCGI webserver, while processing BitSensor in a separate thread.                                 |
 
 ### Connector Types
 
@@ -115,7 +115,7 @@ You have the following config options at your disposal:
 #### File
 | PHP                 | JSON     | Value            | Default                               | Description  |
 |---------------------|----------|------------------|---------------------------------------|--------------|
-| ```setFilename()``` | filename | File to write to | /var/log/bitsensor-datapoints-php.log | Logfile that is appendd to. Make sure that the Apache or Nginx user can write to this file. Set this using `touch /var/log/bitsensor-datapoints-php.log; chown www-data /var/log/bitsensor-datapoints-php.log; chmod 200 /var/log/bitsensor-datapoints-php.log` |
+| ```setFilename()``` | filename | File to write to | /var/log/bitsensor-datapoints-php.log | Logfile that is appended to. Make sure that the Apache or Nginx user can write to this file. Set this using `touch /var/log/bitsensor-datapoints-php.log; chown www-data /var/log/bitsensor-datapoints-php.log; chmod 200 /var/log/bitsensor-datapoints-php.log` |
 
 
 ### Blocking Actions
@@ -164,7 +164,7 @@ $log->pushHandler(new PsrHandler(new PsrLogHandler()));
 ```
 
 ### Tags
-If you are running many applications, it might be sensible to group them by a tag. You can create a tag using the following snipplet
+If you are running many applications, it might be sensible to group them by a tag. You can create a tag using the following snippet:
 ```php
 <?php
 use \BitSensor\Core\BitSensor;
