@@ -15,7 +15,7 @@ class ExceptionHandlerTest extends HandlerTest
         $code = 17;
         $line = __LINE__ + 1;
         $exception = new \Exception($message, $code);
-        $expectedContext = explode(PHP_EOL, $exception->getTrace());
+        $expectedContext = $exception->getTrace();
 
 
         ExceptionHandler::handle($exception);
