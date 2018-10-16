@@ -81,7 +81,9 @@ pages:
   image: node:8.9.0
   before_script:
     - npm install gitbook-cli -g -q # install gitbook
-    - gitbook fetch latest # fetch latest stable version
+    - gitbook fetch 3.2.3 # pull version 3.2.3 while waiting for fix from gitbook. https://github.com/GitbookIO/gitbook/issues/2138
+    # - gitbook fetch latest # fetch latest stable version
+
   script:
     - gitbook build . public
   artifacts:
