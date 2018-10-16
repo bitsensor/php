@@ -15,8 +15,7 @@ class ExceptionHandlerTest extends HandlerTest
         $code = 17;
         $line = __LINE__ + 1;
         $exception = new \Exception($message, $code);
-        $expectedContext = $exception->getTrace();
-
+        $expectedContext = explode(PHP_EOL, $exception->getTraceAsString());
 
         ExceptionHandler::handle($exception);
 
@@ -24,9 +23,6 @@ class ExceptionHandlerTest extends HandlerTest
 
         /** @var Error $err */
         $err = BitSensor::getDatapoint()->getErrors()[0];
-
-        echo print_r($err->getContext(), true);
-        echo print_r($expectedContext, true);
 
         self::assertEquals($err->getCode(), $code);
         self::assertEquals($err->getDescription(), $message);

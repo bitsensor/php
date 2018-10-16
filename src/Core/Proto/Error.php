@@ -237,10 +237,8 @@ class Error extends \Google\Protobuf\Internal\Message
      */
     public function setContext($var)
     {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->context = $arr;
-
-        return $this;
+        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->context = $var;
     }
 
 }
