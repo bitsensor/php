@@ -4,106 +4,13 @@
 
 namespace Proto;
 
-use Google\Protobuf\Internal\GPBUtil;
-
-/**
- * <pre>
- * SQL Invocation
- * </pre>
- *
- * Protobuf type <code>proto.Invocation.SQLInvocation</code>
- */
-class Invocation_SQLInvocation extends \Google\Protobuf\Internal\Message
-{
+if (false) {
     /**
-     * <code>repeated .proto.Invocation.SQLInvocation.Query queries = 1;</code>
+     * This class is deprecated. Use Proto\Invocation\SQLInvocation instead.
+     * @deprecated
      */
-    private $queries;
-    /**
-     * <code>map&lt;string, string&gt; endpoint = 2;</code>
-     */
-    private $endpoint;
-    /**
-     * <code>string prepare_statement = 3;</code>
-     */
-    private $prepare_statement = '';
-    /**
-     * <code>string prepare_call = 4;</code>
-     */
-    private $prepare_call = '';
-
-    public function __construct()
-    {
-        \GPBMetadata\Invocation::initOnce();
-        parent::__construct();
-    }
-
-    /**
-     * <code>repeated .proto.Invocation.SQLInvocation.Query queries = 1;</code>
-     */
-    public function getQueries()
-    {
-        return $this->queries;
-    }
-
-    /**
-     * <code>repeated .proto.Invocation.SQLInvocation.Query queries = 1;</code>
-     */
-    public function setQueries(&$var)
-    {
-        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\Invocation_SQLInvocation_Query::class);
-        $this->queries = $var;
-    }
-
-    /**
-     * <code>map&lt;string, string&gt; endpoint = 2;</code>
-     */
-    public function getEndpoint()
-    {
-        return $this->endpoint;
-    }
-
-    /**
-     * <code>map&lt;string, string&gt; endpoint = 2;</code>
-     */
-    public function setEndpoint(&$var)
-    {
-        $this->endpoint = $var;
-    }
-
-    /**
-     * <code>string prepare_statement = 3;</code>
-     */
-    public function getPrepareStatement()
-    {
-        return $this->prepare_statement;
-    }
-
-    /**
-     * <code>string prepare_statement = 3;</code>
-     */
-    public function setPrepareStatement($var)
-    {
-        GPBUtil::checkString($var, True);
-        $this->prepare_statement = $var;
-    }
-
-    /**
-     * <code>string prepare_call = 4;</code>
-     */
-    public function getPrepareCall()
-    {
-        return $this->prepare_call;
-    }
-
-    /**
-     * <code>string prepare_call = 4;</code>
-     */
-    public function setPrepareCall($var)
-    {
-        GPBUtil::checkString($var, True);
-        $this->prepare_call = $var;
-    }
-
+    class Invocation_SQLInvocation {}
 }
+class_exists(Invocation\SQLInvocation::class);
+@trigger_error('Proto\Invocation_SQLInvocation is deprecated and will be removed in the next major release. Use Proto\Invocation\SQLInvocation instead', E_USER_DEPRECATED);
 

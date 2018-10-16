@@ -4,50 +4,95 @@
 
 namespace Proto;
 
+use Google\Protobuf\Internal\GPBType;
+use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Protobuf type <code>proto.Datapoint</code>
+ * Generated from protobuf message <code>proto.Datapoint</code>
  */
 class Datapoint extends \Google\Protobuf\Internal\Message
 {
     /**
-     * <code>map&lt;string, string&gt; context = 1;</code>
+     * Generated from protobuf field <code>map<string, string> context = 1;</code>
      */
     private $context;
     /**
-     * <code>repeated .proto.Error errors = 2;</code>
+     * Generated from protobuf field <code>repeated .proto.Error errors = 2;</code>
      */
     private $errors;
     /**
-     * <code>map&lt;string, string&gt; endpoint = 3;</code>
+     * Generated from protobuf field <code>map<string, string> endpoint = 3;</code>
      */
     private $endpoint;
     /**
-     * <code>map&lt;string, string&gt; meta = 4;</code>
+     * Generated from protobuf field <code>map<string, string> meta = 4;</code>
      */
     private $meta;
     /**
-     * <code>repeated .proto.Detection detections = 5;</code>
+     * Generated from protobuf field <code>repeated .proto.Detection detections = 5;</code>
      */
     private $detections;
     /**
-     * <code>map&lt;string, string&gt; input = 6;</code>
+     * Generated from protobuf field <code>map<string, string> input = 6;</code>
      */
     private $input;
     /**
-     * <code>.proto.Invocation invocation = 7;</code>
+     * Generated from protobuf field <code>.proto.Invocation invocation = 7;</code>
      */
     private $invocation = null;
+    /**
+     * Generated from protobuf field <code>repeated .proto.Vulnerability vulnerabilities = 9;</code>
+     */
+    private $vulnerabilities;
+    /**
+     * Generated from protobuf field <code>repeated .proto.DataLeakage data_leakages = 10;</code>
+     */
+    private $data_leakages;
+    /**
+     * key should not contain dot .
+     *
+     * Generated from protobuf field <code>map<string, .proto.PersonalData> personal_data = 11;</code>
+     */
+    private $personal_data;
+    /**
+     * Generated from protobuf field <code>.proto.Agent agent = 12;</code>
+     */
+    private $agent = null;
+    /**
+     * Generated from protobuf field <code>.proto.Notable notable = 13;</code>
+     */
+    private $notable = null;
 
-    public function __construct()
-    {
+    /**
+     * Constructor.
+     *
+     * @param array $data {
+     *     Optional. Data for populating the Message object.
+     *
+     *     @type array|\Google\Protobuf\Internal\MapField $context
+     *     @type \Proto\Error[]|\Google\Protobuf\Internal\RepeatedField $errors
+     *     @type array|\Google\Protobuf\Internal\MapField $endpoint
+     *     @type array|\Google\Protobuf\Internal\MapField $meta
+     *     @type \Proto\Detection[]|\Google\Protobuf\Internal\RepeatedField $detections
+     *     @type array|\Google\Protobuf\Internal\MapField $input
+     *     @type \Proto\Invocation $invocation
+     *     @type \Proto\Vulnerability[]|\Google\Protobuf\Internal\RepeatedField $vulnerabilities
+     *     @type \Proto\DataLeakage[]|\Google\Protobuf\Internal\RepeatedField $data_leakages
+     *     @type array|\Google\Protobuf\Internal\MapField $personal_data
+     *           key should not contain dot .
+     *     @type \Proto\Agent $agent
+     *     @type \Proto\Notable $notable
+     * }
+     */
+    public function __construct($data = NULL) {
         \GPBMetadata\Datapoint::initOnce();
-        parent::__construct();
+        parent::__construct($data);
     }
 
     /**
-     * <code>map&lt;string, string&gt; context = 1;</code>
+     * Generated from protobuf field <code>map<string, string> context = 1;</code>
+     * @return \Google\Protobuf\Internal\MapField
      */
     public function getContext()
     {
@@ -55,15 +100,21 @@ class Datapoint extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>map&lt;string, string&gt; context = 1;</code>
+     * Generated from protobuf field <code>map<string, string> context = 1;</code>
+     * @param array|\Google\Protobuf\Internal\MapField $var
+     * @return $this
      */
-    public function setContext(&$var)
+    public function setContext($var)
     {
-        $this->context = $var;
+        $arr = GPBUtil::checkMapField($var, \Google\Protobuf\Internal\GPBType::STRING, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->context = $arr;
+
+        return $this;
     }
 
     /**
-     * <code>repeated .proto.Error errors = 2;</code>
+     * Generated from protobuf field <code>repeated .proto.Error errors = 2;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getErrors()
     {
@@ -71,16 +122,21 @@ class Datapoint extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>repeated .proto.Error errors = 2;</code>
+     * Generated from protobuf field <code>repeated .proto.Error errors = 2;</code>
+     * @param \Proto\Error[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
      */
-    public function setErrors(&$var)
+    public function setErrors($var)
     {
-        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\Error::class);
-        $this->errors = $var;
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\Error::class);
+        $this->errors = $arr;
+
+        return $this;
     }
 
     /**
-     * <code>map&lt;string, string&gt; endpoint = 3;</code>
+     * Generated from protobuf field <code>map<string, string> endpoint = 3;</code>
+     * @return \Google\Protobuf\Internal\MapField
      */
     public function getEndpoint()
     {
@@ -88,15 +144,21 @@ class Datapoint extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>map&lt;string, string&gt; endpoint = 3;</code>
+     * Generated from protobuf field <code>map<string, string> endpoint = 3;</code>
+     * @param array|\Google\Protobuf\Internal\MapField $var
+     * @return $this
      */
-    public function setEndpoint(&$var)
+    public function setEndpoint($var)
     {
-        $this->endpoint = $var;
+        $arr = GPBUtil::checkMapField($var, \Google\Protobuf\Internal\GPBType::STRING, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->endpoint = $arr;
+
+        return $this;
     }
 
     /**
-     * <code>map&lt;string, string&gt; meta = 4;</code>
+     * Generated from protobuf field <code>map<string, string> meta = 4;</code>
+     * @return \Google\Protobuf\Internal\MapField
      */
     public function getMeta()
     {
@@ -104,15 +166,21 @@ class Datapoint extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>map&lt;string, string&gt; meta = 4;</code>
+     * Generated from protobuf field <code>map<string, string> meta = 4;</code>
+     * @param array|\Google\Protobuf\Internal\MapField $var
+     * @return $this
      */
-    public function setMeta(&$var)
+    public function setMeta($var)
     {
-        $this->meta = $var;
+        $arr = GPBUtil::checkMapField($var, \Google\Protobuf\Internal\GPBType::STRING, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->meta = $arr;
+
+        return $this;
     }
 
     /**
-     * <code>repeated .proto.Detection detections = 5;</code>
+     * Generated from protobuf field <code>repeated .proto.Detection detections = 5;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getDetections()
     {
@@ -120,16 +188,21 @@ class Datapoint extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>repeated .proto.Detection detections = 5;</code>
+     * Generated from protobuf field <code>repeated .proto.Detection detections = 5;</code>
+     * @param \Proto\Detection[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
      */
-    public function setDetections(&$var)
+    public function setDetections($var)
     {
-        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\Detection::class);
-        $this->detections = $var;
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\Detection::class);
+        $this->detections = $arr;
+
+        return $this;
     }
 
     /**
-     * <code>map&lt;string, string&gt; input = 6;</code>
+     * Generated from protobuf field <code>map<string, string> input = 6;</code>
+     * @return \Google\Protobuf\Internal\MapField
      */
     public function getInput()
     {
@@ -137,15 +210,21 @@ class Datapoint extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>map&lt;string, string&gt; input = 6;</code>
+     * Generated from protobuf field <code>map<string, string> input = 6;</code>
+     * @param array|\Google\Protobuf\Internal\MapField $var
+     * @return $this
      */
-    public function setInput(&$var)
+    public function setInput($var)
     {
-        $this->input = $var;
+        $arr = GPBUtil::checkMapField($var, \Google\Protobuf\Internal\GPBType::STRING, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->input = $arr;
+
+        return $this;
     }
 
     /**
-     * <code>.proto.Invocation invocation = 7;</code>
+     * Generated from protobuf field <code>.proto.Invocation invocation = 7;</code>
+     * @return \Proto\Invocation
      */
     public function getInvocation()
     {
@@ -153,12 +232,130 @@ class Datapoint extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>.proto.Invocation invocation = 7;</code>
+     * Generated from protobuf field <code>.proto.Invocation invocation = 7;</code>
+     * @param \Proto\Invocation $var
+     * @return $this
      */
-    public function setInvocation(&$var)
+    public function setInvocation($var)
     {
         GPBUtil::checkMessage($var, \Proto\Invocation::class);
         $this->invocation = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .proto.Vulnerability vulnerabilities = 9;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
+     */
+    public function getVulnerabilities()
+    {
+        return $this->vulnerabilities;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .proto.Vulnerability vulnerabilities = 9;</code>
+     * @param \Proto\Vulnerability[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
+     */
+    public function setVulnerabilities($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\Vulnerability::class);
+        $this->vulnerabilities = $arr;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .proto.DataLeakage data_leakages = 10;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
+     */
+    public function getDataLeakages()
+    {
+        return $this->data_leakages;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .proto.DataLeakage data_leakages = 10;</code>
+     * @param \Proto\DataLeakage[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
+     */
+    public function setDataLeakages($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\DataLeakage::class);
+        $this->data_leakages = $arr;
+
+        return $this;
+    }
+
+    /**
+     * key should not contain dot .
+     *
+     * Generated from protobuf field <code>map<string, .proto.PersonalData> personal_data = 11;</code>
+     * @return \Google\Protobuf\Internal\MapField
+     */
+    public function getPersonalData()
+    {
+        return $this->personal_data;
+    }
+
+    /**
+     * key should not contain dot .
+     *
+     * Generated from protobuf field <code>map<string, .proto.PersonalData> personal_data = 11;</code>
+     * @param array|\Google\Protobuf\Internal\MapField $var
+     * @return $this
+     */
+    public function setPersonalData($var)
+    {
+        $arr = GPBUtil::checkMapField($var, \Google\Protobuf\Internal\GPBType::STRING, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\PersonalData::class);
+        $this->personal_data = $arr;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.proto.Agent agent = 12;</code>
+     * @return \Proto\Agent
+     */
+    public function getAgent()
+    {
+        return $this->agent;
+    }
+
+    /**
+     * Generated from protobuf field <code>.proto.Agent agent = 12;</code>
+     * @param \Proto\Agent $var
+     * @return $this
+     */
+    public function setAgent($var)
+    {
+        GPBUtil::checkMessage($var, \Proto\Agent::class);
+        $this->agent = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.proto.Notable notable = 13;</code>
+     * @return \Proto\Notable
+     */
+    public function getNotable()
+    {
+        return $this->notable;
+    }
+
+    /**
+     * Generated from protobuf field <code>.proto.Notable notable = 13;</code>
+     * @param \Proto\Notable $var
+     * @return $this
+     */
+    public function setNotable($var)
+    {
+        GPBUtil::checkMessage($var, \Proto\Notable::class);
+        $this->notable = $var;
+
+        return $this;
     }
 
 }

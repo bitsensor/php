@@ -4,94 +4,188 @@
 
 namespace Proto;
 
+use Google\Protobuf\Internal\GPBType;
+use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Protobuf type <code>proto.Detection</code>
+ * Generated from protobuf message <code>proto.Detection</code>
  */
 class Detection extends \Google\Protobuf\Internal\Message
 {
     /**
-     * <code>string ids = 1;</code>
+     * System emitting the event
+     *
+     * Generated from protobuf field <code>string ids = 1;</code>
      */
     private $ids = '';
     /**
-     * <code>string name = 2;</code>
+     * Name of the detection
+     *
+     * Generated from protobuf field <code>string name = 2;</code>
      */
     private $name = '';
     /**
-     * <code>string description = 3;</code>
+     * Description tailored to this event
+     *
+     * Generated from protobuf field <code>string description = 3;</code>
      */
     private $description = '';
     /**
-     * <code>repeated string type = 4;</code>
-     */
-    private $type;
-    /**
-     * <code>float severity = 5;</code>
-     */
-    private $severity = 0.0;
-    /**
-     * <code>float certainty = 6;</code>
-     */
-    private $certainty = 0.0;
-    /**
-     * <code>bool successful = 7;</code>
-     */
-    private $successful = false;
-    /**
-     * <code>bool relevant = 8;</code>
-     */
-    private $relevant = false;
-    /**
-     * <code>.proto.Detection.Reason reason = 9;</code>
+     * Class of the rule    
+     *
+     * Generated from protobuf field <code>.proto.Detection.Reason reason = 9;</code>
      */
     private $reason = 0;
     /**
-     * <code>.proto.GeneratedBy generatedby = 10;</code>
+     * Reference to the location, ie. querystring, header
+     *
+     * Generated from protobuf field <code>string on_key = 16;</code>
      */
-    private $generatedby = 0;
+    private $on_key = '';
     /**
-     * <code>bool attack = 11;</code>
+     * Value that triggered the match
+     *
+     * Generated from protobuf field <code>string by_input = 17;</code>
      */
-    private $attack = false;
+    private $by_input = '';
     /**
-     * <code>repeated string input = 12;</code>
-     */
-    private $input;
-    /**
-     * <code>repeated string errors = 13;</code>
+     * Reference to an hash of an exception or log line
+     *
+     * Generated from protobuf field <code>repeated string errors = 13;</code>
      */
     private $errors;
     /**
-     * <code>int64 hash = 14;</code>
+     * Rule that created detection
+     *
+     * Generated from protobuf field <code>.proto.Detection.Rule rule = 19;</code>
+     */
+    private $rule = null;
+    /**
+     * Specifies to what systems the attack is dangerous
+     *
+     * Generated from protobuf field <code>.proto.Detection.ApplicableTo applicable_to = 22;</code>
+     */
+    private $applicable_to = null;
+    /**
+     * Type of the attack, should match Attack
+     *
+     * Generated from protobuf field <code>string attack = 24;</code>
+     */
+    private $attack = '';
+    /**
+     * Mapping to OWASP, PCI, CVE ...
+     *
+     * Generated from protobuf field <code>.proto.Detection.StandardsMapping standards_mapping = 21;</code>
+     */
+    private $standards_mapping = null;
+    /**
+     * Arbitrary tags
+     *
+     * Generated from protobuf field <code>repeated string tags = 18;</code>
+     */
+    private $tags;
+    /**
+     * Generated from protobuf field <code>.proto.Detection.VendorImplementation vendor_implementation = 23;</code>
+     */
+    private $vendor_implementation = null;
+    /**
+     * 1.0 = highest business impact, 0.0 = low
+     *
+     * Generated from protobuf field <code>float severity = 5;</code>
+     */
+    private $severity = 0.0;
+    /**
+     * 1.0 = definite attack, 0.0 = def noise
+     *
+     * Generated from protobuf field <code>float certainty = 6;</code>
+     */
+    private $certainty = 0.0;
+    /**
+     * 1.0 = system is vulnerable for this attack, 0.0 means invulnerable
+     *
+     * Generated from protobuf field <code>float impact = 25;</code>
+     */
+    private $impact = 0.0;
+    /**
+     * A-F grade
+     *
+     * Generated from protobuf field <code>.proto.Grade grade = 20;</code>
+     */
+    private $grade = 0;
+    /**
+     * Hash of the ids, name, attack and on_key
+     *
+     * Generated from protobuf field <code>int64 hash = 14;</code>
      */
     private $hash = 0;
     /**
-     * <code>int64 ruleHash = 15;</code>
+     * Hash of ids, name and attack
+     *
+     * Generated from protobuf field <code>int64 rule_hash = 15;</code>
      */
-    private $ruleHash = 0;
+    private $rule_hash = 0;
     /**
-     * <code>string onKey = 16;</code>
+     * Generated from protobuf field <code>.proto.GeneratedBy generated_by = 10;</code>
      */
-    private $onKey = '';
-    /**
-     * <code>string byInput = 17;</code>
-     */
-    private $byInput = '';
-    /**
-     * <code>repeated string tags = 18;</code>
-     */
-    private $tags;
+    private $generated_by = 0;
 
-    public function __construct()
-    {
+    /**
+     * Constructor.
+     *
+     * @param array $data {
+     *     Optional. Data for populating the Message object.
+     *
+     *     @type string $ids
+     *           System emitting the event
+     *     @type string $name
+     *           Name of the detection
+     *     @type string $description
+     *           Description tailored to this event
+     *     @type int $reason
+     *           Class of the rule    
+     *     @type string $on_key
+     *           Reference to the location, ie. querystring, header
+     *     @type string $by_input
+     *           Value that triggered the match
+     *     @type string[]|\Google\Protobuf\Internal\RepeatedField $errors
+     *           Reference to an hash of an exception or log line
+     *     @type \Proto\Detection\Rule $rule
+     *           Rule that created detection
+     *     @type \Proto\Detection\ApplicableTo $applicable_to
+     *           Specifies to what systems the attack is dangerous
+     *     @type string $attack
+     *           Type of the attack, should match Attack
+     *     @type \Proto\Detection\StandardsMapping $standards_mapping
+     *           Mapping to OWASP, PCI, CVE ...
+     *     @type string[]|\Google\Protobuf\Internal\RepeatedField $tags
+     *           Arbitrary tags
+     *     @type \Proto\Detection\VendorImplementation $vendor_implementation
+     *     @type float $severity
+     *           1.0 = highest business impact, 0.0 = low
+     *     @type float $certainty
+     *           1.0 = definite attack, 0.0 = def noise
+     *     @type float $impact
+     *           1.0 = system is vulnerable for this attack, 0.0 means invulnerable
+     *     @type int $grade
+     *           A-F grade
+     *     @type int|string $hash
+     *           Hash of the ids, name, attack and on_key
+     *     @type int|string $rule_hash
+     *           Hash of ids, name and attack
+     *     @type int $generated_by
+     * }
+     */
+    public function __construct($data = NULL) {
         \GPBMetadata\Detection::initOnce();
-        parent::__construct();
+        parent::__construct($data);
     }
 
     /**
-     * <code>string ids = 1;</code>
+     * System emitting the event
+     *
+     * Generated from protobuf field <code>string ids = 1;</code>
+     * @return string
      */
     public function getIds()
     {
@@ -99,16 +193,25 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>string ids = 1;</code>
+     * System emitting the event
+     *
+     * Generated from protobuf field <code>string ids = 1;</code>
+     * @param string $var
+     * @return $this
      */
     public function setIds($var)
     {
         GPBUtil::checkString($var, True);
         $this->ids = $var;
+
+        return $this;
     }
 
     /**
-     * <code>string name = 2;</code>
+     * Name of the detection
+     *
+     * Generated from protobuf field <code>string name = 2;</code>
+     * @return string
      */
     public function getName()
     {
@@ -116,16 +219,25 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>string name = 2;</code>
+     * Name of the detection
+     *
+     * Generated from protobuf field <code>string name = 2;</code>
+     * @param string $var
+     * @return $this
      */
     public function setName($var)
     {
         GPBUtil::checkString($var, True);
         $this->name = $var;
+
+        return $this;
     }
 
     /**
-     * <code>string description = 3;</code>
+     * Description tailored to this event
+     *
+     * Generated from protobuf field <code>string description = 3;</code>
+     * @return string
      */
     public function getDescription()
     {
@@ -133,101 +245,25 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>string description = 3;</code>
+     * Description tailored to this event
+     *
+     * Generated from protobuf field <code>string description = 3;</code>
+     * @param string $var
+     * @return $this
      */
     public function setDescription($var)
     {
         GPBUtil::checkString($var, True);
         $this->description = $var;
+
+        return $this;
     }
 
     /**
-     * <code>repeated string type = 4;</code>
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * <code>repeated string type = 4;</code>
-     */
-    public function setType(&$var)
-    {
-        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->type = $var;
-    }
-
-    /**
-     * <code>float severity = 5;</code>
-     */
-    public function getSeverity()
-    {
-        return $this->severity;
-    }
-
-    /**
-     * <code>float severity = 5;</code>
-     */
-    public function setSeverity($var)
-    {
-        GPBUtil::checkFloat($var);
-        $this->severity = $var;
-    }
-
-    /**
-     * <code>float certainty = 6;</code>
-     */
-    public function getCertainty()
-    {
-        return $this->certainty;
-    }
-
-    /**
-     * <code>float certainty = 6;</code>
-     */
-    public function setCertainty($var)
-    {
-        GPBUtil::checkFloat($var);
-        $this->certainty = $var;
-    }
-
-    /**
-     * <code>bool successful = 7;</code>
-     */
-    public function getSuccessful()
-    {
-        return $this->successful;
-    }
-
-    /**
-     * <code>bool successful = 7;</code>
-     */
-    public function setSuccessful($var)
-    {
-        GPBUtil::checkBool($var);
-        $this->successful = $var;
-    }
-
-    /**
-     * <code>bool relevant = 8;</code>
-     */
-    public function getRelevant()
-    {
-        return $this->relevant;
-    }
-
-    /**
-     * <code>bool relevant = 8;</code>
-     */
-    public function setRelevant($var)
-    {
-        GPBUtil::checkBool($var);
-        $this->relevant = $var;
-    }
-
-    /**
-     * <code>.proto.Detection.Reason reason = 9;</code>
+     * Class of the rule    
+     *
+     * Generated from protobuf field <code>.proto.Detection.Reason reason = 9;</code>
+     * @return int
      */
     public function getReason()
     {
@@ -235,67 +271,77 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>.proto.Detection.Reason reason = 9;</code>
+     * Class of the rule    
+     *
+     * Generated from protobuf field <code>.proto.Detection.Reason reason = 9;</code>
+     * @param int $var
+     * @return $this
      */
     public function setReason($var)
     {
         GPBUtil::checkEnum($var, \Proto\Detection_Reason::class);
         $this->reason = $var;
+
+        return $this;
     }
 
     /**
-     * <code>.proto.GeneratedBy generatedby = 10;</code>
+     * Reference to the location, ie. querystring, header
+     *
+     * Generated from protobuf field <code>string on_key = 16;</code>
+     * @return string
      */
-    public function getGeneratedby()
+    public function getOnKey()
     {
-        return $this->generatedby;
+        return $this->on_key;
     }
 
     /**
-     * <code>.proto.GeneratedBy generatedby = 10;</code>
+     * Reference to the location, ie. querystring, header
+     *
+     * Generated from protobuf field <code>string on_key = 16;</code>
+     * @param string $var
+     * @return $this
      */
-    public function setGeneratedby($var)
+    public function setOnKey($var)
     {
-        GPBUtil::checkEnum($var, \Proto\GeneratedBy::class);
-        $this->generatedby = $var;
+        GPBUtil::checkString($var, True);
+        $this->on_key = $var;
+
+        return $this;
     }
 
     /**
-     * <code>bool attack = 11;</code>
+     * Value that triggered the match
+     *
+     * Generated from protobuf field <code>string by_input = 17;</code>
+     * @return string
      */
-    public function getAttack()
+    public function getByInput()
     {
-        return $this->attack;
+        return $this->by_input;
     }
 
     /**
-     * <code>bool attack = 11;</code>
+     * Value that triggered the match
+     *
+     * Generated from protobuf field <code>string by_input = 17;</code>
+     * @param string $var
+     * @return $this
      */
-    public function setAttack($var)
+    public function setByInput($var)
     {
-        GPBUtil::checkBool($var);
-        $this->attack = $var;
+        GPBUtil::checkString($var, True);
+        $this->by_input = $var;
+
+        return $this;
     }
 
     /**
-     * <code>repeated string input = 12;</code>
-     */
-    public function getInput()
-    {
-        return $this->input;
-    }
-
-    /**
-     * <code>repeated string input = 12;</code>
-     */
-    public function setInput(&$var)
-    {
-        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->input = $var;
-    }
-
-    /**
-     * <code>repeated string errors = 13;</code>
+     * Reference to an hash of an exception or log line
+     *
+     * Generated from protobuf field <code>repeated string errors = 13;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getErrors()
     {
@@ -303,84 +349,129 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>repeated string errors = 13;</code>
+     * Reference to an hash of an exception or log line
+     *
+     * Generated from protobuf field <code>repeated string errors = 13;</code>
+     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
      */
-    public function setErrors(&$var)
+    public function setErrors($var)
     {
-        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->errors = $var;
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->errors = $arr;
+
+        return $this;
     }
 
     /**
-     * <code>int64 hash = 14;</code>
+     * Rule that created detection
+     *
+     * Generated from protobuf field <code>.proto.Detection.Rule rule = 19;</code>
+     * @return \Proto\Detection\Rule
      */
-    public function getHash()
+    public function getRule()
     {
-        return $this->hash;
+        return $this->rule;
     }
 
     /**
-     * <code>int64 hash = 14;</code>
+     * Rule that created detection
+     *
+     * Generated from protobuf field <code>.proto.Detection.Rule rule = 19;</code>
+     * @param \Proto\Detection\Rule $var
+     * @return $this
      */
-    public function setHash($var)
+    public function setRule($var)
     {
-        GPBUtil::checkInt64($var);
-        $this->hash = $var;
+        GPBUtil::checkMessage($var, \Proto\Detection_Rule::class);
+        $this->rule = $var;
+
+        return $this;
     }
 
     /**
-     * <code>int64 ruleHash = 15;</code>
+     * Specifies to what systems the attack is dangerous
+     *
+     * Generated from protobuf field <code>.proto.Detection.ApplicableTo applicable_to = 22;</code>
+     * @return \Proto\Detection\ApplicableTo
      */
-    public function getRuleHash()
+    public function getApplicableTo()
     {
-        return $this->ruleHash;
+        return $this->applicable_to;
     }
 
     /**
-     * <code>int64 ruleHash = 15;</code>
+     * Specifies to what systems the attack is dangerous
+     *
+     * Generated from protobuf field <code>.proto.Detection.ApplicableTo applicable_to = 22;</code>
+     * @param \Proto\Detection\ApplicableTo $var
+     * @return $this
      */
-    public function setRuleHash($var)
+    public function setApplicableTo($var)
     {
-        GPBUtil::checkInt64($var);
-        $this->ruleHash = $var;
+        GPBUtil::checkMessage($var, \Proto\Detection_ApplicableTo::class);
+        $this->applicable_to = $var;
+
+        return $this;
     }
 
     /**
-     * <code>string onKey = 16;</code>
+     * Type of the attack, should match Attack
+     *
+     * Generated from protobuf field <code>string attack = 24;</code>
+     * @return string
      */
-    public function getOnKey()
+    public function getAttack()
     {
-        return $this->onKey;
+        return $this->attack;
     }
 
     /**
-     * <code>string onKey = 16;</code>
+     * Type of the attack, should match Attack
+     *
+     * Generated from protobuf field <code>string attack = 24;</code>
+     * @param string $var
+     * @return $this
      */
-    public function setOnKey($var)
+    public function setAttack($var)
     {
         GPBUtil::checkString($var, True);
-        $this->onKey = $var;
+        $this->attack = $var;
+
+        return $this;
     }
 
     /**
-     * <code>string byInput = 17;</code>
+     * Mapping to OWASP, PCI, CVE ...
+     *
+     * Generated from protobuf field <code>.proto.Detection.StandardsMapping standards_mapping = 21;</code>
+     * @return \Proto\Detection\StandardsMapping
      */
-    public function getByInput()
+    public function getStandardsMapping()
     {
-        return $this->byInput;
+        return $this->standards_mapping;
     }
 
     /**
-     * <code>string byInput = 17;</code>
+     * Mapping to OWASP, PCI, CVE ...
+     *
+     * Generated from protobuf field <code>.proto.Detection.StandardsMapping standards_mapping = 21;</code>
+     * @param \Proto\Detection\StandardsMapping $var
+     * @return $this
      */
-    public function setByInput($var)
+    public function setStandardsMapping($var)
     {
-        GPBUtil::checkString($var, True);
-        $this->byInput = $var;
+        GPBUtil::checkMessage($var, \Proto\Detection_StandardsMapping::class);
+        $this->standards_mapping = $var;
+
+        return $this;
     }
 
     /**
-     * <code>repeated string tags = 18;</code>
+     * Arbitrary tags
+     *
+     * Generated from protobuf field <code>repeated string tags = 18;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getTags()
     {
@@ -388,12 +479,218 @@ class Detection extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * <code>repeated string tags = 18;</code>
+     * Arbitrary tags
+     *
+     * Generated from protobuf field <code>repeated string tags = 18;</code>
+     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
      */
-    public function setTags(&$var)
+    public function setTags($var)
     {
-        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
-        $this->tags = $var;
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::STRING);
+        $this->tags = $arr;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.proto.Detection.VendorImplementation vendor_implementation = 23;</code>
+     * @return \Proto\Detection\VendorImplementation
+     */
+    public function getVendorImplementation()
+    {
+        return $this->vendor_implementation;
+    }
+
+    /**
+     * Generated from protobuf field <code>.proto.Detection.VendorImplementation vendor_implementation = 23;</code>
+     * @param \Proto\Detection\VendorImplementation $var
+     * @return $this
+     */
+    public function setVendorImplementation($var)
+    {
+        GPBUtil::checkMessage($var, \Proto\Detection_VendorImplementation::class);
+        $this->vendor_implementation = $var;
+
+        return $this;
+    }
+
+    /**
+     * 1.0 = highest business impact, 0.0 = low
+     *
+     * Generated from protobuf field <code>float severity = 5;</code>
+     * @return float
+     */
+    public function getSeverity()
+    {
+        return $this->severity;
+    }
+
+    /**
+     * 1.0 = highest business impact, 0.0 = low
+     *
+     * Generated from protobuf field <code>float severity = 5;</code>
+     * @param float $var
+     * @return $this
+     */
+    public function setSeverity($var)
+    {
+        GPBUtil::checkFloat($var);
+        $this->severity = $var;
+
+        return $this;
+    }
+
+    /**
+     * 1.0 = definite attack, 0.0 = def noise
+     *
+     * Generated from protobuf field <code>float certainty = 6;</code>
+     * @return float
+     */
+    public function getCertainty()
+    {
+        return $this->certainty;
+    }
+
+    /**
+     * 1.0 = definite attack, 0.0 = def noise
+     *
+     * Generated from protobuf field <code>float certainty = 6;</code>
+     * @param float $var
+     * @return $this
+     */
+    public function setCertainty($var)
+    {
+        GPBUtil::checkFloat($var);
+        $this->certainty = $var;
+
+        return $this;
+    }
+
+    /**
+     * 1.0 = system is vulnerable for this attack, 0.0 means invulnerable
+     *
+     * Generated from protobuf field <code>float impact = 25;</code>
+     * @return float
+     */
+    public function getImpact()
+    {
+        return $this->impact;
+    }
+
+    /**
+     * 1.0 = system is vulnerable for this attack, 0.0 means invulnerable
+     *
+     * Generated from protobuf field <code>float impact = 25;</code>
+     * @param float $var
+     * @return $this
+     */
+    public function setImpact($var)
+    {
+        GPBUtil::checkFloat($var);
+        $this->impact = $var;
+
+        return $this;
+    }
+
+    /**
+     * A-F grade
+     *
+     * Generated from protobuf field <code>.proto.Grade grade = 20;</code>
+     * @return int
+     */
+    public function getGrade()
+    {
+        return $this->grade;
+    }
+
+    /**
+     * A-F grade
+     *
+     * Generated from protobuf field <code>.proto.Grade grade = 20;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setGrade($var)
+    {
+        GPBUtil::checkEnum($var, \Proto\Grade::class);
+        $this->grade = $var;
+
+        return $this;
+    }
+
+    /**
+     * Hash of the ids, name, attack and on_key
+     *
+     * Generated from protobuf field <code>int64 hash = 14;</code>
+     * @return int|string
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * Hash of the ids, name, attack and on_key
+     *
+     * Generated from protobuf field <code>int64 hash = 14;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setHash($var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->hash = $var;
+
+        return $this;
+    }
+
+    /**
+     * Hash of ids, name and attack
+     *
+     * Generated from protobuf field <code>int64 rule_hash = 15;</code>
+     * @return int|string
+     */
+    public function getRuleHash()
+    {
+        return $this->rule_hash;
+    }
+
+    /**
+     * Hash of ids, name and attack
+     *
+     * Generated from protobuf field <code>int64 rule_hash = 15;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setRuleHash($var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->rule_hash = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.proto.GeneratedBy generated_by = 10;</code>
+     * @return int
+     */
+    public function getGeneratedBy()
+    {
+        return $this->generated_by;
+    }
+
+    /**
+     * Generated from protobuf field <code>.proto.GeneratedBy generated_by = 10;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setGeneratedBy($var)
+    {
+        GPBUtil::checkEnum($var, \Proto\GeneratedBy::class);
+        $this->generated_by = $var;
+
+        return $this;
     }
 
 }

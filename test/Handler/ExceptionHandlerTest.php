@@ -17,7 +17,6 @@ class ExceptionHandlerTest extends HandlerTest
         $exception = new \Exception($message, $code);
         $expectedContext = explode(PHP_EOL, $exception->getTraceAsString());
 
-
         ExceptionHandler::handle($exception);
 
         self::assertEquals(1, BitSensor::getDatapoint()->getErrors()->count(), "Datapoint must contain 1 error.");
