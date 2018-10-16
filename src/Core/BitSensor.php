@@ -133,7 +133,7 @@ class BitSensor
             self::$errorHandler = set_error_handler([CodeErrorHandler::class, 'handle']);
             Log::d("Previous error handler is: " . (is_null(self::$errorHandler) ?
                     "not defined" : (is_array(self::$errorHandler) ?
-                        implode(self::$errorHandler) : self::$errorHandler)));
+                    (is_string(self::$errorHandler[0]) ? implode(self::$errorHandler) : get_class(self::$errorHandler[0])) : self::$errorHandler)));
         }
 
         if (!isset(self::$exceptionHandler)) {
@@ -141,7 +141,7 @@ class BitSensor
             /** @noinspection PhpParamsInspection */
             Log::d("Previous exception handler is: " . (is_null(self::$exceptionHandler) ?
                     "not defined" : (is_array(self::$exceptionHandler) ?
-                        implode(self::$exceptionHandler) : self::$exceptionHandler)));
+                    (is_string(self::$exceptionHandler[0]) ? implode(self::$exceptionHandler) : get_class(self::$exceptionHandler[0])) : self::$exceptionHandler)));
         }
     }
 

@@ -32,7 +32,7 @@ class ExceptionHandler
 
         BitSensor::addError($error);
 
-        if (isset(BitSensor::$exceptionHandler) && stripos(BitSensor::$exceptionHandler[0], 'BitSensor'))
+        if (isset(BitSensor::$exceptionHandler) && is_string(BitSensor::$exceptionHandler[0]) && stripos(BitSensor::$exceptionHandler[0], 'BitSensor'))
             call_user_func(BitSensor::$exceptionHandler, $exception);
     }
 }
