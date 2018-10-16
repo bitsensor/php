@@ -4,22 +4,13 @@
 
 namespace Proto;
 
-/**
- * Protobuf enum <code>proto.Detection.Reason</code>
- */
-class Detection_Reason
-{
+if (false) {
     /**
-     * <code>KNOWN_ATTACK = 0;</code>
+     * This class is deprecated. Use Proto\Detection\Reason instead.
+     * @deprecated
      */
-    const KNOWN_ATTACK = 0;
-    /**
-     * <code>BEHAVIOUR = 1;</code>
-     */
-    const BEHAVIOUR = 1;
-    /**
-     * <code>KNOWN_TOOL = 2;</code>
-     */
-    const KNOWN_TOOL = 2;
+    class Detection_Reason {}
 }
+class_exists(Detection\Reason::class);
+@trigger_error('Proto\Detection_Reason is deprecated and will be removed in the next major release. Use Proto\Detection\Reason instead', E_USER_DEPRECATED);
 

@@ -4,39 +4,54 @@
 
 namespace Proto;
 
+use Google\Protobuf\Internal\GPBType;
+use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
 
 /**
- * Protobuf type <code>proto.Invocation</code>
+ * Generated from protobuf message <code>proto.Invocation</code>
  */
 class Invocation extends \Google\Protobuf\Internal\Message
 {
     /**
-     * <code>repeated .proto.Invocation.SQLInvocation sqlInvocations = 1;</code>
+     * Generated from protobuf field <code>repeated .proto.Invocation.SQLInvocation sql_invocations = 1;</code>
      */
-    private $sqlInvocations;
+    private $sql_invocations;
 
-    public function __construct()
-    {
+    /**
+     * Constructor.
+     *
+     * @param array $data {
+     *     Optional. Data for populating the Message object.
+     *
+     *     @type \Proto\Invocation\SQLInvocation[]|\Google\Protobuf\Internal\RepeatedField $sql_invocations
+     * }
+     */
+    public function __construct($data = NULL) {
         \GPBMetadata\Invocation::initOnce();
-        parent::__construct();
+        parent::__construct($data);
     }
 
     /**
-     * <code>repeated .proto.Invocation.SQLInvocation sqlInvocations = 1;</code>
+     * Generated from protobuf field <code>repeated .proto.Invocation.SQLInvocation sql_invocations = 1;</code>
+     * @return \Google\Protobuf\Internal\RepeatedField
      */
     public function getSqlInvocations()
     {
-        return $this->sqlInvocations;
+        return $this->sql_invocations;
     }
 
     /**
-     * <code>repeated .proto.Invocation.SQLInvocation sqlInvocations = 1;</code>
+     * Generated from protobuf field <code>repeated .proto.Invocation.SQLInvocation sql_invocations = 1;</code>
+     * @param \Proto\Invocation\SQLInvocation[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @return $this
      */
-    public function setSqlInvocations(&$var)
+    public function setSqlInvocations($var)
     {
-        GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\Invocation_SQLInvocation::class);
-        $this->sqlInvocations = $var;
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Proto\Invocation\SQLInvocation::class);
+        $this->sql_invocations = $arr;
+
+        return $this;
     }
 
 }
