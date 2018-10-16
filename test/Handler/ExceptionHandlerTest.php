@@ -31,7 +31,7 @@ class ExceptionHandlerTest extends HandlerTest
         self::assertEquals($err->getCode(), $code);
         self::assertEquals($err->getDescription(), $message);
         self::assertEquals($err->getLine(), $line);
-        self::assertEquals($err->getContext(), $expectedContext);
+        self::assertEquals($err->getContext()[0], $expectedContext);
     }
 
 }
