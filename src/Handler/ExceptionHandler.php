@@ -5,6 +5,7 @@ namespace BitSensor\Handler;
 use BitSensor\Core\BitSensor;
 use Exception;
 use Proto\Error;
+use Proto\GeneratedBy;
 
 /**
  * Collects information about thrown exceptions.
@@ -24,6 +25,7 @@ class ExceptionHandler
         $error->setLocation($exception->getFile());
         $error->setLine($exception->getLine());
         $error->setType('Exception');
+        $error->setGeneratedBy(GeneratedBy::PLUGIN);
 
         $traces = explode(PHP_EOL, $exception->getTraceAsString());
         $error->setContext($traces);
