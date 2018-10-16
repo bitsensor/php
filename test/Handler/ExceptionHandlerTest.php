@@ -25,6 +25,9 @@ class ExceptionHandlerTest extends HandlerTest
         /** @var Error $err */
         $err = BitSensor::getDatapoint()->getErrors()[0];
 
+        echo $err->getContext();
+        echo $expectedContext;
+
         self::assertEquals($err->getCode(), $code);
         self::assertEquals($err->getDescription(), $message);
         self::assertEquals($err->getLine(), $line);

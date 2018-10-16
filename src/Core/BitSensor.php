@@ -307,7 +307,7 @@ class BitSensor
      */
     public static function addError(\Proto\Error $error)
     {
-        $error->setGeneratedby(GeneratedBy::PLUGIN);
+        $error->setGeneratedBy(GeneratedBy::PLUGIN);
         self::$datapoint->getErrors()[] = $error;
     }
 
