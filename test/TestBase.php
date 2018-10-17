@@ -14,9 +14,20 @@ abstract class TestBase extends PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        BitSensor::init();
+        $datapoint = self::getPrivateDatapoint();
+        $datapoint->setValue(new \Proto\Datapoint());
+
         BitSensor::setEnbaleShutdownHandler(false);
         BitSensor::createConnector('noop');
         Blocking::setEnabled(false);
+    }
+
+    private static function getPrivateDatapoint()
+    {
+        $class = new \ReflectionClass('BitSensor\Core\BitSensor');
+        $datapoint = $class->getProperty('datapoint');
+        $datapoint->setAccessible(true);
+
+        return $datapoint;
     }
 }

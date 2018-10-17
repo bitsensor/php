@@ -9,7 +9,6 @@ use Proto\Datapoint;
 
 class ApiConnectorTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @throws ApiException
      */
