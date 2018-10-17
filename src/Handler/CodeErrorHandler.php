@@ -4,7 +4,6 @@ namespace BitSensor\Handler;
 
 use BitSensor\Core\BitSensor;
 use Proto\Error;
-use Proto\GeneratedBy;
 
 /**
  * Handler to run when an error in the application occurs. Collects data about.
@@ -28,7 +27,6 @@ class CodeErrorHandler
         $error->setLocation($errfile);
         $error->setLine($errline);
         $error->setType("Code");
-        $error->setGeneratedBy(GeneratedBy::PLUGIN);
 
         BitSensor::addError($error);
 
