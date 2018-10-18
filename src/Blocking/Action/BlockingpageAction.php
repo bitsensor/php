@@ -67,6 +67,8 @@ class BlockingpageAction extends AbstractBlockingAction
         ob_clean();
 
         $curl = curl_init($this->generateUrl($datapoint));
+        // This disables the output of true/'1' when the request was succesful
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
         $blockingPage = curl_exec($curl);
         curl_close($curl);
 
