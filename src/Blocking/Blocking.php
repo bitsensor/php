@@ -127,6 +127,7 @@ class Blocking
 
         error_log("User blocked by BitSensor for block with id $id", E_USER_ERROR);
         throw new Exception("User blocked by BitSensor for block with id $id");
+        die();
     }
 
     /**
