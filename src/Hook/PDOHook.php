@@ -199,7 +199,7 @@ class PDOHook extends AbstractHook
         if ($sqlInvocation == null)
             return call_user_func_array(array($stmt, 'execute'), $args);
 
-        $sqlQuery = new SQLInvocation_Query();
+        $sqlQuery = new Query();
         $sqlQuery->setQuery($queryString);
 
         // Adds sub-queries
