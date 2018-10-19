@@ -9,8 +9,8 @@ use mysqli_stmt;
 use Proto\Datapoint;
 use Proto\Error;
 use Proto\Invocation;
-use Proto\Invocation_SQLInvocation;
-use Proto\Invocation_SQLInvocation_Query;
+use Proto\Invocation\SQLInvocation;
+use Proto\Invocation\SQLInvocation\Query;
 
 /**
  * Class MysqlHook.

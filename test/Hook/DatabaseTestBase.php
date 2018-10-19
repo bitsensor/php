@@ -4,7 +4,7 @@ namespace BitSensor\Test\Hook;
 
 use BitSensor\Core\BitSensor;
 use BitSensor\Test\TestBase;
-use Proto\Invocation_SQLInvocation;
+use Proto\Invocation\SQLInvocation;
 
 /**
  * Class DatabaseTestBase contains test suite setup and basic test cases.

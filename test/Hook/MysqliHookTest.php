@@ -6,7 +6,7 @@ use BitSensor\Core\BitSensor;
 use BitSensor\Hook\MysqliHook;
 use mysqli;
 use mysqli_stmt;
-use Proto\Invocation_SQLInvocation;
+use Proto\Invocation\SQLInvocation;
 use SuperClosure\SerializableClosure;
 
 /**

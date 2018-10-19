@@ -6,8 +6,8 @@ use BitSensor\Core\BitSensor;
 use PDO;
 use PDOStatement;
 use Proto\Datapoint;
-use Proto\Invocation_SQLInvocation;
-use Proto\Invocation_SQLInvocation_Query;
+use Proto\Invocation\SQLInvocation;
+use Proto\Invocation\SQLInvocation\Query;
 
 /**
  * Class PDOHook.

@@ -5,7 +5,7 @@ namespace BitSensor\Test\Hook;
 use BitSensor\Core\BitSensor;
 use BitSensor\Hook\PDOHook;
 use PDO;
-use Proto\Invocation_SQLInvocation;
+use Proto\Invocation\SQLInvocation;
 use SuperClosure\SerializableClosure;
 
 /**
