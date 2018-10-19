@@ -63,7 +63,7 @@ abstract class DatabaseTestBase extends TestBase
         $query = "*";
         call_user_func($queryFunc, $query);
 
-        /** @var Invocation_SQLInvocation $sqlInvocation */
+        /** @var SQLInvocation $sqlInvocation */
         $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertContains($this->host, $sqlInvocation->getEndpoint()['url']);
@@ -80,7 +80,7 @@ abstract class DatabaseTestBase extends TestBase
         $query = "select * from pet";
         call_user_func($queryFunc, $query);
 
-        /** @var Invocation_SQLInvocation $sqlInvocation */
+        /** @var SQLInvocation $sqlInvocation */
         $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertEquals($query, $sqlInvocation->getQueries()[0]->getQuery());
@@ -100,7 +100,7 @@ abstract class DatabaseTestBase extends TestBase
         $query = "select *";
         call_user_func($queryFunc, $query);
 
-        /** @var Invocation_SQLInvocation $sqlInvocation */
+        /** @var SQLInvocation $sqlInvocation */
         $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertEquals($query, $sqlInvocation->getQueries()[0]->getQuery());

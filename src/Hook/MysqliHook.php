@@ -214,10 +214,10 @@ class MysqliHook extends AbstractHook
                 : $args[0];
 
             // Pre-handle
-            $sqlInvocation = new Invocation_SQLInvocation();
+            $sqlInvocation = new SQLInvocation();
             MysqliHook::instance()->preHandle($mysqli, $sqlInvocation);
 
-            $sqlQuery = new Invocation_SQLInvocation_Query();
+            $sqlQuery = new Query();
             $sqlQuery->setQuery($query);
             $sqlInvocation->getQueries()[] = $sqlQuery;
 
@@ -257,7 +257,7 @@ class MysqliHook extends AbstractHook
 
             $sqlInvocations = BitSensor::getInvocations()->getSQLInvocations();
             $sqlInvocation = Util::array_find($sqlInvocations,
-                function (Invocation_SQLInvocation $i) use ($statement) {
+                function (SQLInvocation $i) use ($statement) {
                     return $i->getPrepareStatement() == $statement;
                 }
             );
@@ -266,7 +266,7 @@ class MysqliHook extends AbstractHook
             if ($sqlInvocation !== null)
                 return;
 
-            $sqlInvocation = new Invocation_SQLInvocation();
+            $sqlInvocation = new SQLInvocation();
             $sqlInvocation->setPrepareStatement($statement);
             $sqlInvocations[] = $sqlInvocation;
 
@@ -282,7 +282,7 @@ class MysqliHook extends AbstractHook
     {
         $internalHookBindParam = function ($function, $args, &$variables) {
             /** @var Datapoint $datapoint */
-            /** @var Invocation_SQLInvocation $sqlInvocation */
+            /** @var SQLInvocation $sqlInvocation */
 
             // Finds current sqlInvocation for this execution.
             if (BitSensor::getInvocations() == null)
@@ -327,7 +327,7 @@ class MysqliHook extends AbstractHook
     {
         return function (...$args) use ($function) {
             /** @var Datapoint $datapoint */
-            /** @var Invocation_SQLInvocation $sqlInvocation */
+            /** @var SQLInvocation $sqlInvocation */
             /** @var mysqli_result $result */
 
             $function = isset($function[1]) ? [$this, $function[1]] : $function[0];
@@ -348,7 +348,7 @@ class MysqliHook extends AbstractHook
                 return call_user_func_array($function, $args);
 
             $queryString = $sqlInvocation->getPrepareStatement();
-            $sqlQuery = new Invocation_SQLInvocation_Query();
+            $sqlQuery = new Query();
             $sqlQuery->setQuery($queryString);
 
             // Adds sub-queries
@@ -385,7 +385,7 @@ class MysqliHook extends AbstractHook
      * Pre-handling Mysqli execution.
      *
      * @param mysqli $mysqli
-     * @param Invocation_SQLInvocation $sqlInvocation
+     * @param SQLInvocation $sqlInvocation
      */
     public function preHandle($mysqli, $sqlInvocation)
     {
@@ -409,7 +409,7 @@ class MysqliHook extends AbstractHook
      * Post-handling Mysqli execution.
      *
      * @param mixed $result
-     * @param Invocation_SQLInvocation $sqlInvocation
+     * @param SQLInvocation $sqlInvocation
      * @param mysqli|mysqli_stmt $m
      */
     public function postHandle($result, $sqlInvocation, $m = null)

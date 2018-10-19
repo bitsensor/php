@@ -78,7 +78,7 @@ class PDOHookTest extends DatabaseTestBase
         $owner = 'Miley';
         $stmt->execute();
 
-        /** @var Invocation_SQLInvocation $sqlInvocation */
+        /** @var SQLInvocation $sqlInvocation */
         $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertEquals($prepare, $sqlInvocation->getPrepareStatement());
@@ -103,7 +103,7 @@ class PDOHookTest extends DatabaseTestBase
         $stmt->bindValue(':owner', 'Miley');
         $stmt->execute();
 
-        /** @var Invocation_SQLInvocation $sqlInvocation */
+        /** @var SQLInvocation $sqlInvocation */
         $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertEquals($prepare, $sqlInvocation->getPrepareStatement());
@@ -123,7 +123,7 @@ class PDOHookTest extends DatabaseTestBase
         $stmt = $pdo->prepare($query);
         $stmt->execute();
 
-        /** @var Invocation_SQLInvocation $sqlInvocation */
+        /** @var SQLInvocation $sqlInvocation */
         $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         $result = $stmt->fetchAll();

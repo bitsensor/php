@@ -63,7 +63,7 @@ class PDOHook extends AbstractHook
 
                 $sqlInvocations = BitSensor::getInvocations()->getSQLInvocations();
                 $sqlInvocation = Util::array_find($sqlInvocations,
-                    function (Invocation_SQLInvocation $i) use ($statement) {
+                    function (SQLInvocation $i) use ($statement) {
                         return $i->getPrepareStatement() == $statement;
                     }
                 );
@@ -72,7 +72,7 @@ class PDOHook extends AbstractHook
                 if ($sqlInvocation !== null)
                     return;
 
-                $sqlInvocation = new Invocation_SQLInvocation();
+                $sqlInvocation = new SQLInvocation();
                 $sqlInvocation->setPrepareStatement($statement);
                 $sqlInvocations[] = $sqlInvocation;
 
@@ -153,10 +153,10 @@ class PDOHook extends AbstractHook
             return call_user_func_array(array($pdo, $funcName), $args);
 
         // Pre-handle
-        $sqlInvocation = new Invocation_SQLInvocation();
+        $sqlInvocation = new SQLInvocation();
         $this->preHandle($pdo, $sqlInvocation);
 
-        $sqlQuery = new Invocation_SQLInvocation_Query();
+        $sqlQuery = new Query();
         $sqlQuery->setQuery($args[0]);
         $sqlInvocation->getQueries()[] = $sqlQuery;
 
@@ -183,14 +183,14 @@ class PDOHook extends AbstractHook
     public function hookStatementExecute($stmt, $args)
     {
         /** @var Datapoint $datapoint */
-        /** @var Invocation_SQLInvocation $sqlInvocation */
+        /** @var SQLInvocation $sqlInvocation */
         /** @var PDOStatement $result */
 
         $queryString = $stmt->queryString;
 
         // Finds current sqlInvocation for this execution.
         $sqlInvocation = Util::array_find(BitSensor::getInvocations()->getSQLInvocations(),
-            function (Invocation_SQLInvocation $i) use ($queryString) {
+            function (SQLInvocation $i) use ($queryString) {
                 return $i->getPrepareStatement() == $queryString;
             }
         );
@@ -199,7 +199,7 @@ class PDOHook extends AbstractHook
         if ($sqlInvocation == null)
             return call_user_func_array(array($stmt, 'execute'), $args);
 
-        $sqlQuery = new Invocation_SQLInvocation_Query();
+        $sqlQuery = new SQLInvocation_Query();
         $sqlQuery->setQuery($queryString);
 
         // Adds sub-queries
@@ -223,7 +223,7 @@ class PDOHook extends AbstractHook
      * Pre-handling PDO execution.
      *
      * @param PDO $pdo
-     * @param Invocation_SQLInvocation $sqlInvocation
+     * @param SQLInvocation $sqlInvocation
      */
     public function preHandle($pdo, $sqlInvocation)
     {
@@ -250,7 +250,7 @@ class PDOHook extends AbstractHook
      * Post-handling PDO execution.
      *
      * @param PDOStatement $result
-     * @param Invocation_SQLInvocation $sqlInvocation
+     * @param SQLInvocation $sqlInvocation
      */
     public function postHandle($result, $sqlInvocation)
     {

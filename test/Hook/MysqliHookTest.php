@@ -132,7 +132,7 @@ class MysqliHookTest extends DatabaseTestBase
 
         call_user_func($function, $stmt, $owners);
 
-        /** @var Invocation_SQLInvocation $sqlInvocation */
+        /** @var SQLInvocation $sqlInvocation */
         $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         self::assertEquals($prepare, $sqlInvocation->getPrepareStatement());
@@ -154,7 +154,7 @@ class MysqliHookTest extends DatabaseTestBase
         $stmt = $conn->prepare($query);
         call_user_func($function, $stmt);
 
-        /** @var Invocation_SQLInvocation $sqlInvocation */
+        /** @var SQLInvocation $sqlInvocation */
         $sqlInvocation = BitSensor::getInvocations()->getSQLInvocations()[0];
 
         $stmt->bind_result($name, $owner);
