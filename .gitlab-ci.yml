@@ -71,12 +71,6 @@ test:7.2:
     BITSENSOR_MYSQL_HOST: "mysql"
     PHP_VERSION: '7.2'
 
-deploy:packagist:
-  stage: deploy
-  script:
-    - curl -XPOST -H'content-type:application/json' 'https://packagist.org/api/update-package?username='$PACKAGIST_USERNAME'&apiToken='$PACKAGIST_API_KEY -d'{"repository":{"url":"'$PACKAGIST_URL'"}}'
-
-
 pages:
   image: node:8.9.0
   before_script:
