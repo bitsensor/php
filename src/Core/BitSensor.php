@@ -24,12 +24,11 @@ use Proto\Invocation;
 /**
  * Entry point for starting the BitSensor Web Application Security plugin.
  * @package BitSensor\Core
- * @version 0.11.0
  */
 class BitSensor
 {
 
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.5';
 
     /**
      * Reference to the global Datapoint instance.
