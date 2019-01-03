@@ -59,7 +59,7 @@ class EndpointConstants extends Constants
     /**
      * Status code.
      */
-    const STATUS = 'code';
+    const STATUS = 'http.code';
     /**
      * SAPI name.
      */
